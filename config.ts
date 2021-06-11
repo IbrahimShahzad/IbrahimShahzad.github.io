@@ -1,5 +1,4 @@
 const siteMetadata = {
-    pathPrefix: `/ibrahim`,
     title: `Ibrahim`,
     siteUrl: `https://IbrahimShahzad.github.io`,
     capitalizeTitleOnHome: false,

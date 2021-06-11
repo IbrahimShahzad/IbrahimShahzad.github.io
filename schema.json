@@ -15377,16 +15377,6 @@
               "defaultValue": null
             },
             {
-              "name": "pathPrefix",
-              "description": "",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "StringQueryOperatorInput",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "siteUrl",
               "description": "",
               "type": {
@@ -16022,18 +16012,6 @@
               "deprecationReason": null
             },
             {
-              "name": "pathPrefix",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "siteUrl",
               "description": null,
               "args": [],
@@ -16631,12 +16609,6 @@
             },
             {
               "name": "siteMetadata___description",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "siteMetadata___pathPrefix",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
