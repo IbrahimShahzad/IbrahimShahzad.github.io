@@ -1,5 +1,4 @@
 module.exports = {
-  pathPrefix: "/ibrahim",
   client: {
     addTypename: false,
     excludes: [],
