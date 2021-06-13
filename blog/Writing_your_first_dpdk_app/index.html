@@ -15,116 +15,137 @@ which it forwards the packet to the application in the userspace. Doing this few
 each and every packet is quite costly in terms of performance.</p><p>With DPDK you bind the interface with the drivers provided, after which when the
 packet is received the application can directly access it. </p><p>In short DPDK allows to bypass the kernel and receiver and process the packets
 directly in user space.</p><p>Datapath ususally entails 10s to 100s of Gigs per second on an interface. If you
-want to write code dealing with such a traffic DPDK would be a fair choice.</p><h2>What Do you need?</h2><p>In order to follo along with the material you will need the following:</p><ul><li>A linux based system:<ul><li>2 Intel processors, each with 8 cores, 8 GB RAM </li><li><a href="http://core.dpdk.org/supported/">DPDK compatible NIC</a></li></ul></li><li>Some knowledge of C</li></ul><p>Furthermore, for later you would also need to read up on following concepts:</p><ul><li>Enviroment Abstraction Layer</li><li>Hugepages</li><li>Non-Uniform Memory Architecture (NUMA)</li><li>Transition Lookaside Buffer (TLB)</li><li>CPU isolation and pinning</li></ul><p>Some Useful Links</p><ul><li><a href="http://doc.dpdk.org/guides/prog_guide/intro.html">Programmers Guide</a></li><li><a href="http://doc.dpdk.org/api/">API Documentation</a></li><li><a href="https://www.dpdk.org/">DPDK Home</a></li></ul><hr/><h1>Lets Get Started</h1><h2>DPDK installation</h2><p>We will be using DPDK stable version 20.11.1. We would need to do A couple
-things in this section</p><ol><li>Install the dependencies and Build DPDK</li><li>Set up some <code>Hugepages</code></li><li>Bind the NIC to the <code>igb_uio</code> dirver</li></ol><p>Fire up that ubuntu terminal and let us begin...</p><h3>Installing dependencies/DPDK</h3><p>First lets install some dependencies</p><pre><code class="language-bash">sudo apt-get install -y build-essential \
-        git \
-        libnuma-dev \
-        software-properties-common \
-        python3 \
-        python3-pip \
-        python3-pyelftools
+want to write code dealing with such a traffic DPDK would be a fair choice.</p><h2>What Do you need?</h2><p>In order to follo along with the material you will need the following:</p><ul><li><p>A linux based system:</p><ul><li><p>2 Intel processors, each with 8 cores, 8 GB RAM </p></li><li><p><a href="http://core.dpdk.org/supported/">DPDK compatible NIC</a></p></li></ul></li><li><p>Some knowledge of C</p></li></ul><p>Furthermore, for later you would also need to read up on following concepts:</p><ul><li><p>Enviroment Abstraction Layer</p></li><li><p>Hugepages</p></li><li><p>Non-Uniform Memory Architecture (NUMA)</p></li><li><p>Transition Lookaside Buffer (TLB)</p></li><li><p>CPU isolation and pinning</p></li></ul><p>Some Useful Links</p><ul><li><p><a href="http://doc.dpdk.org/guides/prog_guide/intro.html">Programmers Guide</a></p></li><li><p><a href="http://doc.dpdk.org/api/">API Documentation</a></p></li><li><p><a href="https://www.dpdk.org/">DPDK Home</a></p></li></ul><hr/><h1>Lets Get Started</h1><h2>DPDK installation</h2><p>We will be using DPDK stable version 20.11.1. We would need to do A couple
+things in this section</p><ol><li><p>Install the dependencies and Build DPDK</p></li><li><p>Set up some <code>Hugepages</code></p></li><li><p>Bind the NIC to the <code>igb_uio</code> dirver</p></li></ol><p>Fire up that ubuntu terminal and let us begin...</p><h3>Installing dependencies/DPDK</h3><p>First lets install some dependencies</p><pre><code class="language-bash">
+    sudo apt-get install -y build-essential \
+                            git \
+                            libnuma-dev \
+                            software-properties-common \
+                            python3 \
+                            python3-pip \
+                            python3-pyelftools
 
 </code></pre><p>Now that the dependencies have been taken care of lets get the DPDK tarfile
-and build it.
-We will write a script that would help installing DPDK later as well. (i have
-a habit of writing scripts XD)</p><p>open up a new file with your favourite editor (i hope its vim)</p><pre><code class="language-bash">vim install-dpdk.sh
-</code></pre><p>Now paste the following in the file</p><pre><code class="language-bash">#!/bin/bash
-pushd /opt/
-wget https://fast.dpdk.org/rel/dpdk-20.11.1.tar.xz
-tar xf dpdk-20.11.1.tar.xz
-pushd dpdk-stable-20.11.1
-pip3 install meson ninja
-meson build
-pushd build
-ninja
-ninja install
-ldconfig
-popd
-popd
-popd
-</code></pre><p>The above code should do the following:</p><ol><li>get the <code>dpdk-20.11.1.tar.xz</code> file in <code>/opt/</code> directory</li><li>untar it</li><li>install <code>meson ninja</code></li><li>build the code</li><li>update the library path</li></ol><p>Make the file executable and run the script by following:</p><pre><code class="language-bash">chmod u+x install-dpdk.sh
-./install-dpdk.sh
+and build it.</p><p>We will write a script that would help installing DPDK later as well. (i have
+a habit of writing scripts XD)</p><p>open up a new file with your favourite editor (i hope its vim)</p><pre><code class="language-bash">
+    vim install-dpdk.sh
+
+</code></pre><p>Now paste the following in the file</p><pre><code class="language-bash">
+    #!/bin/bash
+    pushd /opt/
+    wget https://fast.dpdk.org/rel/dpdk-20.11.1.tar.xz
+    tar xf dpdk-20.11.1.tar.xz
+    pushd dpdk-stable-20.11.1
+    pip3 install meson ninja
+    meson build
+    pushd build
+    ninja
+    ninja install
+    ldconfig
+    popd
+    popd
+    popd
+
+</code></pre><p>The above code should do the following:</p><ol><li><p>get the <code>dpdk-20.11.1.tar.xz</code> file in <code>/opt/</code> directory</p></li><li><p>untar it</p></li><li><p>install <code>meson ninja</code></p></li><li><p>build the code</p></li><li><p>update the library path</p></li></ol><p>Make the file executable and run the script by following:</p><pre><code class="language-bash">
+    chmod u+x install-dpdk.sh
+    ./install-dpdk.sh
+
 </code></pre><h3>Setting up Hugepages</h3><p>There are two sizes of hugepages that we can set; <code>2M</code> or <code>1G</code>. </p><p>We can set it
-the following way either by </p><pre><code>using the script in dpdk/usertools directory 
-or 
-by entering them in Grub file
-</code></pre><h4>Usertools</h4><ul><li><p>goto <code>/opt/dpdk-stable-20.11.1/usertools</code> where you will find
+the following way either by </p><ul><li><p>using the script in dpdk/usertools directory </p><pre><code>  or 
+</code></pre></li><li><p>by setting them up in Grub file</p></li></ul><h4>Usertools</h4><ul><li><p>goto <code>/opt/dpdk-stable-20.11.1/usertools</code> where you will find
 <code>dpdk-hugepages.py</code> python script</p></li><li><p>You can see the usage by running it with <code>-h</code> flag which should show you
-following information</p></li></ul><pre><code class="language-bash">usage: dpdk-hugepages.py [-h] [--show] [--clear] [--mount] [--unmount] [--node NODE] [--pagesize SIZE] [--reserve SIZE] [--setup SIZE]
+following information</p></li></ul><pre><code class="language-bash">
+        usage: dpdk-hugepages.py [-h] [--show] [--clear] [--mount] [--unmount] 
+        [--node NODE] [--pagesize SIZE] [--reserve SIZE] [--setup SIZE]
 
-Setup huge pages
+        Setup huge pages
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --show, -s            print the current huge page configuration
-  --clear, -c           clear existing huge pages
-  --mount, -m           mount the huge page filesystem
-  --unmount, -u         unmount the system huge page directory
-  --node NODE, -n NODE  select numa node to reserve pages on
-  --pagesize SIZE, -p SIZE
-                        choose huge page size to use
-  --reserve SIZE, -r SIZE
-                        reserve huge pages. Size is in bytes with K, M, or G suffix
-  --setup SIZE          setup huge pages by doing clear, unmount, reserve and mount
+        optional arguments:
+        -h, --help            show this help message and exit
+        --show, -s            print the current huge page configuration
+        --clear, -c           clear existing huge pages
+        --mount, -m           mount the huge page filesystem
+        --unmount, -u         unmount the system huge page directory
+        --node NODE, -n NODE  select numa node to reserve pages on
+        --pagesize SIZE, -p SIZE
+                                choose huge page size to use
+        --reserve SIZE, -r SIZE
+                                reserve huge pages. Size is in bytes with K, M, or G suffix
+        --setup SIZE          setup huge pages by doing clear, unmount, reserve and mount
 
-Examples:
+        Examples:
 
-To display current huge page settings:
-    dpdk-hugepages.py -s
+        To display current huge page settings:
+            dpdk-hugepages.py -s
 
-To a complete setup of with 2 Gigabyte of 1G huge pages:
-    dpdk-hugepages.py -p 1G --setup 2G
+        To a complete setup of with 2 Gigabyte of 1G huge pages:
+            dpdk-hugepages.py -p 1G --setup 2G
 </code></pre><ul><li>you can set up 4 hugepages with size of 1G each by running the following
-command</li></ul><pre><code class="language-bash">python3 dpdk-hugepages.py -p 1G --setup 4G
+command</li></ul><pre><code class="language-shell">
+        python3 dpdk-hugepages.py -p 1G --setup 4G
+
 </code></pre><h4>Grub file</h4><ul><li>We can set hugepages in the grub file as well. This would allow the machine to
 set the pages up during boot time.
-Run the following command</li></ul><pre><code class="language-bash">sed -i -e &#x27;s/GRUB_CMDLINE_LINUX=&quot;/GRUB_CMDLINE_LINUX=&quot;default_hugepagesz=1G hugepagesz=1G hugepages=4 iommu=pt intel_iommu=on isolcpu=0,1,2,3,4,5 /&#x27;  /etc/default/grub
-</code></pre><p>The above command:</p><ol><li>sets 4 hugepages with size <code>1G</code> each</li><li>isolates certain cpus from kernel scheduling so that we can dedicate those for
-our application.</li></ol><ul><li>Update the grub</li></ul><pre><code class="language-bash">sudo update-grub
-</code></pre><ul><li>Restart your machine</li></ul><pre><code class="language-bash">sudo reboot
-</code></pre><ul><li>you can check whether the <code>hugepages</code> are set up or not by running the
-following:</li></ul><pre><code class="language-bash">cat /proc/meminfo | grep -i &quot;huge&quot;
-</code></pre><ul><li>the ouptut should be something like</li></ul><pre><code class="language-bash">
-AnonHugePages:         0 kB
-ShmemHugePages:        0 kB
-FileHugePages:         0 kB
-HugePages_Total:       4
-HugePages_Free:        4
-HugePages_Rsvd:        0
-HugePages_Surp:        0
-Hugepagesize:    1048576 kB
-Hugetlb:               0 kB
+Run the following command</li></ul><pre><code class="language-bash">
+        sed -i -e &#x27;s/GRUB_CMDLINE_LINUX=&quot;/GRUB_CMDLINE_LINUX=&quot;default_hugepagesz=1G hugepagesz=1G hugepages=4 iommu=pt intel_iommu=on isolcpu=0,1,2,3,4,5 /&#x27;  /etc/default/grub
 
-</code></pre><h3>installing the drivers</h3><ul><li>Get the drivers</li></ul><pre><code class="language-bash">
-sudo apt install dpdk-igb-uio-dkms -y
+</code></pre><p>The above command:</p><ol><li><p>sets 4 hugepages with size <code>1G</code> each</p></li><li><p>isolates certain cpus from kernel scheduling so that we can dedicate those for
+our application.</p></li></ol><ul><li>Update the grub</li></ul><pre><code class="language-bash">
+        sudo update-grub
+
+</code></pre><ul><li>Restart your machine</li></ul><pre><code class="language-bash">
+        sudo reboot
+
+</code></pre><ul><li>you can check whether the <code>hugepages</code> are set up or not by running the
+following:</li></ul><pre><code class="language-bash">
+        cat /proc/meminfo | grep -i &quot;huge&quot;
+
+</code></pre><ul><li>the ouptut should be something like</li></ul><pre><code class="language-bash">
+                        AnonHugePages:         0 kB
+                        ShmemHugePages:        0 kB
+                        FileHugePages:         0 kB
+                        HugePages_Total:       4
+                        HugePages_Free:        4
+                        HugePages_Rsvd:        0
+                        HugePages_Surp:        0
+                        Hugepagesize:    1048576 kB
+                        Hugetlb:               0 kB
+
+</code></pre><ul><li>Pay attention to <code>HugePages_Total</code>, <code>HugePages_Free</code> and <code>Hugepagesize</code> here.</li></ul><h3>installing the drivers</h3><ul><li>Get the drivers</li></ul><pre><code class="language-bash">
+        sudo apt install dpdk-igb-uio-dkms -y
 
 </code></pre><ul><li>load the driver</li></ul><pre><code class="language-bash">
-sudo modprobe uio
+        sudo modprobe uio
 
 </code></pre><h3>bind the NIC to the driver</h3><ul><li><p>goto <code>/opt/dpdk-stable-20.11.1/usertools</code> where you will find
-<code>dpdk-devbind.py</code> python script</p></li><li><p>run with <code>-s</code> flag that will show the staus of all the NICs</p></li></ul><pre><code class="language-bash">test:~/dpdk-stable-20.11.1/usertools$ ./dpdk-devbind.py -s
-Network devices using kernel driver
-===================================
-0000:0b:00.0 &#x27;example&#x27; if=ens1 drv=i40e unused=vfio-pci,igb_uio *Active*
-0000:01:00.0 &#x27;example&#x27; if=ens2 drv=i40e unused=vfio-pci,igb_uio
-0000:01:00.1 &#x27;example&#x27; if=ens3 drv=i40e unused=vfio-pci,igb_uio
-0000:01:00.2 &#x27;example&#x27; if=ens4 drv=i40e unused=vfio-pci,igb_uio
-0000:01:00.3 &#x27;example&#x27; if=ens5 drv=i40e unused=vfio-pci,igb_uio
+<code>dpdk-devbind.py</code> python script</p></li><li><p>run with <code>-s</code> flag that will show the staus of all the NICs</p></li></ul><pre><code class="language-bash">
+        python3 dpdk-devbind.py -s
+        Network devices using kernel driver
+        ===================================
+        0000:0b:00.0 &#x27;example&#x27; if=ens1 drv=i40e unused=vfio-pci,igb_uio *Active*
+        0000:01:00.0 &#x27;example&#x27; if=ens2 drv=i40e unused=vfio-pci,igb_uio
+        0000:01:00.1 &#x27;example&#x27; if=ens3 drv=i40e unused=vfio-pci,igb_uio
+        0000:01:00.2 &#x27;example&#x27; if=ens4 drv=i40e unused=vfio-pci,igb_uio
+        0000:01:00.3 &#x27;example&#x27; if=ens5 drv=i40e unused=vfio-pci,igb_uio
 
 </code></pre><ul><li>we can bind the desired NIC to the <code>igb_uio</code> driver using its PCI address as
-follows</li></ul><pre><code class="language-bash">python3 ./dpdk-devbind.py -b igb_uio 0000:01:00.0
-</code></pre><p>This should change the status as follows:</p><pre><code class="language-bash">test:~/dpdk-stable-20.11.1/usertools$ ./dpdk-devbind.py -s
-Network devices using DPDK compatible driver
-===================================
-0000:01:00.0 &#x27;example&#x27; if=ens2 drv=igb_uio unused=i40e,vfio-pci
+follows</li></ul><pre><code class="language-bash">
+        python3 ./dpdk-devbind.py -b igb_uio 0000:01:00.0
 
-Network devices using kernel driver
-===================================
-0000:0b:00.0 &#x27;example&#x27; if=ens1 drv=i40e unused=vfio-pci,igb_uio *Active*
-0000:01:00.1 &#x27;example&#x27; if=ens3 drv=i40e unused=vfio-pci,igb_uio
-0000:01:00.2 &#x27;example&#x27; if=ens4 drv=i40e unused=vfio-pci,igb_uio
-0000:01:00.3 &#x27;example&#x27; if=ens5 drv=i40e unused=vfio-pci,igb_uio
-</code></pre><hr/><h1>ALL Done</h1><ul><li>phew!</li><li>We have finally set up the dpdk and loaded the NIC.</li><li>In the next one we will write C code to receive and transmit the packets
-using DPDK.</li><li>In the meanwhile go to <code>/opt/dpdk-stable-20.11.1/examples</code> where you will
+</code></pre><p>This should change the status as follows:</p><pre><code class="language-bash">
+        python3 dpdk-devbind.py -s
+        Network devices using DPDK compatible driver
+        ===================================
+        0000:01:00.0 &#x27;example&#x27; if=ens2 drv=igb_uio unused=i40e,vfio-pci
+
+        Network devices using kernel driver
+        ===================================
+        0000:0b:00.0 &#x27;example&#x27; if=ens1 drv=i40e unused=vfio-pci,igb_uio *Active*
+        0000:01:00.1 &#x27;example&#x27; if=ens3 drv=i40e unused=vfio-pci,igb_uio
+        0000:01:00.2 &#x27;example&#x27; if=ens4 drv=i40e unused=vfio-pci,igb_uio
+        0000:01:00.3 &#x27;example&#x27; if=ens5 drv=i40e unused=vfio-pci,igb_uio
+
+</code></pre><hr/><h1>ALL Done</h1><p><img src="https://i.pinimg.com/originals/59/54/b4/5954b408c66525ad932faa693a647e3f.jpg" alt="phew"/></p><ul><li><p>We have finally set up the <strong>DPDK</strong>.</p></li><li><p>In the next one we will <em>write C code to receive and transmit the packets
+using DPDK</em>.</p></li><li><p>In the meanwhile go to <code>/opt/dpdk-stable-20.11.1/examples</code> where you will
 find a lot of example code. I would suggest to try the <code>helloworld</code> and
-<code>l2fwd</code>.</li><li>you cand read about <strong>L2FWD</strong> <a href="https://doc.dpdk.org/guides/sample_app_ug/l2_forward_real_virtual.html">here</a> </li></ul></div><div class="comments mt-8"><div id="disqus_thread" url="https://IbrahimShahzad.github.io[object Object]" title="DPDK 01" identifier="DPDK 01" counter="0"></div></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/Writing_your_first_dpdk_app/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-f276128544a2c6798986.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-0890f19f6c82abb3dbff.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-blog-tsx-0890f19f6c82abb3dbff.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-0913ce156a2217435b19.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-f276128544a2c6798986.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-48d2a495542d250089e9.js" async=""></script></body></html>
+<code>l2fwd</code>.</p></li><li><p>you cand read about <strong><em>L2FWD</em></strong> <a href="https://doc.dpdk.org/guides/sample_app_ug/l2_forward_real_virtual.html">here</a> </p></li></ul></div><div class="comments mt-8"><div id="disqus_thread" url="https://IbrahimShahzad.github.io[object Object]" title="DPDK 01" identifier="DPDK 01" counter="0"></div></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/Writing_your_first_dpdk_app/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-f276128544a2c6798986.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-0890f19f6c82abb3dbff.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-blog-tsx-0890f19f6c82abb3dbff.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-0913ce156a2217435b19.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-f276128544a2c6798986.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-48d2a495542d250089e9.js" async=""></script></body></html>
