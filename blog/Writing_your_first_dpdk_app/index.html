@@ -89,8 +89,9 @@ set the pages up during boot time.
 Run the following command</li></ul><pre><code class="language-bash">
         sed -i -e &#x27;s/GRUB_CMDLINE_LINUX=&quot;/GRUB_CMDLINE_LINUX=&quot;default_hugepagesz=1G hugepagesz=1G hugepages=4 iommu=pt intel_iommu=on isolcpu=0,1,2,3,4,5 /&#x27;  /etc/default/grub
 
-</code></pre><p>The above command:</p><ol><li><p>sets 4 hugepages with size <code>1G</code> each</p></li><li><p>isolates certain cpus from kernel scheduling so that we can dedicate those for
-our application.</p></li></ol><ul><li>Update the grub</li></ul><pre><code class="language-bash">
+</code></pre><p>The above command:</p><pre><code>1. sets 4 hugepages with size `1G` each
+2. isolates certain cpus from kernel scheduling so that we can dedicate those for our application.
+</code></pre><ul><li>Update the grub</li></ul><pre><code class="language-bash">
         sudo update-grub
 
 </code></pre><ul><li>Restart your machine</li></ul><pre><code class="language-bash">
