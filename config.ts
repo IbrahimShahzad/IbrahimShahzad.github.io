@@ -85,7 +85,7 @@ const siteMetadata = {
         phone: "",
         address: "",
     },
-    disqus: "elemental-netlify-com",
+    disqus: "ibrahimshahzad-github-io",
 }
 
 const beforeContactFormSubmit = data => {
