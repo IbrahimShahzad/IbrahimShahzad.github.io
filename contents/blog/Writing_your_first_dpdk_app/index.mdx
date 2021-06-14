@@ -10,6 +10,7 @@ description: Setting up DPDK
 
 ## What is DPDK?
 
+
 Data Plane Development Kit (DPDK) is a set of libraries that enable fast packet processing.
 
 ## Why would we want to use it?
@@ -22,13 +23,13 @@ In a normal flow the kernel receives a packet and does does its processing after
 which it forwards the packet to the application in the userspace. Doing this few
 each and every packet is quite costly in terms of performance.
 
-With DPDK you bind the interface with the drivers provided, after which when the
-packet is received the application can directly access it. 
+With DPDK you bind the interface with the drivers provided, after which the
+packet received can directly accessed by the application  in userspace. 
 
-In short DPDK allows to bypass the kernel and receiver and process the packets
+In short DPDK allows to bypass the kernel and process the received packets
 directly in user space.
 
-Datapath ususally entails 10s to 100s of Gigs per second on an interface. If you
+_DATAPATH_ ususally entails 10s to 100s of Gigs per second on an interface. If you
 want to write code dealing with such a traffic DPDK would be a fair choice.
 
 
@@ -88,7 +89,7 @@ Fire up that ubuntu terminal and let us begin...
 
 First lets install some dependencies
 
-```bash
+```
 
     sudo apt-get install -y build-essential \
                             git \
@@ -100,7 +101,7 @@ First lets install some dependencies
 
 ```
 
-Now that the dependencies have been taken care of lets get the DPDK tarfile
+Now that the dependencies have been taken care of lets get the DPDK tar file
 and build it.
 
 We will write a script that would help installing DPDK later as well. (i have
