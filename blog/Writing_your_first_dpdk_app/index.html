@@ -12,11 +12,11 @@
 performance then you might need to look into fast pacekt processing libraries
 such as DPDK.</p><p>In a normal flow the kernel receives a packet and does does its processing after
 which it forwards the packet to the application in the userspace. Doing this few
-each and every packet is quite costly in terms of performance.</p><p>With DPDK you bind the interface with the drivers provided, after which when the
-packet is received the application can directly access it. </p><p>In short DPDK allows to bypass the kernel and receiver and process the packets
-directly in user space.</p><p>Datapath ususally entails 10s to 100s of Gigs per second on an interface. If you
+each and every packet is quite costly in terms of performance.</p><p>With DPDK you bind the interface with the drivers provided, after which the
+packet received can directly accessed by the application  in userspace. </p><p>In short DPDK allows to bypass the kernel and process the received packets
+directly in user space.</p><p><em>DATAPATH</em> ususally entails 10s to 100s of Gigs per second on an interface. If you
 want to write code dealing with such a traffic DPDK would be a fair choice.</p><h2>What Do you need?</h2><p>In order to follo along with the material you will need the following:</p><ul><li><p>A linux based system:</p><ul><li><p>2 Intel processors, each with 8 cores, 8 GB RAM </p></li><li><p><a href="http://core.dpdk.org/supported/">DPDK compatible NIC</a></p></li></ul></li><li><p>Some knowledge of C</p></li></ul><p>Furthermore, for later you would also need to read up on following concepts:</p><ul><li><p>Enviroment Abstraction Layer</p></li><li><p>Hugepages</p></li><li><p>Non-Uniform Memory Architecture (NUMA)</p></li><li><p>Transition Lookaside Buffer (TLB)</p></li><li><p>CPU isolation and pinning</p></li></ul><p>Some Useful Links</p><ul><li><p><a href="http://doc.dpdk.org/guides/prog_guide/intro.html">Programmers Guide</a></p></li><li><p><a href="http://doc.dpdk.org/api/">API Documentation</a></p></li><li><p><a href="https://www.dpdk.org/">DPDK Home</a></p></li></ul><hr/><h1>Lets Get Started</h1><h2>DPDK installation</h2><p>We will be using DPDK stable version 20.11.1. We would need to do A couple
-things in this section</p><ol><li><p>Install the dependencies and Build DPDK</p></li><li><p>Set up some <code>Hugepages</code></p></li><li><p>Bind the NIC to the <code>igb_uio</code> dirver</p></li></ol><p>Fire up that ubuntu terminal and let us begin...</p><h3>Installing dependencies/DPDK</h3><p>First lets install some dependencies</p><pre><code class="language-bash">
+things in this section</p><ol><li><p>Install the dependencies and Build DPDK</p></li><li><p>Set up some <code>Hugepages</code></p></li><li><p>Bind the NIC to the <code>igb_uio</code> dirver</p></li></ol><p>Fire up that ubuntu terminal and let us begin...</p><h3>Installing dependencies/DPDK</h3><p>First lets install some dependencies</p><pre><code>
     sudo apt-get install -y build-essential \
                             git \
                             libnuma-dev \
@@ -25,7 +25,7 @@ things in this section</p><ol><li><p>Install the dependencies and Build DPDK</p>
                             python3-pip \
                             python3-pyelftools
 
-</code></pre><p>Now that the dependencies have been taken care of lets get the DPDK tarfile
+</code></pre><p>Now that the dependencies have been taken care of lets get the DPDK tar file
 and build it.</p><p>We will write a script that would help installing DPDK later as well. (i have
 a habit of writing scripts XD)</p><p>open up a new file with your favourite editor (i hope its vim)</p><pre><code class="language-bash">
     vim install-dpdk.sh
