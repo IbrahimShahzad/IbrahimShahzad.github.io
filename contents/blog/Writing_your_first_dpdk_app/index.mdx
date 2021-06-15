@@ -16,7 +16,7 @@ Data Plane Development Kit (DPDK) is a set of libraries that enable fast packet 
 ## Why would we want to use it?
 
 If you are writing any application that deals with packets AND require fast
-performance then you might need to look into fast pacekt processing libraries
+performance then you might need to look into fast packet processing libraries
 such as DPDK.
 
 In a normal flow the kernel receives a packet and does does its processing after
@@ -24,9 +24,9 @@ which it forwards the packet to the application in the userspace. Doing this few
 each and every packet is quite costly in terms of performance.
 
 With DPDK you bind the interface with the drivers provided, after which the
-packet received can directly accessed by the application  in userspace. 
+packet received can directly be accessed by the application  in userspace. 
 
-In short DPDK allows to bypass the kernel and process the received packets
+In short DPDK allows you to bypass the kernel and process the received packets
 directly in user space.
 
 _DATAPATH_ ususally entails 10s to 100s of Gigs per second on an interface. If you
@@ -35,7 +35,7 @@ want to write code dealing with such a traffic DPDK would be a fair choice.
 
 ## What Do you need?
 
-In order to follo along with the material you will need the following:
+In order to follow along with the material you will need the following:
 
 
 - A linux based system:
@@ -229,7 +229,7 @@ Run the following command
 
 ```
 
-The above command:
+The above command inserts a line in `/etc/deault/grub` file that:
 
     1. sets 4 hugepages with size `1G` each
     2. isolates certain cpus from kernel scheduling so that we can dedicate those for our application.
@@ -266,12 +266,12 @@ following:
                         AnonHugePages:         0 kB
                         ShmemHugePages:        0 kB
                         FileHugePages:         0 kB
-                        HugePages_Total:       4
-                        HugePages_Free:        4
+                        HugePages_Total:      20
+                        HugePages_Free:       20
                         HugePages_Rsvd:        0
                         HugePages_Surp:        0
                         Hugepagesize:    1048576 kB
-                        Hugetlb:               0 kB
+                        Hugetlb:        20971520 kB
 
 ```
 
