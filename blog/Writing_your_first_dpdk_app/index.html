@@ -13,9 +13,9 @@ performance then you might need to look into fast packet processing libraries
 such as DPDK.</p><p>In a normal flow the kernel receives a packet and does does its processing after
 which it forwards the packet to the application in the userspace. Doing this few
 each and every packet is quite costly in terms of performance.</p><p>With DPDK you bind the interface with the drivers provided, after which the
-packet received can directly accessed by the application  in userspace. </p><p>In short DPDK allows to bypass the kernel and process the received packets
+packet received can directly be accessed by the application  in userspace. </p><p>In short DPDK allows you to bypass the kernel and process the received packets
 directly in user space.</p><p><em>DATAPATH</em> ususally entails 10s to 100s of Gigs per second on an interface. If you
-want to write code dealing with such a traffic DPDK would be a fair choice.</p><h2>What Do you need?</h2><p>In order to follo along with the material you will need the following:</p><ul><li><p>A linux based system:</p><ul><li><p>2 Intel processors, each with 8 cores, 8 GB RAM </p></li><li><p><a href="http://core.dpdk.org/supported/">DPDK compatible NIC</a></p></li></ul></li><li><p>Some knowledge of C</p></li></ul><p>Furthermore, for later you would also need to read up on following concepts:</p><ul><li><p>Enviroment Abstraction Layer</p></li><li><p>Hugepages</p></li><li><p>Non-Uniform Memory Architecture (NUMA)</p></li><li><p>Transition Lookaside Buffer (TLB)</p></li><li><p>CPU isolation and pinning</p></li></ul><p>Some Useful Links</p><ul><li><p><a href="http://doc.dpdk.org/guides/prog_guide/intro.html">Programmers Guide</a></p></li><li><p><a href="http://doc.dpdk.org/api/">API Documentation</a></p></li><li><p><a href="https://www.dpdk.org/">DPDK Home</a></p></li></ul><hr/><h1>Lets Get Started</h1><h2>DPDK installation</h2><p>We will be using DPDK stable version 20.11.1. We would need to do A couple
+want to write code dealing with such a traffic DPDK would be a fair choice.</p><h2>What Do you need?</h2><p>In order to follow along with the material you will need the following:</p><ul><li><p>A linux based system:</p><ul><li><p>2 Intel processors, each with 8 cores, 8 GB RAM </p></li><li><p><a href="http://core.dpdk.org/supported/">DPDK compatible NIC</a></p></li></ul></li><li><p>Some knowledge of C</p></li></ul><p>Furthermore, for later you would also need to read up on following concepts:</p><ul><li><p>Enviroment Abstraction Layer</p></li><li><p>Hugepages</p></li><li><p>Non-Uniform Memory Architecture (NUMA)</p></li><li><p>Transition Lookaside Buffer (TLB)</p></li><li><p>CPU isolation and pinning</p></li></ul><p>Some Useful Links</p><ul><li><p><a href="http://doc.dpdk.org/guides/prog_guide/intro.html">Programmers Guide</a></p></li><li><p><a href="http://doc.dpdk.org/api/">API Documentation</a></p></li><li><p><a href="https://www.dpdk.org/">DPDK Home</a></p></li></ul><hr/><h1>Lets Get Started</h1><h2>DPDK installation</h2><p>We will be using DPDK stable version 20.11.1. We would need to do A couple
 things in this section</p><ol><li><p>Install the dependencies and Build DPDK</p></li><li><p>Set up some <code>Hugepages</code></p></li><li><p>Bind the NIC to the <code>igb_uio</code> dirver</p></li></ol><p>Fire up that ubuntu terminal and let us begin...</p><h3>Installing dependencies/DPDK</h3><p>First lets install some dependencies</p><pre><code>
     sudo apt-get install -y build-essential \
                             git \
@@ -89,7 +89,7 @@ set the pages up during boot time.
 Run the following command</li></ul><pre><code class="language-bash">
         sed -i -e &#x27;s/GRUB_CMDLINE_LINUX=&quot;/GRUB_CMDLINE_LINUX=&quot;default_hugepagesz=1G hugepagesz=1G hugepages=4 iommu=pt intel_iommu=on isolcpu=0,1,2,3,4,5 /&#x27;  /etc/default/grub
 
-</code></pre><p>The above command:</p><pre><code>1. sets 4 hugepages with size `1G` each
+</code></pre><p>The above command inserts a line in <code>/etc/deault/grub</code> file that:</p><pre><code>1. sets 4 hugepages with size `1G` each
 2. isolates certain cpus from kernel scheduling so that we can dedicate those for our application.
 </code></pre><ul><li>Update the grub</li></ul><pre><code class="language-bash">
         sudo update-grub
@@ -105,12 +105,12 @@ following:</li></ul><pre><code class="language-bash">
                         AnonHugePages:         0 kB
                         ShmemHugePages:        0 kB
                         FileHugePages:         0 kB
-                        HugePages_Total:       4
-                        HugePages_Free:        4
+                        HugePages_Total:      20
+                        HugePages_Free:       20
                         HugePages_Rsvd:        0
                         HugePages_Surp:        0
                         Hugepagesize:    1048576 kB
-                        Hugetlb:               0 kB
+                        Hugetlb:        20971520 kB
 
 </code></pre><ul><li>Pay attention to <code>HugePages_Total</code>, <code>HugePages_Free</code> and <code>Hugepagesize</code> here.</li></ul><h3>installing the drivers</h3><ul><li>Get the drivers</li></ul><pre><code class="language-bash">
         sudo apt install dpdk-igb-uio-dkms -y
