@@ -6,13 +6,9 @@ image: ./data1.jpg
 banner: ./data1.jpg
 ---
 
-A RADIUS parser written using C++ and PcapPlusPlus (wrapper for C-DPDK). 
-It extracts attributes from the RADIUS layer.
 
 
-
-
-# High Level Overview
+## High Level Overview
 
 The program starts and 
 - initializes the EAL params
@@ -31,7 +27,7 @@ Each workerThread
     - frees the packet
 - receives the next burst and so on
 
-![image](./CPacketParserArch.png)
+![image](./arch.svg)
 
 ---
 
