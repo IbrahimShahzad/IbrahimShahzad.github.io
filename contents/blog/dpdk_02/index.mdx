@@ -1,0 +1,162 @@
+---
+title: DPDK 02
+date: 2021-06-23
+image: ./dpdk.png
+banner: ./fast.jpg
+description: Writing the application
+---
+
+# Introduction
+
+In this section we will write a smiple C application to recieve packets. Let's dive in
+
+
+# PreReqs
+
+Make sure that
+
+- DPDK is built
+
+- A DPDK compatible NIC is binded to the `igb_uio` driver
+
+- Hugepages are setup
+
+- Minimum system requirements are met
+
+Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dpdk_app/) if any of the aforementioned pre-reqs are not set.
+
+# File Setup
+
+> From here on out we will refer to our dpdk installation directory as `RTE_SDK`. 
+
+- Go into the your dpdk installation directory and run the following command
+
+```bash
+        export RTE_SDK=$(pwd)
+```
+
+- The directory should contain following folders
+
+```bash
+        app/
+        build/
+        buildtools/
+        .ci/
+        config/
+        devtools/
+        doc/
+        drivers/
+        .editorconfig
+        examples/
+        .gitattributes
+        .gitignore
+        kernel/
+        lib/
+        license/
+        MAINTAINERS
+        Makefile
+        meson.build
+        meson_options.txt
+        README
+        .travis.yml
+        usertools/
+        VERSION
+```
+
+- For our purposes, we are concerned with the `examples` directory and the `usertools` directory.
+
+- The `examples` directory contains the example codes and we will also create our application here
+
+- The `usertools` directory contains user-help scripts such as 
+        -  `cpu_layout.py`; prints out the Architecture,
+        -  `dpdk-devbind.py`; for binding/unbinding PCI devices,  
+        -  `dpdk-hugepages.py`; for setting up hugepages
+
+some of these we used at the time of setup.
+
+go to the examples folder and create a folder for our app
+
+```bash
+        cd $RTE_SDK/examples
+        mkdir my_app
+        cd my_app
+```
+
+## MAKE File
+
+- lets create a simple Makefile
+
+```bash
+        vim Makefile
+```
+
+- we are going to name our app `my_app` and use `main.c` as the source c file 
+```bash
+        include $(RTE_SDK)/mk/rte.vars.mk
+
+        APP := my_app
+        SRCS-y := main.c
+
+        include $(RTE_SDK)/mk/rte.extapp.mk  
+```
+
+## Main.c
+
+```C
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <rte_eal.h>
+#include <rte_common.h>
+
+
+int main(int argc, char* argv[]){
+  printf("\n");
+
+  
+
+  return 0;
+}
+```
+
+
+
+
+### EAL: "Environment Abstraction Layer"
+
+The first thing that is required is initialising up the `EAL`. We use `rte_eal_init()` function.
+
+It gets parameters from cli adn sets up a some of the following:
+-  cpu_init: fill cpu_info structure
+-  log_init
+-  config_init: create memory configuration in shared memory
+-  pci_init: scan pci bus
+-  memory_init (hugepages)
+-  memzone_init: initialize memzone subsystem
+-  lcore_init: Create a thread per lcore
+-  pci_probe: probel all physical devices
+
+```C
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <rte_eal.h>
+#include <rte_common.h>
+
+
+int main(int argc, char* argv[]){
+        printf("\n");
+        int ret;   
+        ret = rte_eal_init(argc,argv);
+        if (ret<0)
+        rte_exit(EXIT_FAILURE,"EAL Init failed\n");
+
+        argc -= ret;
+        argv += ret;
+        return 0;
+}
+
+```
+
+The `rte_eal_init` returns `-ive` in case of an error.
+See more [here](https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3)
