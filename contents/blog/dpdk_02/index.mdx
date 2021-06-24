@@ -8,7 +8,9 @@ description: Writing the application
 
 # Introduction
 
-In this section we will write a smiple C application to recieve packets. Let's dive in
+In this section we will write a smiple C application to recieve packets. 
+
+Let's dive in!
 
 
 # PreReqs
@@ -68,13 +70,13 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 - The `examples` directory contains the example codes and we will also create our application here
 
 - The `usertools` directory contains user-help scripts such as 
-        -  `cpu_layout.py`; prints out the Architecture,
-        -  `dpdk-devbind.py`; for binding/unbinding PCI devices,  
-        -  `dpdk-hugepages.py`; for setting up hugepages
+  -  `cpu_layout.py`; prints out the Architecture  ,        
+  -  `dpdk-devbind.py`; for binding/unbinding PCI devices,  
+  -  `dpdk-hugepages.py`; for setting up hugepages
 
-some of these we used at the time of setup.
+- some of these we used at the time of setup.
 
-go to the examples folder and create a folder for our app
+- Now, go to the examples folder and create a folder for our app
 
 ```bash
         cd $RTE_SDK/examples
@@ -91,6 +93,7 @@ go to the examples folder and create a folder for our app
 ```
 
 - we are going to name our app `my_app` and use `main.c` as the source c file 
+
 ```bash
         include $(RTE_SDK)/mk/rte.vars.mk
 
@@ -124,17 +127,27 @@ int main(int argc, char* argv[]){
 
 ### EAL: "Environment Abstraction Layer"
 
-The first thing that is required is initialising up the `EAL`. We use `rte_eal_init()` function.
 
-It gets parameters from cli adn sets up a some of the following:
--  cpu_init: fill cpu_info structure
--  log_init
--  config_init: create memory configuration in shared memory
--  pci_init: scan pci bus
--  memory_init (hugepages)
--  memzone_init: initialize memzone subsystem
--  lcore_init: Create a thread per lcore
--  pci_probe: probel all physical devices
+-  The first thing that is required is initialising up the `EAL`. We use `rte_eal_init()` function.
+   -  It gets parameters from cli adn sets up a some of the following:
+      -  cpu_init: fill cpu_info structure
+      -  log_init
+      -  config_init: create memory configuration in shared memory
+      -  pci_init: scan pci bus
+      -  memory_init (hugepages)
+      -  memzone_init: initialize memzone subsystem
+      -  lcore_init: Create a thread per lcore
+      -  pci_probe: probel all physical devices
+-  lets start by including `rte_eal.h`
+   -  contains the EAL configuration functions
+   -  Contains the defitnion for `rte_eal_init()`
+      -  The `rte_eal_init` returns `-ive` in case of an error.
+   -  See more [here](https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3).
+-  we will also include `rte_common.h` 
+   -  It contains generic, commonly-used macro and inline function definitions for DPDK.
+   -  It contains the defitnion for `rte_exit()`
+      -  we would need to exit in case of an error.
+   -  See more [here](https://doc.dpdk.org/api/rte__common_8h.html)
 
 ```C
 #include <stdio.h>
@@ -145,8 +158,11 @@ It gets parameters from cli adn sets up a some of the following:
 
 
 int main(int argc, char* argv[]){
+        
         printf("\n");
-        int ret;   
+        int ret;
+
+        /* The EAL arguments are passed when calling the program */   
         ret = rte_eal_init(argc,argv);
         if (ret<0)
         rte_exit(EXIT_FAILURE,"EAL Init failed\n");
@@ -158,5 +174,24 @@ int main(int argc, char* argv[]){
 
 ```
 
-The `rte_eal_init` returns `-ive` in case of an error.
-See more [here](https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3)
+
+### Get Port Count
+
+- We are going to be receiving on one port and transmitting on the other.
+For that we need even number of ports.
+- lets first include `rte_ethdev.h` in our program.
+   -  includes functions to setup/configure an Ethernet device.
+   -  Ethernet devices are represented by a generic data structure of type `rte_eth_dev`.
+   -  contains the definition of `rte_eth_dev_count()`
+       -  returns the total number of dpdk binded devices.
+   -  see more [here](https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html)
+- lets do that nex within our main function
+
+```C
+  nb_ports = rte_eth_dev_count();
+  if(nb_ports < 2 || (nb_ports & 1))
+    rte_exit(EXIT_FAILURE,"Invalid port number\n");
+
+```
+
+   
