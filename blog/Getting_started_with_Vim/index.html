@@ -6,20 +6,17 @@
           <code slot="code">cd ~
 wget https://raw.githubusercontent.com/IbrahimShahzad/My-Vimrc-file/master/.vimrc ~/.vimrc</code>
         </deckgo-highlight-code><h2>Get VIm (version &gt; 8)</h2><h3>CentOS</h3><ul><li>Install the Dependencies and clone vim (version &gt; 8.1 )</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-sudo yum install -y gcc make ncurses ncurses-devel git python3 pip3
+          <code slot="code">sudo yum install -y gcc make ncurses ncurses-devel git python3 pip3
 sudo yum list installed | grep vim
 sudo yum remove -y vim-enhanced vim-common vim-filesystem
 sudo git clone https://github.com/vim/vim.git
 </code>
         </deckgo-highlight-code><h3>Ubuntu</h3><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-sudo apt install -y gcc make libncurses5-dev libncursesw5-dev git python3 pip3 
+          <code slot="code">sudo apt install -y gcc make libncurses5-dev libncursesw5-dev git python3 pip3 
 sudo git clone https://github.com/vim/vim.git
 </code>
         </deckgo-highlight-code><h2>Install Vim</h2><blockquote><p>Following should work for both CentOS and Ubuntu</p></blockquote><ul><li>You can configure with simple options with following</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-pushd vim
+          <code slot="code">pushd vim
 ./configure --with-features=huge \
   --enable-multibyte \
   --enable-pythoninterp \
@@ -29,8 +26,7 @@ sudo make install
 popd
 </code>
         </deckgo-highlight-code><p><strong>OR</strong></p><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-pushd vim
+          <code slot="code">pushd vim
 ./configure --with-features=huge \
             --enable-multibyte \
 	    	--enable-rubyinterp=yes \
@@ -46,33 +42,23 @@ pushd vim
 popd
 </code>
         </deckgo-highlight-code><blockquote><p>On <code>CentOS7</code> change <code>--with-python-config-dir=/usr/lib/python2.7/config</code> to <code>--with-python-config-dir=/lib64/python2.7/config</code></p></blockquote><ul><li>Finally check Vim Version</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-vim -version | less
-</code>
+          <code slot="code">vim -version | less</code>
         </deckgo-highlight-code><h2>Get Vundle</h2><blockquote><p>Following should work for both CentOS and Ubuntu</p></blockquote><ul><li>Download vunlde and install all the plugins mentioned in <code>~.vimrc</code> file.</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
-
-</code>
+          <code slot="code">git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall</code>
         </deckgo-highlight-code><ul><li>The above should download all the plugins in <code>/.vim/bundle/</code> directory.</li></ul><h2>For CLANG support</h2><h3>CentOS</h3><ul><li>Run the following</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-sudo yum install cmake -y
+          <code slot="code">sudo yum install cmake -y
 sudo yum install centos-release-scl -y
 sudo yum install llvm-toolset-7 -y
 scl enable llvm-toolset-7 bash
-clang --version
-</code>
+clang --version</code>
         </deckgo-highlight-code><h3>Ubuntu</h3><ul><li>Run the following</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-sudo apt-get install cmake clang -y
-clang --version
-</code>
+          <code slot="code">sudo apt-get install cmake clang -y
+clang --version</code>
         </deckgo-highlight-code><h2>Install YOUCOMPLETEME for autocompletion</h2><ul><li>Run the following commands</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">
-pushd ~/.vim/bundle/YouCompleteMe/
+          <code slot="code">pushd ~/.vim/bundle/YouCompleteMe/
 git submodule update --init --recursive
 ./install.py --clang-completer
 popd
 </code>
-        </deckgo-highlight-code><h2>Done</h2><p>Finally</p><ul><li>Run the <code>vim</code> command.</li><li>Enjoy the <code>vim</code> in all its glory</li><li>Checkout the plugins in <code>~/.vimrc</code> file</li><li>Need a cheatsheet for vim commands? Look <a href="https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf">here</a></li><li>Give yourself a cookie</li></ul><p><img src="./vim.png" alt="VIM"/></p></div><div class="comments mt-8"><div id="disqus_thread" url="https://IbrahimShahzad.github.io[object Object]" title="Set up your vim" identifier="Set up your vim" counter="0"></div></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/Getting_started_with_Vim/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-dbe152a5c0495476ad15.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"],"polyfills-dom":["/polyfills-dom-3a0d4509b26cd0a38ea3.js"],"polyfills-core-js":["/polyfills-core-js-5511b8240ed3233e7a82.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-23eec9cfe17b8bd08279.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-dbe152a5c0495476ad15.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-7e23dac6662b5819b267.js" async=""></script></body></html>
+        </deckgo-highlight-code><h2>Done</h2><p>Finally</p><ul><li>Run the <code>vim</code> command.</li><li>Enjoy the <code>vim</code> in all its glory</li><li>Checkout the plugins in <code>~/.vimrc</code> file</li><li>Need a cheatsheet for vim commands? Look <a href="https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf"><font color="blue">here</font></a></li><li>Give yourself a cookie</li></ul><p><img src="./vim.png" alt="VIM"/></p></div><div class="comments mt-8"><div id="disqus_thread" url="https://IbrahimShahzad.github.io[object Object]" title="Set up your vim" identifier="Set up your vim" counter="0"></div></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/Getting_started_with_Vim/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-dbe152a5c0495476ad15.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"],"polyfills-dom":["/polyfills-dom-3a0d4509b26cd0a38ea3.js"],"polyfills-core-js":["/polyfills-core-js-5511b8240ed3233e7a82.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-23eec9cfe17b8bd08279.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-dbe152a5c0495476ad15.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-7e23dac6662b5819b267.js" async=""></script></body></html>
