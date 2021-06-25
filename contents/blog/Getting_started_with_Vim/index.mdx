@@ -24,7 +24,6 @@ wget https://raw.githubusercontent.com/IbrahimShahzad/My-Vimrc-file/master/.vimr
 - Install the Dependencies and clone vim (version > 8.1 )
 
 ```bash
-
 sudo yum install -y gcc make ncurses ncurses-devel git python3 pip3
 sudo yum list installed | grep vim
 sudo yum remove -y vim-enhanced vim-common vim-filesystem
@@ -35,7 +34,6 @@ sudo git clone https://github.com/vim/vim.git
 ### Ubuntu
 
 ```bash
-
 sudo apt install -y gcc make libncurses5-dev libncursesw5-dev git python3 pip3 
 sudo git clone https://github.com/vim/vim.git
 
@@ -49,7 +47,6 @@ sudo git clone https://github.com/vim/vim.git
 - You can configure with simple options with following
 
 ```bash
-
 pushd vim
 ./configure --with-features=huge \
   --enable-multibyte \
@@ -62,7 +59,6 @@ popd
 ```
 **OR**
 ```bash
-
 pushd vim
 ./configure --with-features=huge \
             --enable-multibyte \
@@ -86,9 +82,7 @@ popd
 - Finally check Vim Version
 
 ```bash
-
 vim -version | less
-
 ```
 
 ## Get Vundle
@@ -98,11 +92,8 @@ vim -version | less
 - Download vunlde and install all the plugins mentioned in `~.vimrc` file.
 
 ```bash
-
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
-
-
 ```
 
 - The above should download all the plugins in `/.vim/bundle/` directory.
@@ -114,13 +105,11 @@ vim +PluginInstall +qall
 - Run the following
 
 ```bash
-
 sudo yum install cmake -y
 sudo yum install centos-release-scl -y
 sudo yum install llvm-toolset-7 -y
 scl enable llvm-toolset-7 bash
 clang --version
-
 ```
 
 ### Ubuntu
@@ -128,10 +117,8 @@ clang --version
 - Run the following
 
 ```bash
-
 sudo apt-get install cmake clang -y
 clang --version
-
 ```
 
 ## Install YOUCOMPLETEME for autocompletion
@@ -139,7 +126,6 @@ clang --version
 - Run the following commands
 
 ```bash
-
 pushd ~/.vim/bundle/YouCompleteMe/
 git submodule update --init --recursive
 ./install.py --clang-completer
@@ -152,7 +138,7 @@ Finally
 - Run the `vim` command.
 - Enjoy the `vim` in all its glory
 - Checkout the plugins in `~/.vimrc` file
-- Need a cheatsheet for vim commands? Look [here](https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf)
+- Need a cheatsheet for vim commands? Look [<font color="blue">here</font>](https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf)
 - Give yourself a cookie
  
 ![VIM](./vim.png)
