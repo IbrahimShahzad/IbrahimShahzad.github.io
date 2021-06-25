@@ -15,8 +15,12 @@ import { ThemeQuery } from "./__generated__/ThemeQuery"
 import CookieBox from "./cookie";
 import store from "../utils/store";
 
+import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
+deckDeckGoHighlightElement();
+
 export type Theme = { name: string, label: string, icon: JSX.Element };
 type LayoutProps = { children: any, front?: boolean, seo: Partial<SEOProps>, navPlaceholder?: boolean, location: WindowLocation;}
+
 
 export default ({ children, front, seo, navPlaceholder=true, location }: LayoutProps) => {
 

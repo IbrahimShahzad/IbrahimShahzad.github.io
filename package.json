@@ -30,6 +30,7 @@
     "gatsby-remark-highlight-code": "^3.0.0",
     "gatsby-remark-images": "^3.2.1",
     "gatsby-remark-prismjs": "^5.4.1",
+    "gatsby-remark-typescript": "^0.2.2",
     "gatsby-source-filesystem": "^2.2.2",
     "gatsby-transformer-remark": "^4.4.1",
     "gatsby-transformer-sharp": "^2.4.3",

@@ -42,7 +42,7 @@ In order to follow along with the material you will need the following:
     
     - 2 Intel processors, each with 8 cores, 8 GB RAM 
 
-    - [DPDK compatible NIC](http://core.dpdk.org/supported/)
+    - [<font color="blue">DPDK compatible NIC</font>](http://core.dpdk.org/supported/)
 
 - Some knowledge of C
 
@@ -61,11 +61,11 @@ Furthermore, for later you would also need to read up on following concepts:
 
 Some Useful Links
 
-- [Programmers Guide](http://doc.dpdk.org/guides/prog_guide/intro.html)
+- [<font color="blue">Programmers Guide</font>](http://doc.dpdk.org/guides/prog_guide/intro.html)
 
-- [API Documentation](http://doc.dpdk.org/api/)
+- [<font color="blue">API Documentation</font>](http://doc.dpdk.org/api/)
 
-- [DPDK Home](https://www.dpdk.org/)
+- [<font color="blue">DPDK Home</font>](https://www.dpdk.org/)
 
 ---
 
@@ -89,16 +89,14 @@ Fire up that ubuntu terminal and let us begin...
 
 First lets install some dependencies
 
-```
-
-    sudo apt-get install -y build-essential \
-                            git \
-                            libnuma-dev \
-                            software-properties-common \
-                            python3 \
-                            python3-pip \
-                            python3-pyelftools
-
+```bash
+sudo apt-get install -y build-essential \
+                        git \
+                        libnuma-dev \
+                        software-properties-common \
+                        python3 \
+                        python3-pip \
+                        python3-pyelftools
 ```
 
 Now that the dependencies have been taken care of lets get the DPDK tar file
@@ -111,29 +109,26 @@ a habit of writing scripts XD)
 open up a new file with your favourite editor (i hope its vim)
 
 ```bash
-
-    vim install-dpdk.sh
-
+vim install-dpdk.sh
 ```
 
 Now paste the following in the file
 
 ```bash
-
-    #!/bin/bash
-    pushd /opt/
-    wget https://fast.dpdk.org/rel/dpdk-20.11.1.tar.xz
-    tar xf dpdk-20.11.1.tar.xz
-    pushd dpdk-stable-20.11.1
-    pip3 install meson ninja
-    meson build
-    pushd build
-    ninja
-    ninja install
-    ldconfig
-    popd
-    popd
-    popd
+#!/bin/bash
+pushd /opt/
+wget https://fast.dpdk.org/rel/dpdk-20.11.1.tar.xz
+tar xf dpdk-20.11.1.tar.xz
+pushd dpdk-stable-20.11.1
+pip3 install meson ninja
+meson build
+pushd build
+ninja
+ninja install
+ldconfig
+popd
+popd
+popd
 
 ```
 
@@ -153,10 +148,8 @@ The above code should do the following:
 Make the file executable and run the script by following:
 
 ```bash
-
-    chmod u+x install-dpdk.sh
-    ./install-dpdk.sh
-
+chmod u+x install-dpdk.sh
+./install-dpdk.sh
 ```
 
 ### Setting up Hugepages
@@ -168,7 +161,7 @@ the following way either by
 
 - using the script in dpdk/usertools directory 
 
-        or 
+**OR** 
     
 - by setting them up in Grub file
 
@@ -212,10 +205,8 @@ following information
 - you can set up 4 hugepages with size of 1G each by running the following 
 command
 
-```shell
-
-        python3 dpdk-hugepages.py -p 1G --setup 4G
-
+```bash
+python3 dpdk-hugepages.py -p 1G --setup 4G
 ```
 
 #### Grub file
@@ -224,56 +215,44 @@ command
 set the pages up during boot time.
 Run the following command
 ```bash
-
-        sed -i -e 's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=4 iommu=pt intel_iommu=on isolcpu=0,1,2,3,4,5 /'  /etc/default/grub
-
+sed -i -e 's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=4 iommu=pt intel_iommu=on isolcpu=0,1,2,3,4,5 /'  /etc/default/grub
 ```
 
 The above command inserts a line in `/etc/deault/grub` file that:
 
-    1. sets 4 hugepages with size `1G` each
-    2. isolates certain cpus from kernel scheduling so that we can dedicate those for our application.
+1. sets 4 hugepages with size `1G` each
+2. isolates certain cpus from kernel scheduling so that we can dedicate those for our application.
 
 - Update the grub
 
 ```bash
-
-        sudo update-grub
-
+sudo update-grub
 ```
 
 - Restart your machine
 
 ```bash
-
-        sudo reboot
-
+sudo reboot
 ```
 
 - you can check whether the `hugepages` are set up or not by running the
 following:
 
 ```bash
+cat /proc/meminfo | grep -i "huge"
 
-        cat /proc/meminfo | grep -i "huge"
-
-```
-
-- the ouptut should be something like
-
-```bash
-
-                        AnonHugePages:         0 kB
-                        ShmemHugePages:        0 kB
-                        FileHugePages:         0 kB
-                        HugePages_Total:      20
-                        HugePages_Free:       20
-                        HugePages_Rsvd:        0
-                        HugePages_Surp:        0
-                        Hugepagesize:    1048576 kB
-                        Hugetlb:        20971520 kB
+        AnonHugePages:         0 kB
+        ShmemHugePages:        0 kB
+        FileHugePages:         0 kB
+        HugePages_Total:      20
+        HugePages_Free:       20
+        HugePages_Rsvd:        0
+        HugePages_Surp:        0
+        Hugepagesize:    1048576 kB
+        Hugetlb:        20971520 kB
 
 ```
+
 
 - Pay attention to `HugePages_Total`, `HugePages_Free` and `Hugepagesize` here.
 
@@ -282,17 +261,13 @@ following:
 - Get the drivers
 
 ```bash
-
-        sudo apt install dpdk-igb-uio-dkms -y
-
+sudo apt install dpdk-igb-uio-dkms -y
 ```
 
 - load the driver
 
 ```bash
-
-        sudo modprobe uio
-
+sudo modprobe uio
 ```
 
 ### bind the NIC to the driver
@@ -304,8 +279,8 @@ following:
 - run with `-s` flag that will show the staus of all the NICs
 
 ```bash
+python3 dpdk-devbind.py -s
 
-        python3 dpdk-devbind.py -s
         Network devices using kernel driver
         ===================================
         0000:0b:00.0 'example' if=ens1 drv=i40e unused=vfio-pci,igb_uio *Active*
@@ -320,16 +295,14 @@ following:
 follows
 
 ```bash
-
-        python3 ./dpdk-devbind.py -b igb_uio 0000:01:00.0
-
+python3 ./dpdk-devbind.py -b igb_uio 0000:01:00.0
 ```
 
 This should change the status as follows:
 
 ```bash
+python3 dpdk-devbind.py -s
 
-        python3 dpdk-devbind.py -s
         Network devices using DPDK compatible driver
         ===================================
         0000:01:00.0 'example' if=ens2 drv=igb_uio unused=i40e,vfio-pci
@@ -357,4 +330,4 @@ using DPDK_.
 find a lot of example code. I would suggest to try the `helloworld` and 
 `l2fwd`.
 
-- you cand read about **_L2FWD_** [here](https://doc.dpdk.org/guides/sample_app_ug/l2_forward_real_virtual.html) 
+- you cand read about **_L2FWD_** [<font color="blue">here</font>](https://doc.dpdk.org/guides/sample_app_ug/l2_forward_real_virtual.html) 

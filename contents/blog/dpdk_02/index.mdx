@@ -36,7 +36,6 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 ```bash
         export RTE_SDK=$(pwd)
 ```
-
 - The directory should contain following folders
 
 ```bash
@@ -105,7 +104,9 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 
 ## Main.c
 
-```C
+- Now lets move on to the main program
+
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -149,7 +150,7 @@ int main(int argc, char* argv[]){
       -  we would need to exit in case of an error.
    -  See more [here](https://doc.dpdk.org/api/rte__common_8h.html)
 
-```C
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -187,7 +188,7 @@ For that we need even number of ports.
    -  see more [here](https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html)
 -  lets do that nex within our main function
 
-```C
+```c
   nb_ports = rte_eth_dev_count_avail();
   if(nb_ports < 2 || (nb_ports & 1))
     rte_exit(EXIT_FAILURE,"Invalid port number\n");
@@ -198,12 +199,12 @@ For that we need even number of ports.
    -  contains log API to RTE applications.
    -  contains the `RTE_LOG()` function we are going to use for logging.
 -  define the User type logs as follows:   
-```C
+```c
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1  
 ```
 
 -  now update the code as follows
-```C
+```c
 /*...*/
   nb_ports = rte_eth_dev_count_avail();
   if(nb_ports < 2 || (nb_ports & 1))
@@ -240,7 +241,7 @@ We need to reserve some memory for holding the packets in our application. In th
    -  This function uses `rte_memzone_reserve()` to allocate memory.
       -  It reserves a portion of physical memory from hugepages
 -  Required params are as follows
-```
+```bash
 |---------------|-------------------------------------------------------|
 | param         |                     Description                       |
 |---------------|-------------------------------------------------------|
@@ -309,15 +310,17 @@ int main(int argc, char* argv[]){
         };
 ```
 -  Now we define the rx/tx queues we are going to use per port i.e. 1 per port, lcore
-```C
-        const u_int16_t nb_rx_queues = 1;
-        const u_int16_t nb_tx_queues = 1; 
+
+```c
+  const u_int16_t nb_rx_queues = 1;
+  const u_int16_t nb_tx_queues = 1; 
 ```
 -  Next we use the main function `rte_eth_dev_configure()` function to set up the ports.
    -  configures the Ethernet device. 
    -  this function must be invoked first before any other function in the Ethernet API.
-```C
-/* configure the ethernet device */
+
+```c
+  /* configure the ethernet device */
   ret = rte_eth_dev_configure(port,
       nb_rx_queues,
       nb_tx_queues,
@@ -416,8 +419,10 @@ rte_eth_promiscuous_enable(port);
 
 -  We are going to create a new function to check the link status of the ports
 -  It is going to tell us which of the links are up and which are down.
-```C
-static int check_link_status(u_int16_t nb_ports){
+
+```c
+static int check_link_status(u_int16_t nb_ports)
+{
   struct rte_eth_link link;
   u_int8_t port;
   for (port=0;port<nb_ports;port++){
@@ -430,11 +435,13 @@ static int check_link_status(u_int16_t nb_ports){
         port,link.link_speed);
   }
 }
+
 ```
 -  Now we can call our function in the `main()`
-```C
-ret=check_link_status(nb_ports);
-  if (ret<0){
+
+```c
+ret = check_link_status(nb_ports);
+  if ( ret < 0 ){
     RTE_LOG(WARNING,APP,"Some ports are down\n");
   }
 ```
@@ -541,13 +548,16 @@ int worker_main(void *arg){
 -  Lets print some stats when we exit the program.
 -  We'll need to add the `signal handler` to first catch the `interrupt`.
    -  First lets create a `flag` that we will change when the signal is caught
-```C
-static volatile bool force_quit;
+
+```c
+
+  static volatile bool force_quit;
+
 ```
    -  Now the `handler` which updates the flag and displays the the stats
-```C
-static void
-signal_handler(int signum){
+
+```c
+static void signal_handler(int signum){
   if(signum== SIGINT || signum== SIGTERM){
     printf("\n\nSignal %d received,preparing to exit...\n",signum);
     force_quit = true;
@@ -597,7 +607,7 @@ print_stats(void){
 -  First we build our program
 -  this should have created a `build` directory within our directory
 ```bash
-        make
+  make
 ```
 -  We will pass our program arguments just like `L2FWD`.
    -  `-l` will indicate cores
@@ -606,7 +616,7 @@ print_stats(void){
       - `0x3` indicates 2 port i.e binary mask `0011`
       - `0x7` indicates 3 port i.e binary mask `0111`
 ```bash
-        ./build/my_app -l 0-3 -n 3 -- -p 0x3
+  ./build/my_app -l 0-3 -n 3 -- -p 0x3
 ```
 -  you should see something like
 ```bash
@@ -652,4 +662,5 @@ RX: 13664640    Tx: 0           dropped: 0
 -  I followed [ferruhy/dpdk-simple-app](https://github.com/ferruhy/dpdk-simple-app) and it was of a great help to me. 
    -  Please do check his repo out.
    -  Infact this whole thing was inspired by this simple learning repo of his.
+-  You can look at the code [here](https://github.com/IbrahimShahzad/dpdk-learning)
 -  [Checkout the DPDK documentation as well.](https://www.dpdk.org/)

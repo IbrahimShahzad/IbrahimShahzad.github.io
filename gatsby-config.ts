@@ -89,6 +89,22 @@ const plugins = [
         },
     },
     {
+      
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-typescript',
+            options: {
+              // configure the JSX component that the plugin should check for
+              wrapperComponent: 'CodeBlockWrapper'
+            }
+          }
+        ]
+      }
+      
+    },
+    {
         resolve: `gatsby-source-filesystem`,
         options: {
             name: `portfolio`,
@@ -114,6 +130,23 @@ const plugins = [
                 },
             ],
         },
+    },
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        extensions: [".mdx", ".md"],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-highlight-code`,
+            options: {
+              terminal: 'carbon',
+              theme: 'vscode',
+              editable: false,
+              lineNumbers: true
+            }
+          },
+        ],
+      },
     },
     {
         resolve: `gatsby-plugin-postcss`,

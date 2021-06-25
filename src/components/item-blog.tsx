@@ -6,6 +6,8 @@ import { Calendar } from "react-feather"
 import { BlogListQuery_allMdx_edges_node } from "../templates/__generated__/BlogListQuery"
 import { IndexPageQuery_blog_edges_node } from "../pages/__generated__/IndexPageQuery"
 
+
+
 type ItemBlogProps = BlogListQuery_allMdx_edges_node | IndexPageQuery_blog_edges_node
 export const ItemBlog: React.FC<{ data: ItemBlogProps}> = ({ data }) => {
 
