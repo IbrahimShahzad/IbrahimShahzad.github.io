@@ -15,7 +15,7 @@ const siteMetadata = {
     author: `@ibrahim`,
     blogItemsPerPage: 10,
     portfolioItemsPerPage: 10,
-    darkmode: true,
+    darkmode: false,
     switchTheme: true,
     navLinks: [
         {

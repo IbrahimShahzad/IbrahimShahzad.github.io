@@ -25,7 +25,7 @@ Make sure that
 
 - Minimum system requirements are met
 
-Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dpdk_app/) if any of the aforementioned pre-reqs are not set.
+Please see [<font color="blue">DPDK-01</font>](https://ibrahimshahzad.github.io/blog/Writing_your_first_dpdk_app/) if any of the aforementioned pre-reqs are not set.
 
 # File Setup
 
@@ -39,29 +39,29 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 - The directory should contain following folders
 
 ```bash
-        app/
-        build/
-        buildtools/
-        .ci/
-        config/
-        devtools/
-        doc/
-        drivers/
-        .editorconfig
-        examples/
-        .gitattributes
-        .gitignore
-        kernel/
-        lib/
-        license/
-        MAINTAINERS
-        Makefile
-        meson.build
-        meson_options.txt
-        README
-        .travis.yml
-        usertools/
-        VERSION
+app/
+build/
+buildtools/
+.ci/
+config/
+devtools/
+doc/
+drivers/
+.editorconfig
+examples/
+.gitattributes
+.gitignore
+kernel/
+lib/
+license/
+MAINTAINERS
+Makefile
+meson.build
+meson_options.txt
+README
+.travis.yml
+usertools/
+VERSION
 ```
 
 - For our purposes, we are concerned with the `examples` directory and the `usertools` directory.
@@ -69,7 +69,7 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 - The `examples` directory contains the example codes and we will also create our application here
 
 - The `usertools` directory contains user-help scripts such as 
-  -  `cpu_layout.py`; prints out the Architecture  ,        
+  -  `cpu_layout.py`; prints out the Architecture,        
   -  `dpdk-devbind.py`; for binding/unbinding PCI devices,  
   -  `dpdk-hugepages.py`; for setting up hugepages
 
@@ -78,9 +78,9 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 - Now, go to the examples folder and create a folder for our app
 
 ```bash
-        cd $RTE_SDK/examples
-        mkdir my_app
-        cd my_app
+cd $RTE_SDK/examples
+mkdir my_app
+cd my_app
 ```
 
 ## MAKE File
@@ -88,18 +88,18 @@ Please see [DPDK-01](https://ibrahimshahzad.github.io/blog/Writing_your_first_dp
 - lets create a simple Makefile
 
 ```bash
-        vim Makefile
+vim Makefile
 ```
 
 - we are going to name our app `my_app` and use `main.c` as the source c file 
 
 ```bash
-        include $(RTE_SDK)/mk/rte.vars.mk
+include $(RTE_SDK)/mk/rte.vars.mk
 
-        APP := my_app
-        SRCS-y := main.c
+APP := my_app
+SRCS-y := main.c
 
-        include $(RTE_SDK)/mk/rte.extapp.mk  
+include $(RTE_SDK)/mk/rte.extapp.mk  
 ```
 
 ## Main.c
@@ -143,12 +143,12 @@ int main(int argc, char* argv[]){
    -  contains the EAL configuration functions
    -  Contains the defitnion for `rte_eal_init()`
       -  The `rte_eal_init` returns `-ive` in case of an error.
-   -  See more [here](https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3).
+   -  See more [<font color="blue">here</font>](https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3).
 -  we will also include `rte_common.h` 
    -  It contains generic, commonly-used macro and inline function definitions for DPDK.
    -  It contains the defitnion for `rte_exit()`
       -  we would need to exit in case of an error.
-   -  See more [here](https://doc.dpdk.org/api/rte__common_8h.html)
+   -  See more [<font color="blue">here</font>](https://doc.dpdk.org/api/rte__common_8h.html)
 
 ```c
 #include <stdio.h>
@@ -160,17 +160,17 @@ int main(int argc, char* argv[]){
 
 int main(int argc, char* argv[]){
         
-        printf("\n");
-        int ret;
+  printf("\n");
+  int ret;
 
-        /* The EAL arguments are passed when calling the program */   
-        ret = rte_eal_init(argc,argv);
-        if (ret<0)
-        rte_exit(EXIT_FAILURE,"EAL Init failed\n");
+  /* The EAL arguments are passed when calling the program */   
+  ret = rte_eal_init(argc,argv);
+  if (ret<0)
+    rte_exit(EXIT_FAILURE,"EAL Init failed\n");
 
-        argc -= ret;
-        argv += ret;
-        return 0;
+  argc -= ret;
+  argv += ret;
+  return 0;
 }
 
 ```
@@ -185,7 +185,7 @@ For that we need even number of ports.
    -  Ethernet devices are represented by a generic data structure of type `rte_eth_dev`.
    -  contains the definition of `rte_eth_dev_count_avail()`
        -  returns the total number of dpdk binded devices.
-   -  see more [here](https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html)
+   -  see more [<font color="blue">here</font>](https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html)
 -  lets do that nex within our main function
 
 ```c
@@ -206,10 +206,10 @@ For that we need even number of ports.
 -  now update the code as follows
 ```c
 /*...*/
-  nb_ports = rte_eth_dev_count_avail();
-  if(nb_ports < 2 || (nb_ports & 1))
-    rte_exit(EXIT_FAILURE,"Invalid port number\n");
-  RTE_LOG(INFO, APP, "Number of ports:%u\n",nb_ports);
+nb_ports = rte_eth_dev_count_avail();
+if(nb_ports < 2 || (nb_ports & 1))
+  rte_exit(EXIT_FAILURE,"Invalid port number\n");
+RTE_LOG(INFO, APP, "Number of ports:%u\n",nb_ports);
 /*...*/
 ```
 ### MBUF Pool Creation
@@ -220,21 +220,16 @@ We need to reserve some memory for holding the packets in our application. In th
    -  The mbuf library provides the ability to create and destroy buffers that may be used by the RTE application to store message buffers.
    -  we are going to use `rte_pktmbuf_pool_create` to create set up a buffer to hold packets. 
    -  it uses `mempool` library.
-   -  Read DPDK Docs regarding `mbuf` [here](https://doc.dpdk.org/guides/prog_guide/mbuf_lib.html)
--  [A good read about general concepts here](https://www.dpdk.org/blog/2019/08/21/memory-in-dpdk-part-1-general-concepts/)
+   -  Read DPDK Docs regarding `mbuf` [<font color="blue">here</font>](https://doc.dpdk.org/guides/prog_guide/mbuf_lib.html)
+-  [<font color="blue">A good read about general concepts here</font>](https://www.dpdk.org/blog/2019/08/21/memory-in-dpdk-part-1-general-concepts/)
 -  First We are going to define `NUM_MBUFS` and `MBUF_CACHE_SIZE`.
 
 ```c
 #include <rte_mbuf.h>
-
 #define NB_MBUFS 8191
-
 #define MBUF_CACHE_SIZE 250
-
 #define RX_RING_SIZE 128
-
 #define TX_RING_SIZE 512
-
 ```
 -  Now we are going to call `rte_pktmbuf_pool_create` in the `main` function.
    -  This function creates and initializes a packet mbuf pool.
@@ -265,13 +260,13 @@ We need to reserve some memory for holding the packets in our application. In th
 -   If the creation is unsuccessful we are going to exit the program.
 ```c
 /* Create a new mbuf mempool */
-  mbuf_pool = rte_pktmbuf_pool_create("MBUF_POOL",
-      NB_MBUFS *nb_ports,
-      MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE,
-      rte_socket_id());
+mbuf_pool = rte_pktmbuf_pool_create("MBUF_POOL",
+    NB_MBUFS *nb_ports,
+    MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE,
+    rte_socket_id());
 
-  if (mbuf_pool == NULL)
-    rte_exit(EXIT_FAILURE,"mbuff_pool create failed\n");
+if (mbuf_pool == NULL)
+  rte_exit(EXIT_FAILURE,"mbuff_pool create failed\n");
 ```
 
 ### Ports Initialisation
@@ -279,7 +274,7 @@ We need to reserve some memory for holding the packets in our application. In th
 -   We will create a function ` port_init` for initialising the ports.
 ```c
 port_init(u_int8_t port,struct rte_mempool *mbuf_pool){
-  
+
   return 0;
 }
 ```
@@ -287,13 +282,11 @@ port_init(u_int8_t port,struct rte_mempool *mbuf_pool){
 ```c
 int main(int argc, char* argv[]){
   /*...*/
-  
   /* Initialize all ports */
   for (portid = 0; portid < nb_ports; portid++){
     if(port_init(portid,mbuf_pool) != 0)
       rte_exit(EXIT_FAILURE,"port init failed\n");
   }
-
   /*...*/
 }
 ```
@@ -329,7 +322,7 @@ int main(int argc, char* argv[]){
 -  Now we allocate one `RX queue` per port.
 -  We will use function `rte_eth_rx_queue_setup()`
    -  The function allocates a contiguous block of memory for receive descriptors
-   -  Read more [here](https://doc.dpdk.org/api/rte__ethdev_8h.html#a36ba70a5a6fce2c2c1f774828ba78f8d)
+   -  Read more [<font color="blue">here</font>](https://doc.dpdk.org/api/rte__ethdev_8h.html#a36ba70a5a6fce2c2c1f774828ba78f8d)
 -  We will set up 1 rx queue per port
 
 ```c
@@ -344,7 +337,7 @@ int main(int argc, char* argv[]){
 -  Now we allocate one `TX queue` per port.
 -  We will use function `rte_eth_tx_queue_setup()`
    -  Allocate and set up a transmit queue for an Ethernet device.
-   -  Read more [here](https://doc.dpdk.org/api/rte__ethdev_8h.html#a796c2f20778984c6f41b271e36bae50e)
+   -  Read more [<font color="blue">here</font>](https://doc.dpdk.org/api/rte__ethdev_8h.html#a796c2f20778984c6f41b271e36bae50e)
 -  We will set up 1 tx queue per port
 
 ```c
@@ -662,5 +655,5 @@ RX: 13664640    Tx: 0           dropped: 0
 -  I followed [ferruhy/dpdk-simple-app](https://github.com/ferruhy/dpdk-simple-app) and it was of a great help to me. 
    -  Please do check his repo out.
    -  Infact this whole thing was inspired by this simple learning repo of his.
--  You can look at the code [here](https://github.com/IbrahimShahzad/dpdk-learning)
--  [Checkout the DPDK documentation as well.](https://www.dpdk.org/)
+-  You can look at the code [<font color="blue">here</font>](https://github.com/IbrahimShahzad/dpdk-learning)
+-  Checkout the [<font color="blue">DPDK documentation</font>](https://www.dpdk.org/) as well.
