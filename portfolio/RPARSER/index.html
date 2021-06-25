@@ -8,25 +8,64 @@
 /static/8d431ec54df3a5dd744a4bcccedeb8a0/af56c/data1.jpg 2880w,
 /static/8d431ec54df3a5dd744a4bcccedeb8a0/d034a/data1.jpg 2999w" src="/static/8d431ec54df3a5dd744a4bcccedeb8a0/d8255/data1.jpg" alt="" style="position:absolute;top:0;left:0;opacity:1;width:100%;height:100%;object-fit:cover;object-position:center"/></picture></noscript></div><div class="flex items-center justify-center relative lg:absolute w-full h-full top-0 left-0"><div class="hidden lg:block absolute w-full h-full bg-black opacity-50"></div><div class="px-4 py-8 lg:p-0 relative z-10 text-center text-color-default lg:text-white bg-bgalt lg:bg-transparent"><h1 class="text-5xl font-bold text-color-1 lg:text-white">RPARSER</h1><p class="mt-1 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <span class="ml-2">11 June 2021</span></p><p class="mt-3 md:w-3/4 mx-auto">A RADIUS parser written using C++ and PcapPlusPlus (wrapper for C-DPDK). It extracts attributes from the RADIUS layer.</p></div></div></div><div class="lg:w-3/4 md:w-11/12 sm:w-full p-3 mt-4 md:mt-6 mx-auto lg:mt-12"><p>A RADIUS parser written using C++ and PcapPlusPlus (wrapper for C-DPDK).
 It extracts attributes from the RADIUS layer.</p><h2>High Level Overview</h2><p>Following diagram depicts the high level flow of the application.
-<img src="https://i.imgur.com/DlxZztN.jpg" alt="Arch"/></p><p>The program starts and </p><ol><li>initializes the EAL params</li><li>setups and starts dpdk devices (ports)</li><li>Spawn workerThreads</li></ol><p>Each workerThread</p><ol><li>receives a burst on the port</li><li>loops through the packet burst</li><li>for each packet burst
-i. checks packet type
-ii. checks for radius Accounting type
-iii. parses header
-iv. parser Attribute Value Pairs (AVPs)
-v. writes to CSV
-vi. frees the packet
-vii. receives the next burst and so on</li></ol><h2>Extracted Information</h2><p>The parser looks for following port numbers associate with authentication
-and authorization:</p><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">AUTHENTICATION PORT 1812 
-AUTHORIZATION PORT 1813</code>
-        </deckgo-highlight-code><p>The minimum lenght of Radius packet required is <code>230</code></p><h3>Header</h3><p>From the header following information is extracted</p><ol><li>Radius Type</li><li>Message id</li><li>Radius Attribute Count</li></ol><p>The CPacketParser parses message of the type <code>ACCOUNTING REQUEST</code> with is
+<img src="https://i.imgur.com/DlxZztN.jpg" alt="Arch"/></p><p>The program starts and </p><deckgo-highlight-code terminal="carbon" theme="vscode" line-numbers="true" highlight-lines="undefined">
+          <code slot="code">    1. initializes the EAL params
+    2. setups and starts dpdk devices (ports)
+    3. Spawn workerThreads</code>
+        </deckgo-highlight-code><p>Each workerThread</p><deckgo-highlight-code terminal="carbon" theme="vscode" line-numbers="true" highlight-lines="undefined">
+          <code slot="code">    1. receives a burst on the port
+    2. loops through the packet burst
+    3. for each packet burst 
+        i. checks packet type
+        ii. checks for radius Accounting type
+        iii. parses header
+        iv. parser Attribute Value Pairs (AVPs)
+        v. writes to CSV
+        vi. frees the packet
+        vii. receives the next burst and so on</code>
+        </deckgo-highlight-code><h2>Extracted Information</h2><p>The parser looks for following port numbers associate with authentication
+and authorization:</p><deckgo-highlight-code terminal="carbon" theme="vscode" line-numbers="true" highlight-lines="undefined">
+          <code slot="code">    1. AUTHENTICATION PORT 1812 
+    2. AUTHORIZATION PORT 1813</code>
+        </deckgo-highlight-code><p>The minimum lenght of Radius packet required is <code>230</code></p><h3>Header</h3><p>From the header following information is extracted</p><deckgo-highlight-code terminal="carbon" theme="vscode" line-numbers="true" highlight-lines="undefined">
+          <code slot="code">    1. Radius Type
+    2. Message id
+    3. Radius Attribute Count</code>
+        </deckgo-highlight-code><p>The CPacketParser parses message of the type <code>ACCOUNTING REQUEST</code> with is
 identifiable by the code <code>4</code>.</p><h3>Extracted Attribute Value Pairs</h3><p>The total number of attributes that are looked for are <code>4</code>. Following are
-the attributes:</p><ol><li><p>Framed IPv4 Address</p><ul><li>Signifies the IPv4 address assigned to the user</li></ul></li><li><p>Framed IPv6 Prefix</p><ul><li>Signifies the IPv6 prefix assigned to the user</li></ul></li><li><p>Calling Station ID</p><ul><li>Signifies the calling station identity of the user (either MSISDN, MAC or any other identifier)</li></ul></li><li><p>Accounting Status Type</p><ul><li>Start; indicating new connection and start of data flow</li><li>Stop; indicating termination connection and end of data flow</li><li>Update; indicating updated connection information and  start of data flow with new information</li></ul></li></ol><h2>Algo for extracting AVPs</h2><p>The AVPs in RADIUS differ in lenght and location and type. Which is why
-we have to loop through all the AVPs to get the ones required.</p><p>All the AVPs have three parts: </p><ol><li><p>Code</p><ul><li>Unique Identifier for the Attribute</li></ul></li><li><p>Length</p><ul><li>the complete length of the AVP</li></ul></li><li><p>Value</p><ul><li>The data is signified in the next <code>lenght - 2</code> bytes.</li></ul></li></ol><p>The data bytes in RADIUS layer are read as follows:</p><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">starting bytes: --- 28 06 00 00 00 02 --- 
-28 = dec(28) = 40 (Acct-Status-Type) 
-06 = total length 
-00 00 00 02 = value =  2 (stop) 
-bytes for data (4) are calculated  as follows: 
-[total:6] - [bytesforlength:1] - [bytesforcode:1] = 4  </code>
+the attributes:</p><deckgo-highlight-code terminal="carbon" theme="vscode" line-numbers="true" highlight-lines="undefined">
+          <code slot="code">    1. Framed IPv4 Address
+        - Signifies the IPv4 address assigned to the user
+
+    2. Framed IPv6 Prefix
+        - Signifies the IPv6 prefix assigned to the user
+
+    3. Calling Station ID
+        - Signifies the calling station identity of the user 
+        (either MSISDN, MAC or any other identifier)
+
+    4. Accounting Status Type
+        - Start; indicating new connection and start of data flow
+        - Stop; indicating termination connection and end of data flow
+        - Update; indicating updated connection information and 
+        start of data flow with new information</code>
+        </deckgo-highlight-code><h2>Algo for extracting AVPs</h2><p>The AVPs in RADIUS differ in lenght and location and type. Which is why
+we have to loop through all the AVPs to get the ones required.</p><p>All the AVPs have three parts: </p><deckgo-highlight-code terminal="carbon" theme="vscode" line-numbers="true" highlight-lines="undefined">
+          <code slot="code">    1. Code
+        - Unique Identifier for the Attribute
+
+    2. Length
+        - the complete length of the AVP
+
+    3. Value
+        - The data is signified in the next `lenght - 2` bytes.</code>
+        </deckgo-highlight-code><p>The data bytes in RADIUS layer are read as follows:</p><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
+          <code slot="code">
+    starting bytes: --- 28 06 00 00 00 02 --- 
+    28 = dec(28) = 40 (Acct-Status-Type) 
+    06 = total length 
+    00 00 00 02 = value =  2 (stop) 
+    bytes for data (4) are calculated  as follows: 
+    [total:6] - [bytesforlength:1] - [bytesforcode:1] = 4  
+    </code>
         </deckgo-highlight-code><hr/><h2>Github Repo</h2><p><a href="https://github.com/IbrahimShahzad/CPacketParser"><font color="blue">Checkout the github Repo here</font></a></p></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/portfolio/RPARSER/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-dbe152a5c0495476ad15.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"],"polyfills-dom":["/polyfills-dom-3a0d4509b26cd0a38ea3.js"],"polyfills-core-js":["/polyfills-core-js-5511b8240ed3233e7a82.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-23eec9cfe17b8bd08279.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-dbe152a5c0495476ad15.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-7e23dac6662b5819b267.js" async=""></script></body></html>
