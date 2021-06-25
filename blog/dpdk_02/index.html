@@ -8,45 +8,45 @@
 /static/e3e365f7ba8597707596ef34bc88cbcc/d8255/fast.jpg 1920w,
 /static/e3e365f7ba8597707596ef34bc88cbcc/af56c/fast.jpg 2880w,
 /static/e3e365f7ba8597707596ef34bc88cbcc/27fce/fast.jpg 3840w,
-/static/e3e365f7ba8597707596ef34bc88cbcc/26ca3/fast.jpg 5851w" src="/static/e3e365f7ba8597707596ef34bc88cbcc/d8255/fast.jpg" alt="" style="position:absolute;top:0;left:0;opacity:1;width:100%;height:100%;object-fit:cover;object-position:center"/></picture></noscript></div><div class="relative w-full lg:w-3/4 md:w-11/12 sm:w-full p-6 box-border lg:box-content mx-auto bg-bg text-color-default blog-wall-content shadow-xl md:-mt-16 "><div class="p-3"><h1 class="text-5xl font-bold text-primary">DPDK 02</h1><p class="mt-1 flex"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <span class="ml-2">23 June 2021</span></p><p class="mt-3">Writing the application</p></div></div></div><div class="lg:w-3/4 md:w-11/12 sm:w-full p-3 mx-auto mt-12 post-content"><h1>Introduction</h1><p>In this section we will write a smiple C application to recieve packets. </p><p>Let&#x27;s dive in!</p><h1>PreReqs</h1><p>Make sure that</p><ul><li><p>DPDK is built</p></li><li><p>A DPDK compatible NIC is binded to the <code>igb_uio</code> driver</p></li><li><p>Hugepages are setup</p></li><li><p>Minimum system requirements are met</p></li></ul><p>Please see <a href="https://ibrahimshahzad.github.io/blog/Writing_your_first_dpdk_app/">DPDK-01</a> if any of the aforementioned pre-reqs are not set.</p><h1>File Setup</h1><blockquote><p>From here on out we will refer to our dpdk installation directory as <code>RTE_SDK</code>. </p></blockquote><ul><li>Go into the your dpdk installation directory and run the following command</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
+/static/e3e365f7ba8597707596ef34bc88cbcc/26ca3/fast.jpg 5851w" src="/static/e3e365f7ba8597707596ef34bc88cbcc/d8255/fast.jpg" alt="" style="position:absolute;top:0;left:0;opacity:1;width:100%;height:100%;object-fit:cover;object-position:center"/></picture></noscript></div><div class="relative w-full lg:w-3/4 md:w-11/12 sm:w-full p-6 box-border lg:box-content mx-auto bg-bg text-color-default blog-wall-content shadow-xl md:-mt-16 "><div class="p-3"><h1 class="text-5xl font-bold text-primary">DPDK 02</h1><p class="mt-1 flex"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <span class="ml-2">23 June 2021</span></p><p class="mt-3">Writing the application</p></div></div></div><div class="lg:w-3/4 md:w-11/12 sm:w-full p-3 mx-auto mt-12 post-content"><h1>Introduction</h1><p>In this section we will write a smiple C application to recieve packets. </p><p>Let&#x27;s dive in!</p><h1>PreReqs</h1><p>Make sure that</p><ul><li><p>DPDK is built</p></li><li><p>A DPDK compatible NIC is binded to the <code>igb_uio</code> driver</p></li><li><p>Hugepages are setup</p></li><li><p>Minimum system requirements are met</p></li></ul><p>Please see <a href="https://ibrahimshahzad.github.io/blog/Writing_your_first_dpdk_app/"><font color="blue">DPDK-01</font></a> if any of the aforementioned pre-reqs are not set.</p><h1>File Setup</h1><blockquote><p>From here on out we will refer to our dpdk installation directory as <code>RTE_SDK</code>. </p></blockquote><ul><li>Go into the your dpdk installation directory and run the following command</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">        export RTE_SDK=$(pwd)</code>
         </deckgo-highlight-code><ul><li>The directory should contain following folders</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">        app/
-        build/
-        buildtools/
-        .ci/
-        config/
-        devtools/
-        doc/
-        drivers/
-        .editorconfig
-        examples/
-        .gitattributes
-        .gitignore
-        kernel/
-        lib/
-        license/
-        MAINTAINERS
-        Makefile
-        meson.build
-        meson_options.txt
-        README
-        .travis.yml
-        usertools/
-        VERSION</code>
-        </deckgo-highlight-code><ul><li><p>For our purposes, we are concerned with the <code>examples</code> directory and the <code>usertools</code> directory.</p></li><li><p>The <code>examples</code> directory contains the example codes and we will also create our application here</p></li><li><p>The <code>usertools</code> directory contains user-help scripts such as </p><ul><li><code>cpu_layout.py</code>; prints out the Architecture  ,        </li><li><code>dpdk-devbind.py</code>; for binding/unbinding PCI devices,  </li><li><code>dpdk-hugepages.py</code>; for setting up hugepages</li></ul></li><li><p>some of these we used at the time of setup.</p></li><li><p>Now, go to the examples folder and create a folder for our app</p></li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">        cd $RTE_SDK/examples
-        mkdir my_app
-        cd my_app</code>
+          <code slot="code">app/
+build/
+buildtools/
+.ci/
+config/
+devtools/
+doc/
+drivers/
+.editorconfig
+examples/
+.gitattributes
+.gitignore
+kernel/
+lib/
+license/
+MAINTAINERS
+Makefile
+meson.build
+meson_options.txt
+README
+.travis.yml
+usertools/
+VERSION</code>
+        </deckgo-highlight-code><ul><li><p>For our purposes, we are concerned with the <code>examples</code> directory and the <code>usertools</code> directory.</p></li><li><p>The <code>examples</code> directory contains the example codes and we will also create our application here</p></li><li><p>The <code>usertools</code> directory contains user-help scripts such as </p><ul><li><code>cpu_layout.py</code>; prints out the Architecture,        </li><li><code>dpdk-devbind.py</code>; for binding/unbinding PCI devices,  </li><li><code>dpdk-hugepages.py</code>; for setting up hugepages</li></ul></li><li><p>some of these we used at the time of setup.</p></li><li><p>Now, go to the examples folder and create a folder for our app</p></li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
+          <code slot="code">cd $RTE_SDK/examples
+mkdir my_app
+cd my_app</code>
         </deckgo-highlight-code><h2>MAKE File</h2><ul><li>lets create a simple Makefile</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">        vim Makefile</code>
+          <code slot="code">vim Makefile</code>
         </deckgo-highlight-code><ul><li>we are going to name our app <code>my_app</code> and use <code>main.c</code> as the source c file </li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">        include $(RTE_SDK)/mk/rte.vars.mk
+          <code slot="code">include $(RTE_SDK)/mk/rte.vars.mk
 
-        APP := my_app
-        SRCS-y := main.c
+APP := my_app
+SRCS-y := main.c
 
-        include $(RTE_SDK)/mk/rte.extapp.mk  </code>
+include $(RTE_SDK)/mk/rte.extapp.mk  </code>
         </deckgo-highlight-code><h2>Main.c</h2><ul><li>Now lets move on to the main program</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
@@ -62,7 +62,7 @@ int main(int argc, char* argv[]){
 
   return 0;
 }</code>
-        </deckgo-highlight-code><h3>EAL: &quot;Environment Abstraction Layer&quot;</h3><ul><li>The first thing that is required is initialising up the <code>EAL</code>. We use <code>rte_eal_init()</code> function.<ul><li>It gets parameters from cli adn sets up a some of the following:<ul><li>cpu_init: fill cpu_info structure</li><li>log_init</li><li>config_init: create memory configuration in shared memory</li><li>pci_init: scan pci bus</li><li>memory_init (hugepages)</li><li>memzone_init: initialize memzone subsystem</li><li>lcore_init: Create a thread per lcore</li><li>pci_probe: probel all physical devices</li></ul></li></ul></li><li>lets start by including <code>rte_eal.h</code><ul><li>contains the EAL configuration functions</li><li>Contains the defitnion for <code>rte_eal_init()</code><ul><li>The <code>rte_eal_init</code> returns <code>-ive</code> in case of an error.</li></ul></li><li>See more <a href="https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3">here</a>.</li></ul></li><li>we will also include <code>rte_common.h</code> <ul><li>It contains generic, commonly-used macro and inline function definitions for DPDK.</li><li>It contains the defitnion for <code>rte_exit()</code><ul><li>we would need to exit in case of an error.</li></ul></li><li>See more <a href="https://doc.dpdk.org/api/rte__common_8h.html">here</a></li></ul></li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
+        </deckgo-highlight-code><h3>EAL: &quot;Environment Abstraction Layer&quot;</h3><ul><li>The first thing that is required is initialising up the <code>EAL</code>. We use <code>rte_eal_init()</code> function.<ul><li>It gets parameters from cli adn sets up a some of the following:<ul><li>cpu_init: fill cpu_info structure</li><li>log_init</li><li>config_init: create memory configuration in shared memory</li><li>pci_init: scan pci bus</li><li>memory_init (hugepages)</li><li>memzone_init: initialize memzone subsystem</li><li>lcore_init: Create a thread per lcore</li><li>pci_probe: probel all physical devices</li></ul></li></ul></li><li>lets start by including <code>rte_eal.h</code><ul><li>contains the EAL configuration functions</li><li>Contains the defitnion for <code>rte_eal_init()</code><ul><li>The <code>rte_eal_init</code> returns <code>-ive</code> in case of an error.</li></ul></li><li>See more <a href="https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3"><font color="blue">here</font></a>.</li></ul></li><li>we will also include <code>rte_common.h</code> <ul><li>It contains generic, commonly-used macro and inline function definitions for DPDK.</li><li>It contains the defitnion for <code>rte_exit()</code><ul><li>we would need to exit in case of an error.</li></ul></li><li>See more <a href="https://doc.dpdk.org/api/rte__common_8h.html"><font color="blue">here</font></a></li></ul></li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 
@@ -72,21 +72,21 @@ int main(int argc, char* argv[]){
 
 int main(int argc, char* argv[]){
         
-        printf(&quot;\n&quot;);
-        int ret;
+  printf(&quot;\n&quot;);
+  int ret;
 
-        /* The EAL arguments are passed when calling the program */   
-        ret = rte_eal_init(argc,argv);
-        if (ret&lt;0)
-        rte_exit(EXIT_FAILURE,&quot;EAL Init failed\n&quot;);
+  /* The EAL arguments are passed when calling the program */   
+  ret = rte_eal_init(argc,argv);
+  if (ret&lt;0)
+    rte_exit(EXIT_FAILURE,&quot;EAL Init failed\n&quot;);
 
-        argc -= ret;
-        argv += ret;
-        return 0;
+  argc -= ret;
+  argv += ret;
+  return 0;
 }
 </code>
         </deckgo-highlight-code><h3>Get Port Count</h3><ul><li>We are going to be receiving on one port and transmitting on the other.
-For that we need even number of ports.</li><li>lets first include <code>rte_ethdev.h</code> in our program.<ul><li>includes functions to setup/configure an Ethernet device.</li><li>Ethernet devices are represented by a generic data structure of type <code>rte_eth_dev</code>.</li><li>contains the definition of <code>rte_eth_dev_count_avail()</code><ul><li>returns the total number of dpdk binded devices.</li></ul></li><li>see more <a href="https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html">here</a></li></ul></li><li>lets do that nex within our main function</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
+For that we need even number of ports.</li><li>lets first include <code>rte_ethdev.h</code> in our program.<ul><li>includes functions to setup/configure an Ethernet device.</li><li>Ethernet devices are represented by a generic data structure of type <code>rte_eth_dev</code>.</li><li>contains the definition of <code>rte_eth_dev_count_avail()</code><ul><li>returns the total number of dpdk binded devices.</li></ul></li><li>see more <a href="https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html"><font color="blue">here</font></a></li></ul></li><li>lets do that nex within our main function</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">  nb_ports = rte_eth_dev_count_avail();
   if(nb_ports &lt; 2 || (nb_ports &amp; 1))
     rte_exit(EXIT_FAILURE,&quot;Invalid port number\n&quot;);</code>
@@ -94,22 +94,17 @@ For that we need even number of ports.</li><li>lets first include <code>rte_ethd
           <code slot="code">#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1  </code>
         </deckgo-highlight-code><ul><li>now update the code as follows</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">/*...*/
-  nb_ports = rte_eth_dev_count_avail();
-  if(nb_ports &lt; 2 || (nb_ports &amp; 1))
-    rte_exit(EXIT_FAILURE,&quot;Invalid port number\n&quot;);
-  RTE_LOG(INFO, APP, &quot;Number of ports:%u\n&quot;,nb_ports);
+nb_ports = rte_eth_dev_count_avail();
+if(nb_ports &lt; 2 || (nb_ports &amp; 1))
+  rte_exit(EXIT_FAILURE,&quot;Invalid port number\n&quot;);
+RTE_LOG(INFO, APP, &quot;Number of ports:%u\n&quot;,nb_ports);
 /*...*/</code>
-        </deckgo-highlight-code><h3>MBUF Pool Creation</h3><p>We need to reserve some memory for holding the packets in our application. In this section we are going to do just that </p><ul><li>We are going to include <code>rte_mbuf.h</code> for memory management.<ul><li>The mbuf library provides the ability to create and destroy buffers that may be used by the RTE application to store message buffers.</li><li>we are going to use <code>rte_pktmbuf_pool_create</code> to create set up a buffer to hold packets. </li><li>it uses <code>mempool</code> library.</li><li>Read DPDK Docs regarding <code>mbuf</code> <a href="https://doc.dpdk.org/guides/prog_guide/mbuf_lib.html">here</a></li></ul></li><li><a href="https://www.dpdk.org/blog/2019/08/21/memory-in-dpdk-part-1-general-concepts/">A good read about general concepts here</a></li><li>First We are going to define <code>NUM_MBUFS</code> and <code>MBUF_CACHE_SIZE</code>.</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
+        </deckgo-highlight-code><h3>MBUF Pool Creation</h3><p>We need to reserve some memory for holding the packets in our application. In this section we are going to do just that </p><ul><li>We are going to include <code>rte_mbuf.h</code> for memory management.<ul><li>The mbuf library provides the ability to create and destroy buffers that may be used by the RTE application to store message buffers.</li><li>we are going to use <code>rte_pktmbuf_pool_create</code> to create set up a buffer to hold packets. </li><li>it uses <code>mempool</code> library.</li><li>Read DPDK Docs regarding <code>mbuf</code> <a href="https://doc.dpdk.org/guides/prog_guide/mbuf_lib.html"><font color="blue">here</font></a></li></ul></li><li><a href="https://www.dpdk.org/blog/2019/08/21/memory-in-dpdk-part-1-general-concepts/"><font color="blue">A good read about general concepts here</font></a></li><li>First We are going to define <code>NUM_MBUFS</code> and <code>MBUF_CACHE_SIZE</code>.</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">#include &lt;rte_mbuf.h&gt;
-
 #define NB_MBUFS 8191
-
 #define MBUF_CACHE_SIZE 250
-
 #define RX_RING_SIZE 128
-
-#define TX_RING_SIZE 512
-</code>
+#define TX_RING_SIZE 512</code>
         </deckgo-highlight-code><ul><li>Now we are going to call <code>rte_pktmbuf_pool_create</code> in the <code>main</code> function.<ul><li>This function creates and initializes a packet mbuf pool.</li><li>This function uses <code>rte_memzone_reserve()</code> to allocate memory.<ul><li>It reserves a portion of physical memory from hugepages</li></ul></li></ul></li><li>Required params are as follows</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">|---------------|-------------------------------------------------------|
 | param         |                     Description                       |
@@ -132,28 +127,26 @@ For that we need even number of ports.</li><li>lets first include <code>rte_ethd
 |---------------|-------------------------------------------------------|</code>
         </deckgo-highlight-code><ul><li>If the creation is unsuccessful we are going to exit the program.</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">/* Create a new mbuf mempool */
-  mbuf_pool = rte_pktmbuf_pool_create(&quot;MBUF_POOL&quot;,
-      NB_MBUFS *nb_ports,
-      MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE,
-      rte_socket_id());
+mbuf_pool = rte_pktmbuf_pool_create(&quot;MBUF_POOL&quot;,
+    NB_MBUFS *nb_ports,
+    MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE,
+    rte_socket_id());
 
-  if (mbuf_pool == NULL)
-    rte_exit(EXIT_FAILURE,&quot;mbuff_pool create failed\n&quot;);</code>
+if (mbuf_pool == NULL)
+  rte_exit(EXIT_FAILURE,&quot;mbuff_pool create failed\n&quot;);</code>
         </deckgo-highlight-code><h3>Ports Initialisation</h3><ul><li>We will create a function <code> port_init</code> for initialising the ports.</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">port_init(u_int8_t port,struct rte_mempool *mbuf_pool){
-  
+
   return 0;
 }</code>
         </deckgo-highlight-code><ul><li>We will loop through all the ports and initialise them one by one.</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">int main(int argc, char* argv[]){
   /*...*/
-  
   /* Initialize all ports */
   for (portid = 0; portid &lt; nb_ports; portid++){
     if(port_init(portid,mbuf_pool) != 0)
       rte_exit(EXIT_FAILURE,&quot;port init failed\n&quot;);
   }
-
   /*...*/
 }</code>
         </deckgo-highlight-code><ul><li><p>Now lets update the <code>port_init</code> function</p></li><li><p>First we set the <code>rte_eth_conf</code></p><ul><li>A structure used to configure an Ethernet port</li><li>We can set up Receive mode and Transmit mode flags</li><li>If you want to enable <code>RSS</code> (Receive Side Scaling) this would be the place to start. </li></ul></li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
@@ -170,7 +163,7 @@ For that we need even number of ports.</li><li>lets first include <code>rte_ethd
       nb_rx_queues,
       nb_tx_queues,
       &amp;port_conf);</code>
-        </deckgo-highlight-code><ul><li>Now we allocate one <code>RX queue</code> per port.</li><li>We will use function <code>rte_eth_rx_queue_setup()</code><ul><li>The function allocates a contiguous block of memory for receive descriptors</li><li>Read more <a href="https://doc.dpdk.org/api/rte__ethdev_8h.html#a36ba70a5a6fce2c2c1f774828ba78f8d">here</a></li></ul></li><li>We will set up 1 rx queue per port</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
+        </deckgo-highlight-code><ul><li>Now we allocate one <code>RX queue</code> per port.</li><li>We will use function <code>rte_eth_rx_queue_setup()</code><ul><li>The function allocates a contiguous block of memory for receive descriptors</li><li>Read more <a href="https://doc.dpdk.org/api/rte__ethdev_8h.html#a36ba70a5a6fce2c2c1f774828ba78f8d"><font color="blue">here</font></a></li></ul></li><li>We will set up 1 rx queue per port</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">  for (q=0;q&lt;nb_rx_queues;q++){
     ret=rte_eth_rx_queue_setup(port,q,RX_RING_SIZE,
         rte_eth_dev_socket_id(port),
@@ -178,7 +171,7 @@ For that we need even number of ports.</li><li>lets first include <code>rte_ethd
     if (ret&lt;0)
       return ret;
   }</code>
-        </deckgo-highlight-code><ul><li>Now we allocate one <code>TX queue</code> per port.</li><li>We will use function <code>rte_eth_tx_queue_setup()</code><ul><li>Allocate and set up a transmit queue for an Ethernet device.</li><li>Read more <a href="https://doc.dpdk.org/api/rte__ethdev_8h.html#a796c2f20778984c6f41b271e36bae50e">here</a></li></ul></li><li>We will set up 1 tx queue per port</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
+        </deckgo-highlight-code><ul><li>Now we allocate one <code>TX queue</code> per port.</li><li>We will use function <code>rte_eth_tx_queue_setup()</code><ul><li>Allocate and set up a transmit queue for an Ethernet device.</li><li>Read more <a href="https://doc.dpdk.org/api/rte__ethdev_8h.html#a796c2f20778984c6f41b271e36bae50e"><font color="blue">here</font></a></li></ul></li><li>We will set up 1 tx queue per port</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">  for (q=0;q&lt;nb_tx_queues;q++){
     ret=rte_eth_tx_queue_setup(port,q,TX_RING_SIZE,
       rte_eth_dev_socket_id(port),
@@ -375,4 +368,4 @@ RX: 0           Tx: 13664640    dropped: 0
 
 Statistics for the port 1
 RX: 13664640    Tx: 0           dropped: 0</code>
-        </deckgo-highlight-code><hr/><h1>WORD</h1><p><img src="https://i.kym-cdn.com/entries/icons/original/000/035/692/cover1.jpg" alt="Meow"/></p><ul><li>Give yourself a pat on the back you are done. (FOR NOW!)</li><li>We will parse a few layers in the next one.</li><li>I followed <a href="https://github.com/ferruhy/dpdk-simple-app">ferruhy/dpdk-simple-app</a> and it was of a great help to me. <ul><li>Please do check his repo out.</li><li>Infact this whole thing was inspired by this simple learning repo of his.</li></ul></li><li>You can look at the code <a href="https://github.com/IbrahimShahzad/dpdk-learning">here</a></li><li><a href="https://www.dpdk.org/">Checkout the DPDK documentation as well.</a></li></ul></div><div class="comments mt-8"><div id="disqus_thread" url="https://IbrahimShahzad.github.io[object Object]" title="DPDK 02" identifier="DPDK 02" counter="0"></div></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/dpdk_02/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-dbe152a5c0495476ad15.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"],"polyfills-dom":["/polyfills-dom-3a0d4509b26cd0a38ea3.js"],"polyfills-core-js":["/polyfills-core-js-5511b8240ed3233e7a82.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-23eec9cfe17b8bd08279.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-dbe152a5c0495476ad15.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-7e2285aceffb4e65b1f6.js" async=""></script></body></html>
+        </deckgo-highlight-code><hr/><h1>WORD</h1><p><img src="https://i.kym-cdn.com/entries/icons/original/000/035/692/cover1.jpg" alt="Meow"/></p><ul><li>Give yourself a pat on the back you are done. (FOR NOW!)</li><li>We will parse a few layers in the next one.</li><li>I followed <a href="https://github.com/ferruhy/dpdk-simple-app">ferruhy/dpdk-simple-app</a> and it was of a great help to me. <ul><li>Please do check his repo out.</li><li>Infact this whole thing was inspired by this simple learning repo of his.</li></ul></li><li>You can look at the code <a href="https://github.com/IbrahimShahzad/dpdk-learning"><font color="blue">here</font></a></li><li>Checkout the <a href="https://www.dpdk.org/"><font color="blue">DPDK documentation</font></a> as well.</li></ul></div><div class="comments mt-8"><div id="disqus_thread" url="https://IbrahimShahzad.github.io[object Object]" title="DPDK 02" identifier="DPDK 02" counter="0"></div></div></div><footer class="footer bg-bgalt py-12"><div class="container mx-auto text-center"><div class="flex justify-center my-3 mb-6"><a title="Ibrahim" href="/"><img src="/images/log.jpg" alt="Ibrahim - logo" class="w-12"/></a></div><div class="text-color-2 my-3 footer-links animated-link-parent"><ul class="flex items-center justify-center flex-wrap"><li class=" "><a title="HOME" class="text-color-2 focus:text-primary" href="/"><span>HOME</span></a></li><li class=" "><a title="ABOUT" class="text-color-2 focus:text-primary" href="/about"><span>ABOUT</span></a></li><li class=" "><a title="BLOG" class="text-color-2 focus:text-primary" href="/blog"><span>BLOG</span></a></li><li class=" "><a title="PORTFOLIO" class="text-color-2 focus:text-primary" href="/portfolio"><span>PORTFOLIO</span></a></li><li class=" "><a title="CONTACT" class="text-color-2 focus:text-primary" href="/contact"><span>CONTACT</span></a></li></ul></div><div class="text-color-2 my-3"><ul><li class="inline-block mx-3 animated-link-parent"><a href="https://github.com/IbrahimShahzad" title="GitHub"><span>GitHub</span></a></li></ul></div><p class="text-color-default text-lg">Copyright © <!-- -->Ibrahim<!-- --> <!-- -->2021</p></div></footer></div><div class="fixed bottom-0 left-0 w-full bg-bgalt border-t-2 border-primary p-4 flex flex-wrap items-center justify-between z-50"><div class="flex"><p class="text-color-default mr-2">This website uses cookies to ensure you get the best experience on our website.</p></div><button class="px-3 py-1 rounded bg-bgalt border-2 border-secondary text-color-default hover:border-primary duration-200 transition-all">Accept</button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/blog/dpdk_02/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3fa65be0978966b2def8.js"],"app":["/app-dbe152a5c0495476ad15.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f32cc2f18aaedc8454f3.js"],"component---src-pages-contact-tsx":["/component---src-pages-contact-tsx-3c9348423271b4c58b98.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-f510dc490652be024d5f.js"],"component---src-templates-basepages-tsx":["/component---src-templates-basepages-tsx-1b998e9dd5bc29fe8047.js"],"component---src-templates-blog-list-tsx":["/component---src-templates-blog-list-tsx-4378b310ffb4141386a1.js"],"component---src-templates-blog-tsx":["/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js"],"component---src-templates-portfolio-list-tsx":["/component---src-templates-portfolio-list-tsx-e2c2dca9290eaad0b5b1.js"],"component---src-templates-portfolio-tsx":["/component---src-templates-portfolio-tsx-5ebd7482729a64fca408.js"],"polyfills-dom":["/polyfills-dom-3a0d4509b26cd0a38ea3.js"],"polyfills-core-js":["/polyfills-core-js-5511b8240ed3233e7a82.js"]};/*]]>*/</script><script src="/polyfill-3fa65be0978966b2def8.js" nomodule=""></script><script src="/component---src-templates-blog-tsx-8bb43832a8758ee17a4f.js" async=""></script><script src="/1f99eab78645a8e15926b4cbcdf6cc32cf455c03-2350ed2d501501cbf7b8.js" async=""></script><script src="/commons-23eec9cfe17b8bd08279.js" async=""></script><script src="/styles-e9d24b1846c7d6eb9685.js" async=""></script><script src="/app-dbe152a5c0495476ad15.js" async=""></script><script src="/framework-acd7498685eeb36e39da.js" async=""></script><script src="/webpack-runtime-7e2285aceffb4e65b1f6.js" async=""></script></body></html>
