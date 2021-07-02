@@ -40,13 +40,48 @@ mkdir my_app
 cd my_app</code>
         </deckgo-highlight-code><h2>MAKE File</h2><ul><li>lets create a simple Makefile</li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">vim Makefile</code>
-        </deckgo-highlight-code><ul><li>we are going to name our app <code>my_app</code> and use <code>main.c</code> as the source c file </li></ul><deckgo-highlight-code language="bash" terminal="carbon" theme="vscode" line-numbers="true">
-          <code slot="code">include $(RTE_SDK)/mk/rte.vars.mk
+        </deckgo-highlight-code><ul><li>we are going to name our app <code>my_app</code> and use <code>main.c</code> as the source c file </li></ul><deckgo-highlight-code language="makefile" terminal="carbon" theme="vscode" line-numbers="true">
+          <code slot="code"># binary name
+APP = my_app
 
-APP := my_app
+# all source are stored in SRCS-y
 SRCS-y := main.c
 
-include $(RTE_SDK)/mk/rte.extapp.mk  </code>
+# Build using pkg-config variables if possible
+ifneq ($(shell pkg-config --exists libdpdk &amp;&amp; echo 0),0)
+$(error &quot;no installation of DPDK found&quot;)
+endif
+
+all: shared
+.PHONY: shared static
+shared: build/$(APP)-shared
+        ln -sf $(APP)-shared build/$(APP)
+static: build/$(APP)-static
+        ln -sf $(APP)-static build/$(APP)
+
+PKGCONF ?= pkg-config
+
+PC_FILE := $(shell $(PKGCONF) --path libdpdk 2&gt;/dev/null)
+CFLAGS += -O3 $(shell $(PKGCONF) --cflags libdpdk)
+LDFLAGS_SHARED = $(shell $(PKGCONF) --libs libdpdk)
+LDFLAGS_STATIC = $(shell $(PKGCONF) --static --libs libdpdk)
+
+CFLAGS += -DALLOW_EXPERIMENTAL_API
+
+build/$(APP)-shared: $(SRCS-y) Makefile $(PC_FILE) | build
+        $(CC) $(CFLAGS) $(SRCS-y) -o $@ $(LDFLAGS) $(LDFLAGS_SHARED)
+
+build/$(APP)-static: $(SRCS-y) Makefile $(PC_FILE) | build
+        $(CC) $(CFLAGS) $(SRCS-y) -o $@ $(LDFLAGS) $(LDFLAGS_STATIC)
+
+build:
+        @mkdir -p $@
+
+.PHONY: clean
+clean:
+        rm -f build/$(APP) build/$(APP)-static build/$(APP)-shared
+        test -d build &amp;&amp; rmdir -p build || true
+</code>
         </deckgo-highlight-code><h2>Main.c</h2><ul><li>Now lets move on to the main program</li></ul><deckgo-highlight-code language="c" terminal="carbon" theme="vscode" line-numbers="true">
           <code slot="code">#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
