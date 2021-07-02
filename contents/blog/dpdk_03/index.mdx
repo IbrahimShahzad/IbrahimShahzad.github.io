@@ -312,6 +312,9 @@ if (is_valid_ipv4_pkt(pIP4Hdr,bufs[i]->pkt_len)>=0){
 - The protocols of this layer provide host-to-host communication services for applications.
   - Different applications use either `TCP` or `UDP` to establish a connection.
   - The ports used by the application are contained within the header as the `source port` and `destination port`
+
+### The Code
+
 - The next layer can be checked by `next_proto_id` within the `rte_ipv4_hdr` struct.
   - We are going to extract the source and destination ports incase of
     - TCP notified by `IPPROTO_TCP` i.e. `6`
