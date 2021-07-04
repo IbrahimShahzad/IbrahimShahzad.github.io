@@ -10,62 +10,47 @@ const plugins = [
     `gatsby-plugin-typescript`,
     `gatsby-plugin-codegen`,
     {
-        resolve: `gatsby-plugin-feed-mdx`,
+        resolve: "gatsby-plugin-feed",
         options: {
             query: `
-        {
-          site {
-            siteMetadata {
-              title
-              description
-              siteUrl
-              site_url: siteUrl
-            }
-          }
-        }
-      `,
-            feeds: [
-                {
-                    serialize: ({ query: { site, allMdx } }) => {
-                        return allMdx.edges.map(edge => {
-                            return Object.assign({}, edge.node.frontmatter, {
-                                description: edge.node.frontmatter.description,
-                                date: edge.node.frontmatter.date,
-                                url:
-                                    site.siteMetadata.siteUrl +
-                                    edge.node.fields.slug,
-                                guid:
-                                    site.siteMetadata.siteUrl +
-                                    edge.node.fields.slug,
-                            })
-                        })
-                    },
-                    query: `
-            {
-              allMdx(
-                sort: { order: DESC, fields: [frontmatter___date] },
-              ) {
-                edges {
-                  node {
-                    fields { slug }
-                    frontmatter {
-                      title
-                      description
-                      date
-                    }
+              {
+                site {
+                  siteMetadata {
+                    title
+                    description
+                    siteUrl
+                     site_url: siteUrl
                   }
                 }
               }
-            }
-          `,
-                    output: "/rss.xml",
-                    title: "Ibrahim's Blog",
-                    // optional configuration to insert feed reference in pages:
-                    // if `string` is used, it will be used to create RegExp and then test if pathname of
-                    // current page satisfied this regular expression;
-                    // if not provided or `undefined`, all pages will have feed reference inserted
-                    match: "^/blog",
-                    link: "https://ibrahimshahzad.github.io/blog",
+            `,
+            feeds: [
+                {
+                    title: "My Personal Blog RSS Feed",
+                    output: "rss.xml",
+                    query: `
+                      {
+                        allMarkdownRemark(sort: {fields: frontmatter___date, order: ASC}) {
+                          nodes {
+                            frontmatter {
+                              title
+                              date
+                              description
+                            }
+                            html
+                            slug: gatsbyPath(filePath: "/{MarkdownRemark.frontmatter__title}")
+                          }
+                        }
+                      }
+                    `,
+                    serialize: ({ query: { site, allMarkdownRemark } }) => {
+                        return allMarkdownRemark.nodes.map(node => {
+                            return Object.assign({}, node.frontmatter, {
+                                url: `${site.siteMetadata.siteUrl}${node.slug}`,
+                                guid: `${site.siteMetadata.siteUrl}${node.slug}`,
+                            })
+                        })
+                    },
                 },
             ],
         },

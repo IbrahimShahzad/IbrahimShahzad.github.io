@@ -65,7 +65,6 @@ const plugins = [
                     // current page satisfied this regular expression;
                     // if not provided or `undefined`, all pages will have feed reference inserted
                     match: "^/blog",
-                    link: "https://ibrahimshahzad.github.io/blog",
                 },
             ],
         },

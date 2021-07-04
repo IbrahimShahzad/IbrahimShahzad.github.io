@@ -29,13 +29,15 @@ const plugins = [
                     serialize: ({ query: { site, allMdx } }) => {
                         return allMdx.edges.map(edge => {
                             return Object.assign({}, edge.node.frontmatter, {
-                                description: edge.node.frontmatter.description,
+                                description: edge.node.frontmatter.summary,
                                 date: edge.node.frontmatter.date,
                                 url:
                                     site.siteMetadata.siteUrl +
+                                    "/" +
                                     edge.node.fields.slug,
                                 guid:
                                     site.siteMetadata.siteUrl +
+                                    "/" +
                                     edge.node.fields.slug,
                             })
                         })
@@ -59,13 +61,12 @@ const plugins = [
             }
           `,
                     output: "/rss.xml",
-                    title: "Ibrahim's Blog",
+                    title: "Blogging for Devs",
                     // optional configuration to insert feed reference in pages:
                     // if `string` is used, it will be used to create RegExp and then test if pathname of
                     // current page satisfied this regular expression;
                     // if not provided or `undefined`, all pages will have feed reference inserted
-                    match: "^/blog",
-                    link: "https://ibrahimshahzad.github.io/blog",
+                    match: "^/blog/",
                 },
             ],
         },
