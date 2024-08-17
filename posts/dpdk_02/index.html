@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+    
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+<script defer language="javascript" type="text/javascript" src="/js/bundle.min.38ccdf5c998a71d2ad889faefccbe9132577d265b25e73d94a1be540ebcaaa18.js"></script>
+
+
+
+
+
+
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="icon" href=/favicon.png>
+
+    
+    
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+
+
+<!-- Open Graph image and Twitter Card metadata -->
+
+  
+<title itemprop="name">Ibrahim Shahzad - DPDK 02</title>
+<meta property="og:title" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;02 />
+<meta name="twitter:title" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;02 />
+<meta itemprop="name" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;02 />
+<meta name="application-name" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;02 />
+<meta property="og:site_name" content="Ibrahim Shahzad - Personal Blog" />
+
+
+<meta name="description" content="Writing the application" />
+<meta itemprop="description" content="Writing the application" />
+<meta property="og:description" content="Writing the application" />
+<meta name="twitter:description" content="Writing the application" />
+
+
+<base href="https://ibrahimshahzad.github.io/posts/dpdk_02/" />
+<link rel="canonical" href="https://ibrahimshahzad.github.io/posts/dpdk_02/" itemprop="url" />
+<meta name="url" content="https://ibrahimshahzad.github.io/posts/dpdk_02/" />
+<meta name="twitter:url" content="https://ibrahimshahzad.github.io/posts/dpdk_02/" />
+<meta property="og:url" content="https://ibrahimshahzad.github.io/posts/dpdk_02/" />
+
+
+<meta property="og:updated_time" content="2021-06-23T00:00:00Z" />
+
+
+<link rel="sitemap" type="application/xml" title="Sitemap" href='https://ibrahimshahzad.github.io/sitemap.xml' />
+
+<meta name="robots" content="index,follow" />
+<meta name="googlebot" content="index,follow" />
+
+
+
+<meta property="fb:admins" content="" />
+
+
+<meta name="apple-mobile-web-app-title" content="Ibrahim Shahzad - Personal Blog" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.92.2" />
+
+
+    
+    
+
+<link type="text/css" rel="stylesheet" href="/css/bundle.min.94a339836f89f0d25f31980cb6b0631da21e20af128308747ce44e0525eb16ef.css">
+
+
+    
+    <style>
+    body {
+        --sidebar-bg-color: #202020;
+        --sidebar-img-border-color: #515151;
+        --sidebar-p-color: #909090;
+        --sidebar-h1-color: #FFF;
+        --sidebar-a-color: #FFF;
+        --sidebar-socials-color: #FFF;
+        --text-color: #222;
+        --bkg-color: #FAF9F6;
+        --post-title-color: #303030;
+        --list-color: #5A5A5A;
+        --link-color: #268BD2;
+        --date-color: #515151;
+        --table-border-color: #E5E5E5;
+        --table-stripe-color: #F9F9F9;
+        --code-color: #000;
+        --code-background-color: #E5E5E5;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+        --moon-sun-color: #FFF;
+        --moon-sun-background-color: #515151;
+    }
+    body.dark-theme {
+        --text-color: #EEE;
+        --bkg-color: #121212;
+        --post-title-color: #DBE2E9;
+        --list-color: #9D9D9D;
+        --link-color: #268BD2;
+        --date-color: #9A9A9A;
+        --table-border-color: #515151;
+        --table-stripe-color: #202020;
+        --code-color: #FFF;
+        --code-background-color: #515151;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+    }
+    body {
+        background-color: var(--bkg-color);
+    }
+</style>
+
+</head>
+
+    <body class="dark-theme">
+        <div class="wrapper">
+            <aside class="sidebar">
+    <div class="container sidebar-sticky">
+        <div class="light-dark" align="right">
+    <button class="btn-light-dark" title="Toggle light/dark mode">
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M6 .278a.768.768 0 0 1 .08.858a7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277c.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316a.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71C0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        </svg>
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+        </svg>
+    </button>
+</div>
+
+        <div class="sidebar-about">
+    <h1 class="brand">
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <img src="/images/profile.png" alt="brand image">
+            </a>
+        
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <h1>Ibrahim Shahzad</h1>
+            </a>
+        
+    </h1>
+    <p class="lead">
+    This is where i write sometimes...
+    </p>
+</div>
+
+        <nav>
+    <ul class="sidebar-nav">
+
+        
+        
+        
+        
+            
+
+            
+                
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+        
+            
+
+            
+                
+                
+                    <li class="heading">
+                        <a href="/posts/">Posts</a>
+                    </li>
+                    
+                        <li class="sub-heading">
+                            Recent
+                        </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_03/">DPDK 03</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_02/">DPDK 02</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_01/">DPDK 01</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/">Set up your vim</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/welcome_arthur/">Welcome Arthur!</a>
+                            </li>
+                        
+                    
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+
+    </ul>
+</nav>
+
+        
+    <a target="_blank" class="social" title="GitHub" href="https://github.com/IbrahimShahzad">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24">
+            <path fill="currentColor" d="M18.88 1.099C18.147.366 17.265 0 16.233 0H3.746C2.714 0 1.832.366 1.099 1.099C.366 1.832 0 2.714 0 3.746v12.487c0 1.032.366 1.914 1.099 2.647c.733.733 1.615 1.099 2.647 1.099H6.66c.19 0 .333-.007.429-.02a.504.504 0 0 0 .286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555 0 0 1-.904-.091a2.026 2.026 0 0 1-.872-.39a1.651 1.651 0 0 1-.572-.8l-.13-.3a3.25 3.25 0 0 0-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956 0 0 1-.17-.156a.723.723 0 0 1-.117-.182c-.026-.061-.004-.111.065-.15c.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1 0 0 1 .631.677c.2.355.44.626.722.813c.282.186.566.28.852.28c.286 0 .533-.022.742-.065a2.59 2.59 0 0 0 .585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907 0 0 1-1.333-.234a5.314 5.314 0 0 1-1.223-.507a3.5 3.5 0 0 1-1.047-.872c-.277-.347-.505-.802-.683-1.365c-.177-.564-.266-1.215-.266-1.952c0-1.049.342-1.942 1.027-2.68c-.32-.788-.29-1.673.091-2.652c.252-.079.625-.02 1.119.175c.494.195.856.362 1.086.5c.23.14.414.257.553.352a9.233 9.233 0 0 1 2.497-.338c.859 0 1.691.113 2.498.338l.494-.312a6.997 6.997 0 0 1 1.197-.572c.46-.174.81-.221 1.054-.143c.39.98.424 1.864.103 2.653c.685.737 1.028 1.63 1.028 2.68c0 .737-.089 1.39-.267 1.957c-.177.568-.407 1.023-.689 1.366a3.65 3.65 0 0 1-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9 0 0 1-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36 0 0 0 .208.189c.096.034.18.056.254.064c.074.01.18.013.318.013h2.914c1.032 0 1.914-.366 2.647-1.099c.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/>
+        </svg>
+    </a>
+
+
+
+    <a target="_blank" class="social" title="LinkedIn" href="https://linkedin.com/in/ibrahim-shahzad-71305773/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512">
+            <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5c0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7c-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5c67.2 0 79.7 44.3 79.7 101.9V416z"/>
+        </svg>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a target="_blank" class="social" title="RSS Feed" href="/posts/index.xml">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280.000000 1280.000000">
+            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentColor">
+                <path d="M2295 11929 c-284 -12 -642 -45 -707 -65 -17 -5 -18 -63 -18 -1039 0 -569 4 -1036 8 -1039 5 -3 74 6 153 19 510 86 1168 95 1789 25 1348 -153 2602 -677 3670 -1531 385 -308 820 -744 1126 -1129 842 -1060 1362 -2313 1514 -3650 70 -621 61 -1279 -25 -1789 -13 -79 -22 -148 -19 -153 3 -4 471 -8 1039 -8 l1035 0 5 23 c51 225 85 942 67 1419 -23 605 -77 1044 -198 1617 -294 1400 -927 2734 -1823 3846 -1043 1295 -2364 2259 -3909 2854 -1158 447 -2451 656 -3707 600z"/>
+                <path d="M2255 7845 c-269 -25 -620 -81 -667 -106 -17 -9 -18 -55 -18 -899 0 -706 3 -890 13 -890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207 -107 2267 -823 2814 -1902 166 -327 268 -637 330 -1001 38 -227 48 -384 42 -662 -8 -348 -44 -590 -126 -831 -23 -66 -41 -126 -41 -132 0 -10 184 -13 890 -13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782 -59 703 -233 1323 -545 1945 -481 956 -1313 1788 -2270 2268 -620 310 -1239 483 -1940 542 -165 14 -669 10 -840 -5z"/>
+                <path d="M2519 3815 c-391 -66 -725 -336 -868 -703 -79 -201 -96 -462 -45 -677 83 -344 338 -641 666 -774 116 -47 205 -69 330 -80 412 -39 811 153 1040 500 193 292 240 648 128 981 -135 403 -492 699 -914 757 -100 14 -241 12 -337 -4z"/>
+            </g>
+        </svg>
+    </a>
+
+
+
+
+
+        <p class="footnote">
+powered by <a target="_blank" href="https://gohugo.io">Hugo</a> | themed with <a target="_blank" href="https://github.com/lukeorth/poison">poison</a>
+    <br>
+    &copy; 2024 Ibrahim Shahzad - Personal Blog. All rights reserved.
+</p>
+
+  </div>
+</aside>
+
+            <main class="content container">
+                <div class="post">
+  <div class="info">
+  <h1 class="post-title">
+    <a href="https://ibrahimshahzad.github.io/posts/dpdk_02/">DPDK 02</a>
+  </h1>
+
+  <div class="headline">
+    <div>
+      
+      
+      <time datetime=" 2021-06-23T00:00:00Z" class="post-date">
+        June 23, 2021
+      </time>
+      
+      <span> - </span>
+      <span class="reading-time">
+        
+          
+        
+
+        <span>12 mins read</span>
+      </span>
+    </div>
+
+    
+  </div>
+
+  
+  
+
+  
+</div>
+
+  <h1 id="introduction">Introduction</h1>
+<p>In this section we will write a smiple C application to recieve packets.</p>
+<p>Let&rsquo;s dive in!</p>
+<h1 id="prereqs">PreReqs</h1>
+<p>Make sure that</p>
+<ul>
+<li>
+<p>DPDK is built</p>
+</li>
+<li>
+<p>A DPDK compatible NIC is binded to the <code>igb_uio</code> driver</p>
+</li>
+<li>
+<p>Hugepages are setup</p>
+</li>
+<li>
+<p>Minimum system requirements are met</p>
+</li>
+</ul>
+<p>Please see <a href="https://ibrahimshahzad.github.io/blog/Writing_your_first_dpdk_app/" target="_blank"><!-- raw HTML omitted -->DPDK-01<!-- raw HTML omitted --></a> if any of the aforementioned pre-reqs are not set.</p>
+<h1 id="file-setup">File Setup</h1>
+<blockquote>
+<p>From here on out we will refer to our dpdk installation directory as <code>RTE_SDK</code>.</p>
+</blockquote>
+<ul>
+<li>Go into the your dpdk installation directory and run the following command</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export RTE_SDK<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>
+</code></pre></div><ul>
+<li>The directory should contain following folders</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">app/
+build/
+buildtools/
+.ci/
+config/
+devtools/
+doc/
+drivers/
+.editorconfig
+examples/
+.gitattributes
+.gitignore
+kernel/
+lib/
+license/
+MAINTAINERS
+Makefile
+meson.build
+meson_options.txt
+README
+.travis.yml
+usertools/
+VERSION
+</code></pre></div><ul>
+<li>
+<p>For our purposes, we are concerned with the <code>examples</code> directory and the <code>usertools</code> directory.</p>
+</li>
+<li>
+<p>The <code>examples</code> directory contains the example codes and we will also create our application here</p>
+</li>
+<li>
+<p>The <code>usertools</code> directory contains user-help scripts such as</p>
+<ul>
+<li><code>cpu_layout.py</code>; prints out the Architecture,</li>
+<li><code>dpdk-devbind.py</code>; for binding/unbinding PCI devices,</li>
+<li><code>dpdk-hugepages.py</code>; for setting up hugepages</li>
+</ul>
+</li>
+<li>
+<p>some of these we used at the time of setup.</p>
+</li>
+<li>
+<p>Now, go to the examples folder and create a folder for our app</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd $RTE_SDK/examples
+mkdir my_app
+cd my_app
+</code></pre></div><h2 id="make-file">MAKE File</h2>
+<ul>
+<li>lets create a simple Makefile</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vim Makefile
+</code></pre></div><ul>
+<li>we are going to name our app <code>my_app</code> and use <code>main.c</code> as the source c file</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#75715e"># binary name
+</span><span style="color:#75715e"></span>APP <span style="color:#f92672">=</span> my_app
+
+<span style="color:#75715e"># all source are stored in SRCS-y
+</span><span style="color:#75715e"></span>SRCS-y <span style="color:#f92672">:=</span> main.c
+
+<span style="color:#75715e"># Build using pkg-config variables if possible
+</span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">ifneq</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#66d9ef">$(</span>shell pkg-config --exists libdpdk &amp;&amp; echo 0<span style="color:#66d9ef">)</span><span style="color:#960050;background-color:#1e0010">,0)</span>
+<span style="color:#66d9ef">$(</span>error &#34;no installation of DPDK found&#34;<span style="color:#66d9ef">)</span>
+<span style="color:#960050;background-color:#1e0010">endif</span>
+
+<span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> shared
+<span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> shared static
+<span style="color:#a6e22e">shared</span><span style="color:#f92672">:</span> build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>-shared
+        ln -sf <span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>-shared build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>
+<span style="color:#a6e22e">static</span><span style="color:#f92672">:</span> build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>-static
+        ln -sf <span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>-static build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>
+
+PKGCONF <span style="color:#f92672">?=</span> pkg-config
+
+PC_FILE <span style="color:#f92672">:=</span> <span style="color:#66d9ef">$(</span>shell <span style="color:#66d9ef">$(</span>PKGCONF<span style="color:#66d9ef">)</span> --path libdpdk 2&gt;/dev/null<span style="color:#66d9ef">)</span>
+CFLAGS <span style="color:#f92672">+=</span> -O3 <span style="color:#66d9ef">$(</span>shell <span style="color:#66d9ef">$(</span>PKGCONF<span style="color:#66d9ef">)</span> --cflags libdpdk<span style="color:#66d9ef">)</span>
+LDFLAGS_SHARED <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>shell <span style="color:#66d9ef">$(</span>PKGCONF<span style="color:#66d9ef">)</span> --libs libdpdk<span style="color:#66d9ef">)</span>
+LDFLAGS_STATIC <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>shell <span style="color:#66d9ef">$(</span>PKGCONF<span style="color:#66d9ef">)</span> --static --libs libdpdk<span style="color:#66d9ef">)</span>
+
+CFLAGS <span style="color:#f92672">+=</span> -DALLOW_EXPERIMENTAL_API
+
+<span style="color:#a6e22e">build/$(APP)-shared</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">$(</span>SRCS-y<span style="color:#66d9ef">)</span> Makefile <span style="color:#66d9ef">$(</span>PC_FILE<span style="color:#66d9ef">)</span> | build
+        <span style="color:#66d9ef">$(</span>CC<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>CFLAGS<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>SRCS-y<span style="color:#66d9ef">)</span> -o $@ <span style="color:#66d9ef">$(</span>LDFLAGS<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>LDFLAGS_SHARED<span style="color:#66d9ef">)</span>
+
+<span style="color:#a6e22e">build/$(APP)-static</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">$(</span>SRCS-y<span style="color:#66d9ef">)</span> Makefile <span style="color:#66d9ef">$(</span>PC_FILE<span style="color:#66d9ef">)</span> | build
+        <span style="color:#66d9ef">$(</span>CC<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>CFLAGS<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>SRCS-y<span style="color:#66d9ef">)</span> -o $@ <span style="color:#66d9ef">$(</span>LDFLAGS<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>LDFLAGS_STATIC<span style="color:#66d9ef">)</span>
+
+<span style="color:#a6e22e">build</span><span style="color:#f92672">:</span>
+        @mkdir -p $@
+
+<span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> clean
+<span style="color:#a6e22e">clean</span><span style="color:#f92672">:</span>
+        rm -f build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span> build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>-static build/<span style="color:#66d9ef">$(</span>APP<span style="color:#66d9ef">)</span>-shared
+        test -d build <span style="color:#f92672">&amp;&amp;</span> rmdir -p build <span style="color:#f92672">||</span> true
+
+</code></pre></div><h2 id="mainc">Main.c</h2>
+<ul>
+<li>Now lets move on to the main program</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;rte_eal.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;rte_common.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> argv[]){
+  printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+
+  
+
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><h3 id="eal-environment-abstraction-layer">EAL: &ldquo;Environment Abstraction Layer&rdquo;</h3>
+<ul>
+<li>The first thing that is required is initialising up the <code>EAL</code>. We use <code>rte_eal_init()</code> function.
+<ul>
+<li>It gets parameters from cli adn sets up a some of the following:
+<ul>
+<li>cpu_init: fill cpu_info structure</li>
+<li>log_init</li>
+<li>config_init: create memory configuration in shared memory</li>
+<li>pci_init: scan pci bus</li>
+<li>memory_init (hugepages)</li>
+<li>memzone_init: initialize memzone subsystem</li>
+<li>lcore_init: Create a thread per lcore</li>
+<li>pci_probe: probel all physical devices</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>lets start by including <code>rte_eal.h</code>
+<ul>
+<li>contains the EAL configuration functions</li>
+<li>Contains the defitnion for <code>rte_eal_init()</code>
+<ul>
+<li>The <code>rte_eal_init</code> returns <code>-ive</code> in case of an error.</li>
+</ul>
+</li>
+<li>See more <a href="https://doc.dpdk.org/api/rte__eal_8h.html#a5c3f4dddc25e38c5a186ecd8a69260e3" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a>.</li>
+</ul>
+</li>
+<li>we will also include <code>rte_common.h</code>
+<ul>
+<li>It contains generic, commonly-used macro and inline function definitions for DPDK.</li>
+<li>It contains the defitnion for <code>rte_exit()</code>
+<ul>
+<li>we would need to exit in case of an error.</li>
+</ul>
+</li>
+<li>See more <a href="https://doc.dpdk.org/api/rte__common_8h.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;rte_eal.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;rte_common.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> argv[]){
+        
+  printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">int</span> ret;
+
+  <span style="color:#75715e">/* The EAL arguments are passed when calling the program */</span>   
+  ret <span style="color:#f92672">=</span> rte_eal_init(argc,argv);
+  <span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>)
+    rte_exit(EXIT_FAILURE,<span style="color:#e6db74">&#34;EAL Init failed</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+
+  argc <span style="color:#f92672">-=</span> ret;
+  argv <span style="color:#f92672">+=</span> ret;
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+</code></pre></div><h3 id="get-port-count">Get Port Count</h3>
+<ul>
+<li>We are going to be receiving on one port and transmitting on the other.
+For that we need even number of ports.</li>
+<li>lets first include <code>rte_ethdev.h</code> in our program.
+<ul>
+<li>includes functions to setup/configure an Ethernet device.</li>
+<li>Ethernet devices are represented by a generic data structure of type <code>rte_eth_dev</code>.</li>
+<li>contains the definition of <code>rte_eth_dev_count_avail()</code>
+<ul>
+<li>returns the total number of dpdk binded devices.</li>
+</ul>
+</li>
+<li>see more <a href="https://doc.dpdk.org/api-17.08/rte__ethdev_8h.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li>lets do that nex within our main function</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  nb_ports <span style="color:#f92672">=</span> rte_eth_dev_count_avail();
+  <span style="color:#66d9ef">if</span>(nb_ports <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">||</span> (nb_ports <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>))
+    rte_exit(EXIT_FAILURE,<span style="color:#e6db74">&#34;Invalid port number</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</code></pre></div><h3 id="logs">Logs</h3>
+<ul>
+<li>We are going to include <code>rte_log</code> for logging.
+<ul>
+<li>contains log API to RTE applications.</li>
+<li>contains the <code>RTE_LOG()</code> function we are going to use for logging.</li>
+</ul>
+</li>
+<li>define the User type logs as follows:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1  
+</span></code></pre></div><ul>
+<li>now update the code as follows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">/*...*/</span>
+nb_ports <span style="color:#f92672">=</span> rte_eth_dev_count_avail();
+<span style="color:#66d9ef">if</span>(nb_ports <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">||</span> (nb_ports <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>))
+  rte_exit(EXIT_FAILURE,<span style="color:#e6db74">&#34;Invalid port number</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+RTE_LOG(INFO, APP, <span style="color:#e6db74">&#34;Number of ports:%u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,nb_ports);
+<span style="color:#75715e">/*...*/</span>
+</code></pre></div><h3 id="mbuf-pool-creation">MBUF Pool Creation</h3>
+<p>We need to reserve some memory for holding the packets in our application. In this section we are going to do just that</p>
+<ul>
+<li>We are going to include <code>rte_mbuf.h</code> for memory management.
+<ul>
+<li>The mbuf library provides the ability to create and destroy buffers that may be used by the RTE application to store message buffers.</li>
+<li>we are going to use <code>rte_pktmbuf_pool_create</code> to create set up a buffer to hold packets.</li>
+<li>it uses <code>mempool</code> library.</li>
+<li>Read DPDK Docs regarding <code>mbuf</code> <a href="https://doc.dpdk.org/guides/prog_guide/mbuf_lib.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li><a href="https://www.dpdk.org/blog/2019/08/21/memory-in-dpdk-part-1-general-concepts/" target="_blank"><!-- raw HTML omitted -->A good read about general concepts here<!-- raw HTML omitted --></a></li>
+<li>First We are going to define <code>NUM_MBUFS</code> and <code>MBUF_CACHE_SIZE</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;rte_mbuf.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#define NB_MBUFS 8191
+</span><span style="color:#75715e">#define MBUF_CACHE_SIZE 250
+</span><span style="color:#75715e">#define RX_RING_SIZE 128
+</span><span style="color:#75715e">#define TX_RING_SIZE 512
+</span></code></pre></div><ul>
+<li>Now we are going to call <code>rte_pktmbuf_pool_create</code> in the <code>main</code> function.
+<ul>
+<li>This function creates and initializes a packet mbuf pool.</li>
+<li>This function uses <code>rte_memzone_reserve()</code> to allocate memory.
+<ul>
+<li>It reserves a portion of physical memory from hugepages</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Required params are as follows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">|---------------|-------------------------------------------------------|
+| param         |                     Description                       |
+|---------------|-------------------------------------------------------|
+| name          | The name of the mbuf pool. we are setting it as       |
+|               | <span style="color:#e6db74">&#34;MBUF_POOL&#34;</span>                                           |
+| n             | The number of elements in the mbuf pool. We are       |
+|               | setting it as NB_MBUF * number of ports. The optimum  |
+|               | size <span style="color:#f92672">(</span>in terms of memory usage<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> a mempool is when |           
+|               |  n is a power of two minus one: n <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>2^q - 1<span style="color:#f92672">)</span>.        |
+| cache_size    | Size of the per-core object cache.                    | 
+|               | Set to MBUF_CACHE_SIZE                                |
+| priv_size     | Size of application private are between the rte_mbuf  |
+|               | structure and the data buffer. Set to 0.              |
+| data_room_size| Size of data buffer in each mbuf,                     |
+|               | including RTE_PKTMBUF_HEADROOM.                       |
+| socket_id     | The socket identifier where the memory should be      |
+|               | allocated. The value can be SOCKET_ID_ANY             |
+|               | <span style="color:#66d9ef">if</span> there is no NUMA constraint <span style="color:#66d9ef">for</span> the reserved zone. |
+|---------------|-------------------------------------------------------|
+</code></pre></div><ul>
+<li>If the creation is unsuccessful we are going to exit the program.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">/* Create a new mbuf mempool */</span>
+mbuf_pool <span style="color:#f92672">=</span> rte_pktmbuf_pool_create(<span style="color:#e6db74">&#34;MBUF_POOL&#34;</span>,
+    NB_MBUFS <span style="color:#f92672">*</span>nb_ports,
+    MBUF_CACHE_SIZE, <span style="color:#ae81ff">0</span>, RTE_MBUF_DEFAULT_BUF_SIZE,
+    rte_socket_id());
+
+<span style="color:#66d9ef">if</span> (mbuf_pool <span style="color:#f92672">==</span> NULL)
+  rte_exit(EXIT_FAILURE,<span style="color:#e6db74">&#34;mbuff_pool create failed</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</code></pre></div><h3 id="ports-initialisation">Ports Initialisation</h3>
+<ul>
+<li>We will create a function <code> port_init</code> for initialising the ports.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">port_init(u_int8_t port,<span style="color:#66d9ef">struct</span> rte_mempool <span style="color:#f92672">*</span>mbuf_pool){
+
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><ul>
+<li>We will loop through all the ports and initialise them one by one.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> argv[]){
+  <span style="color:#75715e">/*...*/</span>
+  <span style="color:#75715e">/* Initialize all ports */</span>
+  <span style="color:#66d9ef">for</span> (portid <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; portid <span style="color:#f92672">&lt;</span> nb_ports; portid<span style="color:#f92672">++</span>){
+    <span style="color:#66d9ef">if</span>(port_init(portid,mbuf_pool) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>)
+      rte_exit(EXIT_FAILURE,<span style="color:#e6db74">&#34;port init failed</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  }
+  <span style="color:#75715e">/*...*/</span>
+}
+</code></pre></div><ul>
+<li>
+<p>Now lets update the <code>port_init</code> function</p>
+</li>
+<li>
+<p>First we set the <code>rte_eth_conf</code></p>
+<ul>
+<li>A structure used to configure an Ethernet port</li>
+<li>We can set up Receive mode and Transmit mode flags</li>
+<li>If you want to enable <code>RSS</code> (Receive Side Scaling) this would be the place to start.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">        <span style="color:#66d9ef">struct</span> rte_eth_conf port_conf <span style="color:#f92672">=</span> {
+          .rxmode <span style="color:#f92672">=</span> { .max_rx_pkt_len <span style="color:#f92672">=</span> RTE_ETHER_MAX_LEN 
+          }
+        };
+</code></pre></div><ul>
+<li>Now we define the rx/tx queues we are going to use per port i.e. 1 per port, lcore</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#66d9ef">const</span> u_int16_t nb_rx_queues <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">const</span> u_int16_t nb_tx_queues <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; 
+</code></pre></div><ul>
+<li>Next we use the main function <code>rte_eth_dev_configure()</code> function to set up the ports.
+<ul>
+<li>configures the Ethernet device.</li>
+<li>this function must be invoked first before any other function in the Ethernet API.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#75715e">/* configure the ethernet device */</span>
+  ret <span style="color:#f92672">=</span> rte_eth_dev_configure(port,
+      nb_rx_queues,
+      nb_tx_queues,
+      <span style="color:#f92672">&amp;</span>port_conf);
+</code></pre></div><ul>
+<li>Now we allocate one <code>RX queue</code> per port.</li>
+<li>We will use function <code>rte_eth_rx_queue_setup()</code>
+<ul>
+<li>The function allocates a contiguous block of memory for receive descriptors</li>
+<li>Read more <a href="https://doc.dpdk.org/api/rte__ethdev_8h.html#a36ba70a5a6fce2c2c1f774828ba78f8d" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li>We will set up 1 rx queue per port</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#66d9ef">for</span> (q<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;q<span style="color:#f92672">&lt;</span>nb_rx_queues;q<span style="color:#f92672">++</span>){
+    ret<span style="color:#f92672">=</span>rte_eth_rx_queue_setup(port,q,RX_RING_SIZE,
+        rte_eth_dev_socket_id(port),
+        NULL, mbuf_pool);
+    <span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>)
+      <span style="color:#66d9ef">return</span> ret;
+  }
+</code></pre></div><ul>
+<li>Now we allocate one <code>TX queue</code> per port.</li>
+<li>We will use function <code>rte_eth_tx_queue_setup()</code>
+<ul>
+<li>Allocate and set up a transmit queue for an Ethernet device.</li>
+<li>Read more <a href="https://doc.dpdk.org/api/rte__ethdev_8h.html#a796c2f20778984c6f41b271e36bae50e" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li>We will set up 1 tx queue per port</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#66d9ef">for</span> (q<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;q<span style="color:#f92672">&lt;</span>nb_tx_queues;q<span style="color:#f92672">++</span>){
+    ret<span style="color:#f92672">=</span>rte_eth_tx_queue_setup(port,q,TX_RING_SIZE,
+      rte_eth_dev_socket_id(port),
+      NULL);
+    <span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>)
+      <span style="color:#66d9ef">return</span> ret;
+  }
+</code></pre></div><ul>
+<li>All togethor now:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">port_init</span>(u_int8_t port,<span style="color:#66d9ef">struct</span> rte_mempool <span style="color:#f92672">*</span>mbuf_pool){
+
+  <span style="color:#66d9ef">struct</span> rte_eth_conf port_conf <span style="color:#f92672">=</span> {
+        .rxmode <span style="color:#f92672">=</span> { .max_rx_pkt_len <span style="color:#f92672">=</span> ETHER_MAX_LEN }
+        };
+  
+  <span style="color:#66d9ef">const</span> u_int16_t nb_rx_queues <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">const</span> u_int16_t nb_tx_queues <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">int</span> ret;
+
+  <span style="color:#75715e">/* configure the ethernet device */</span>
+  ret <span style="color:#f92672">=</span> rte_eth_dev_configure(port,
+                nb_rx_queues,
+                nb_tx_queues,
+                <span style="color:#f92672">&amp;</span>port_conf);
+  <span style="color:#66d9ef">if</span> (ret <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>)
+    <span style="color:#66d9ef">return</span> ret;
+  
+  <span style="color:#75715e">/* Allocate and setup 1 RX queue per Ethernet port */</span>
+  <span style="color:#66d9ef">for</span> (q<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;q<span style="color:#f92672">&lt;</span>nb_rx_queues;q<span style="color:#f92672">++</span>){
+    ret<span style="color:#f92672">=</span>rte_eth_queue_setup(port,q,RX_RING_SIZE,
+                        rte_eth_dev_socket_id(port),
+                        NULL, mbuf_pool);
+    <span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>)
+     <span style="color:#66d9ef">return</span> ret;
+  }
+
+  <span style="color:#75715e">/* Allocate and setup 1 RX queue per Ethernet port */</span>
+  <span style="color:#66d9ef">for</span> (q<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;q<span style="color:#f92672">&lt;</span>nb_tx_queues;q<span style="color:#f92672">++</span>){
+    ret<span style="color:#f92672">=</span>rte_eth_tx_queue_setup(port,q,TX_RING_SIZE,
+      rte_eth_dev_socket_id(port),
+      NULL);
+  
+    <span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>)
+      <span style="color:#66d9ef">return</span> ret;
+  }
+  
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+
+}
+</code></pre></div><ul>
+<li>Finally, we start the device using <code>rte_eth_dev_start()</code></li>
+<li>we will also enable promisuous mode <code>rte_eth_promiscuous_enable()</code>
+<ul>
+<li>in <code>promiscuous</code> mode every data packet transmitted can be received and read by a network adapter</li>
+</ul>
+</li>
+<li>Update the main function as follows</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">/* start the ethernet port */</span>
+ret <span style="color:#f92672">=</span> rte_eth_dev_start(port);
+
+<span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>){
+  <span style="color:#66d9ef">return</span> ret;
+}
+
+<span style="color:#75715e">/* Enable RX in promiscuous mode for the Ethernet device */</span>
+rte_eth_promiscuous_enable(port);
+
+</code></pre></div><h3 id="check-link-status">Check Link Status</h3>
+<ul>
+<li>We are going to create a new function to check the link status of the ports</li>
+<li>It is going to tell us which of the links are up and which are down.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">check_link_status</span>(u_int16_t nb_ports)
+{
+  <span style="color:#66d9ef">struct</span> rte_eth_link link;
+  u_int8_t port;
+  <span style="color:#66d9ef">for</span> (port<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;port<span style="color:#f92672">&lt;</span>nb_ports;port<span style="color:#f92672">++</span>){
+    rte_eth_link_get(port,<span style="color:#f92672">&amp;</span>link);
+    <span style="color:#66d9ef">if</span>(link.link_status <span style="color:#f92672">==</span> ETH_LINK_DOWN){
+      RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;Port: %u Link DOWN</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,port);
+      <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    }
+    RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;Port: %u Link UP Speed %u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+        port,link.link_speed);
+  }
+}
+
+</code></pre></div><ul>
+<li>Now we can call our function in the <code>main()</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">ret <span style="color:#f92672">=</span> check_link_status(nb_ports);
+  <span style="color:#66d9ef">if</span> ( ret <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> ){
+    RTE_LOG(WARNING,APP,<span style="color:#e6db74">&#34;Some ports are down</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  }
+</code></pre></div><h3 id="workers-init">Workers Init</h3>
+<ul>
+<li>We will create a worker function that will run all the cores</li>
+<li>This worker will be responsible for
+<ul>
+<li>receiving packets</li>
+<li>parsing packets</li>
+<li>transmitting packets</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">worker_main</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg){
+  <span style="color:#75715e">/* Run until app is killed or quit */</span>
+  <span style="color:#66d9ef">for</span>(;;){
+
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><ul>
+<li>In the main program we will launch the <code>woker_main()</code> function on all the lcores available</li>
+<li>We will use <code>rte_eal_mp_remote_launch()</code> for this
+<ul>
+<li>Launches a function on all lcores</li>
+<li>first argument is the function name (<code>worker_main</code>) that needs to be launched on all cores</li>
+<li>The next argrument takes in the arguments that need to be passed. Since we have nothing to pass we will set this as <code>NULL</code>.</li>
+<li>The third arguemnt specifies whether the function needs to run on all cores
+<ul>
+<li>including <code>MASTER</code>/<code>MAIN</code> core (<code>CALL_MAIN</code> flag)</li>
+<li>excluding <code>MASTER</code>/<code>MAIN</code> core (<code>SKIP_MAIN</code> flag)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Then we use <code>rte_eal_mp_wait_lcore</code> so that <code>MASTER</code> core waits for other worker cores.
+<ul>
+<li>This keeps the program from exiting.</li>
+<li>We can print stats on master core if needed.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  ret<span style="color:#f92672">=</span>check_link_status(nb_ports);
+  <span style="color:#66d9ef">if</span> (ret<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>){
+    RTE_LOG(WARNING,APP,<span style="color:#e6db74">&#34;Some ports are down</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  }
+  rte_eal_mp_remote_launch(worker_main,NULL,SKIP_MAIN);
+  rte_eal_mp_wait_lcore();
+</code></pre></div><h3 id="receivetransmit-packets">Receive/Transmit Packets</h3>
+<ul>
+<li>Lets define the <code>BURST_SIZE</code> first.
+=  This defines how many packets will the core pick up at a time.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#75715e">#define BURST_SIZE 32
+</span></code></pre></div><ul>
+<li>In the worker_main we will set up struct rte_mbuf array that will be of the size <code>BURST_SIZE</code>
+<ul>
+<li>This will be defined by <code>struct rte_mbuf *bufs[BURST_SIZE];</code></li>
+</ul>
+</li>
+<li>We will recieve packets using <code>rte_eth_rx_burst</code> function
+<ul>
+<li>It requires
+<ul>
+<li><code>port</code> number on which to receive</li>
+<li><code>queue</code> number on which to receive</li>
+<li><code>rte_mbuf</code> structure to hold the packets</li>
+<li>Number of packets to receive.</li>
+</ul>
+</li>
+<li>It will return the total number of packets received (<code>nb_rx</code>)</li>
+<li>We will transmit the recieved packets on the opposite port.
+<ul>
+<li>Receive on <code>1</code>, send on <code>0</code></li>
+<li>Receive on <code>0</code>, send on <code>1</code></li>
+</ul>
+</li>
+<li>For Transmitting we use the function <code>rte_eth_tx_burst</code>
+<ul>
+<li><code>port</code> number on which to transmit</li>
+<li><code>queue</code> number on which to transmit</li>
+<li><code>rte_mbuf</code> structure that holds the packets</li>
+<li>Number of packets to transmit</li>
+</ul>
+</li>
+<li>After that we will loop through packets again and free all the unsent packets
+<ul>
+<li>packets are freed using <code>rte_pktmbuf_free()</code> function</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">worker_main</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg){
+  <span style="color:#66d9ef">const</span> u_int8_t nb_ports <span style="color:#f92672">=</span> rte_eth_dev_count_avail();
+  u_int8_t port;
+  u_int8_t dest_port;
+
+  <span style="color:#75715e">/* Run until app is killed or quit */</span>
+  <span style="color:#66d9ef">for</span>(;;){
+    <span style="color:#75715e">/* Receive packets on port */</span>
+    <span style="color:#66d9ef">for</span>(port<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;port<span style="color:#f92672">&lt;</span> nb_ports;port<span style="color:#f92672">++</span>){
+      <span style="color:#66d9ef">struct</span> rte_mbuf <span style="color:#f92672">*</span>bufs[BURST_SIZE];
+      u_int16_t nb_rx;
+      u_int16_t buf;
+
+      <span style="color:#75715e">/* Get burst fo RX packets */</span>
+      nb_rx <span style="color:#f92672">=</span> rte_eth_rx_burst(port,<span style="color:#ae81ff">0</span>,
+          bufs,BURST_SIZE);
+      <span style="color:#66d9ef">if</span> (unlikely(nb_rx<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>))
+        <span style="color:#66d9ef">continue</span>;
+
+      <span style="color:#75715e">/* send burst of Tx packets to the 
+</span><span style="color:#75715e">       * second port
+</span><span style="color:#75715e">       */</span>
+      dest_port <span style="color:#f92672">=</span> port <span style="color:#f92672">^</span> <span style="color:#ae81ff">1</span>;
+      nb_tx<span style="color:#f92672">=</span> rte_eth_tx_burst(dest_port, <span style="color:#ae81ff">0</span>,
+          bufs, nb_rx);
+      
+      <span style="color:#75715e">/* Free any unsent packets. */</span>
+      <span style="color:#66d9ef">for</span> (buf<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;buf<span style="color:#f92672">&lt;</span>nb_rx;buf<span style="color:#f92672">++</span>)
+        rte_pktmbuf_free(bufs[buf]);
+
+    }
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><h3 id="some-stats">Some Stats</h3>
+<ul>
+<li>Lets print some stats when we exit the program.</li>
+<li>We&rsquo;ll need to add the <code>signal handler</code> to first catch the <code>interrupt</code>.
+<ul>
+<li>First lets create a <code>flag</code> that we will change when the signal is caught</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">bool</span> force_quit;
+
+</code></pre></div><ul>
+<li>Now the <code>handler</code> which updates the flag and displays the the stats</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">signal_handler</span>(<span style="color:#66d9ef">int</span> signum){
+  <span style="color:#66d9ef">if</span>(signum<span style="color:#f92672">==</span> SIGINT <span style="color:#f92672">||</span> signum<span style="color:#f92672">==</span> SIGTERM){
+    printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">Signal %d received,preparing to exit...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,signum);
+    force_quit <span style="color:#f92672">=</span> true;
+    print_stats();
+  }
+}
+</code></pre></div><ul>
+<li>lets register
+<ul>
+<li>add following in the <code>main</code> function</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">   force_quit <span style="color:#f92672">=</span> false;
+   signal(SIGINT,signal_handler);
+   signal(SIGTERM,signal_handler);
+</code></pre></div><ul>
+<li>update the <code>for loop</code> condition in <code>worker_main</code>
+<ul>
+<li>use <code>while(!force_quit)</code> instead of <code>for(;;)</code></li>
+</ul>
+</li>
+<li>Lastly, lets create a function to display the stats
+<ul>
+<li>It uses the <code>rte_eth_stats</code> struct and <code>rte_eth_stats_get</code> function</li>
+<li>the function takes in <code>port_id</code> for which the stats are required and <code>rte_eth_stats</code> struct</li>
+<li>It fills the <code>rte_eth_stats</code> struct which contains
+<ul>
+<li><code>ipackets</code>: packets received by the interface</li>
+<li><code>opackets</code>: packets sent by the interface</li>
+<li><code>imissed</code>: packets dropped by the interface</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>
+<span style="color:#a6e22e">print_stats</span>(<span style="color:#66d9ef">void</span>){
+  <span style="color:#66d9ef">struct</span> rte_eth_stats stats;
+  u_int8_t nb_ports <span style="color:#f92672">=</span> rte_eth_dev_count_avail();
+  u_int8_t port;
+
+  <span style="color:#66d9ef">for</span>(port<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;port<span style="color:#f92672">&lt;</span>nb_ports;port<span style="color:#f92672">++</span>){
+    printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Statistics for the port %u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,port);
+    rte_eth_stats_get(port,<span style="color:#f92672">&amp;</span>stats);
+    printf(<span style="color:#e6db74">&#34;RX:%911u Tx:%911u dropped:%911u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+        stats.ipackets,stats.opackets,stats.imissed);
+  }
+}
+</code></pre></div><hr>
+<h2 id="now-lets-run-this">Now Lets Run this</h2>
+<ul>
+<li>First we build our program</li>
+<li>this should have created a <code>build</code> directory within our directory</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  make
+</code></pre></div><ul>
+<li>We will pass our program arguments just like <code>L2FWD</code>.
+<ul>
+<li><code>-l</code> will indicate cores</li>
+<li><code>-p</code> will indicate portmask
+<ul>
+<li><code>0x1</code> indicates 1 port i.e binary mask <code>0001</code></li>
+<li><code>0x3</code> indicates 2 port i.e binary mask <code>0011</code></li>
+<li><code>0x7</code> indicates 3 port i.e binary mask <code>0111</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  ./build/my_app -l 0-3 -n <span style="color:#ae81ff">3</span> -- -p 0x3
+</code></pre></div><ul>
+<li>you should see something like</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">EAL: Detected <span style="color:#ae81ff">18</span> lcore<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+EAL: Detected <span style="color:#ae81ff">1</span> NUMA nodes
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/rte/mp_socket
+EAL: Selected IOVA mode <span style="color:#e6db74">&#39;PA&#39;</span>
+EAL: No available hugepages reported in hugepages-2048kB
+EAL: Probing VFIO support...
+EAL: VFIO support initialized
+EAL:   Invalid NUMA socket, default to <span style="color:#ae81ff">0</span>
+EAL:   Invalid NUMA socket, default to <span style="color:#ae81ff">0</span>
+EAL:   Invalid NUMA socket, default to <span style="color:#ae81ff">0</span>
+EAL:   Invalid NUMA socket, default to <span style="color:#ae81ff">0</span>
+EAL: No legacy callbacks, legacy socket not created
+APP: Number of ports:2
+APP: MAC address swapping enabledi
+APP: Port: <span style="color:#ae81ff">0</span> Link UP Speed <span style="color:#ae81ff">10000</span>
+APP: Port: <span style="color:#ae81ff">1</span> Link UP Speed <span style="color:#ae81ff">10000</span>
+APP: Some ports are down
+APP: lcore <span style="color:#ae81ff">2</span> exiting
+APP: lcore <span style="color:#ae81ff">3</span> exiting
+</code></pre></div><ul>
+<li>Press <code>Ctrl-C</code> to exit the program and print some stats</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Signal <span style="color:#ae81ff">2</span> received,preparing to exit...
+
+Statistics <span style="color:#66d9ef">for</span> the port <span style="color:#ae81ff">0</span>
+RX: <span style="color:#ae81ff">0</span>           Tx: <span style="color:#ae81ff">13664640</span>    dropped: <span style="color:#ae81ff">0</span>
+
+Statistics <span style="color:#66d9ef">for</span> the port <span style="color:#ae81ff">1</span>
+RX: <span style="color:#ae81ff">13664640</span>    Tx: <span style="color:#ae81ff">0</span>           dropped: <span style="color:#ae81ff">0</span>
+</code></pre></div><hr>
+<h1 id="word">WORD</h1>
+<p><img src="https://i.kym-cdn.com/entries/icons/original/000/035/692/cover1.jpg" alt="Meow"></p>
+<ul>
+<li>Give yourself a pat on the back you are done. (FOR NOW!)</li>
+<li>We will parse a few layers in the next one.</li>
+<li>I followed <a href="https://github.com/ferruhy/dpdk-simple-app" target="_blank">ferruhy/dpdk-simple-app</a> and it was of a great help to me.
+<ul>
+<li>Please do check his repo out.</li>
+<li>Infact this whole thing was inspired by this simple learning repo of his.</li>
+</ul>
+</li>
+<li>You can look at the code <a href="https://github.com/IbrahimShahzad/dpdk-learning" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+<li>Checkout the <a href="https://www.dpdk.org/" target="_blank"><!-- raw HTML omitted -->DPDK documentation<!-- raw HTML omitted --></a> as well.</li>
+</ul>
+
+  
+  <hr>
+<div class="footer">
+    
+	    
+            <a class="previous-post" href="https://ibrahimshahzad.github.io/posts/dpdk_01/?ref=footer"><span style="font-weight:bold;">« Previous</span><br>DPDK 01</a>
+        
+	    
+            <div class="next-post">
+                <a href="https://ibrahimshahzad.github.io/posts/dpdk_03/?ref=footer"><span style="font-weight:bold;">Next »</span><br>DPDK 03</a>
+            </div>
+        
+    
+</div>
+
+  
+</div>
+            </main>
+            
+  
+    <div class="article-toc ">
+    <div class="toc-wrapper">
+      <h4 id="contents"></h4>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#make-file">MAKE File</a></li>
+    <li><a href="#mainc">Main.c</a>
+      <ul>
+        <li><a href="#eal-environment-abstraction-layer">EAL: &ldquo;Environment Abstraction Layer&rdquo;</a></li>
+        <li><a href="#get-port-count">Get Port Count</a></li>
+        <li><a href="#logs">Logs</a></li>
+        <li><a href="#mbuf-pool-creation">MBUF Pool Creation</a></li>
+        <li><a href="#ports-initialisation">Ports Initialisation</a></li>
+        <li><a href="#check-link-status">Check Link Status</a></li>
+        <li><a href="#workers-init">Workers Init</a></li>
+        <li><a href="#receivetransmit-packets">Receive/Transmit Packets</a></li>
+        <li><a href="#some-stats">Some Stats</a></li>
+      </ul>
+    </li>
+    <li><a href="#now-lets-run-this">Now Lets Run this</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+  
+
+        </div>
+    </body>
+</html>

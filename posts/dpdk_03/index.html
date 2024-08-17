@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+    
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+<script defer language="javascript" type="text/javascript" src="/js/bundle.min.38ccdf5c998a71d2ad889faefccbe9132577d265b25e73d94a1be540ebcaaa18.js"></script>
+
+
+
+
+
+
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="icon" href=/favicon.png>
+
+    
+    
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+
+
+<!-- Open Graph image and Twitter Card metadata -->
+
+  
+<title itemprop="name">Ibrahim Shahzad - DPDK 03</title>
+<meta property="og:title" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;03 />
+<meta name="twitter:title" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;03 />
+<meta itemprop="name" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;03 />
+<meta name="application-name" content=Ibrahim&#32;Shahzad&#32;-&#32;DPDK&#32;03 />
+<meta property="og:site_name" content="Ibrahim Shahzad - Personal Blog" />
+
+
+<meta name="description" content="Extracting packet headers" />
+<meta itemprop="description" content="Extracting packet headers" />
+<meta property="og:description" content="Extracting packet headers" />
+<meta name="twitter:description" content="Extracting packet headers" />
+
+
+<base href="https://ibrahimshahzad.github.io/posts/dpdk_03/" />
+<link rel="canonical" href="https://ibrahimshahzad.github.io/posts/dpdk_03/" itemprop="url" />
+<meta name="url" content="https://ibrahimshahzad.github.io/posts/dpdk_03/" />
+<meta name="twitter:url" content="https://ibrahimshahzad.github.io/posts/dpdk_03/" />
+<meta property="og:url" content="https://ibrahimshahzad.github.io/posts/dpdk_03/" />
+
+
+<meta property="og:updated_time" content="2021-07-02T00:00:00Z" />
+
+
+<link rel="sitemap" type="application/xml" title="Sitemap" href='https://ibrahimshahzad.github.io/sitemap.xml' />
+
+<meta name="robots" content="index,follow" />
+<meta name="googlebot" content="index,follow" />
+
+
+
+<meta property="fb:admins" content="" />
+
+
+<meta name="apple-mobile-web-app-title" content="Ibrahim Shahzad - Personal Blog" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.92.2" />
+
+
+    
+    
+
+<link type="text/css" rel="stylesheet" href="/css/bundle.min.94a339836f89f0d25f31980cb6b0631da21e20af128308747ce44e0525eb16ef.css">
+
+
+    
+    <style>
+    body {
+        --sidebar-bg-color: #202020;
+        --sidebar-img-border-color: #515151;
+        --sidebar-p-color: #909090;
+        --sidebar-h1-color: #FFF;
+        --sidebar-a-color: #FFF;
+        --sidebar-socials-color: #FFF;
+        --text-color: #222;
+        --bkg-color: #FAF9F6;
+        --post-title-color: #303030;
+        --list-color: #5A5A5A;
+        --link-color: #268BD2;
+        --date-color: #515151;
+        --table-border-color: #E5E5E5;
+        --table-stripe-color: #F9F9F9;
+        --code-color: #000;
+        --code-background-color: #E5E5E5;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+        --moon-sun-color: #FFF;
+        --moon-sun-background-color: #515151;
+    }
+    body.dark-theme {
+        --text-color: #EEE;
+        --bkg-color: #121212;
+        --post-title-color: #DBE2E9;
+        --list-color: #9D9D9D;
+        --link-color: #268BD2;
+        --date-color: #9A9A9A;
+        --table-border-color: #515151;
+        --table-stripe-color: #202020;
+        --code-color: #FFF;
+        --code-background-color: #515151;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+    }
+    body {
+        background-color: var(--bkg-color);
+    }
+</style>
+
+</head>
+
+    <body class="dark-theme">
+        <div class="wrapper">
+            <aside class="sidebar">
+    <div class="container sidebar-sticky">
+        <div class="light-dark" align="right">
+    <button class="btn-light-dark" title="Toggle light/dark mode">
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M6 .278a.768.768 0 0 1 .08.858a7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277c.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316a.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71C0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        </svg>
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+        </svg>
+    </button>
+</div>
+
+        <div class="sidebar-about">
+    <h1 class="brand">
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <img src="/images/profile.png" alt="brand image">
+            </a>
+        
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <h1>Ibrahim Shahzad</h1>
+            </a>
+        
+    </h1>
+    <p class="lead">
+    This is where i write sometimes...
+    </p>
+</div>
+
+        <nav>
+    <ul class="sidebar-nav">
+
+        
+        
+        
+        
+            
+
+            
+                
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+        
+            
+
+            
+                
+                
+                    <li class="heading">
+                        <a href="/posts/">Posts</a>
+                    </li>
+                    
+                        <li class="sub-heading">
+                            Recent
+                        </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_03/">DPDK 03</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_02/">DPDK 02</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_01/">DPDK 01</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/">Set up your vim</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/welcome_arthur/">Welcome Arthur!</a>
+                            </li>
+                        
+                    
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+
+    </ul>
+</nav>
+
+        
+    <a target="_blank" class="social" title="GitHub" href="https://github.com/IbrahimShahzad">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24">
+            <path fill="currentColor" d="M18.88 1.099C18.147.366 17.265 0 16.233 0H3.746C2.714 0 1.832.366 1.099 1.099C.366 1.832 0 2.714 0 3.746v12.487c0 1.032.366 1.914 1.099 2.647c.733.733 1.615 1.099 2.647 1.099H6.66c.19 0 .333-.007.429-.02a.504.504 0 0 0 .286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555 0 0 1-.904-.091a2.026 2.026 0 0 1-.872-.39a1.651 1.651 0 0 1-.572-.8l-.13-.3a3.25 3.25 0 0 0-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956 0 0 1-.17-.156a.723.723 0 0 1-.117-.182c-.026-.061-.004-.111.065-.15c.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1 0 0 1 .631.677c.2.355.44.626.722.813c.282.186.566.28.852.28c.286 0 .533-.022.742-.065a2.59 2.59 0 0 0 .585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907 0 0 1-1.333-.234a5.314 5.314 0 0 1-1.223-.507a3.5 3.5 0 0 1-1.047-.872c-.277-.347-.505-.802-.683-1.365c-.177-.564-.266-1.215-.266-1.952c0-1.049.342-1.942 1.027-2.68c-.32-.788-.29-1.673.091-2.652c.252-.079.625-.02 1.119.175c.494.195.856.362 1.086.5c.23.14.414.257.553.352a9.233 9.233 0 0 1 2.497-.338c.859 0 1.691.113 2.498.338l.494-.312a6.997 6.997 0 0 1 1.197-.572c.46-.174.81-.221 1.054-.143c.39.98.424 1.864.103 2.653c.685.737 1.028 1.63 1.028 2.68c0 .737-.089 1.39-.267 1.957c-.177.568-.407 1.023-.689 1.366a3.65 3.65 0 0 1-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9 0 0 1-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36 0 0 0 .208.189c.096.034.18.056.254.064c.074.01.18.013.318.013h2.914c1.032 0 1.914-.366 2.647-1.099c.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/>
+        </svg>
+    </a>
+
+
+
+    <a target="_blank" class="social" title="LinkedIn" href="https://linkedin.com/in/ibrahim-shahzad-71305773/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512">
+            <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5c0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7c-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5c67.2 0 79.7 44.3 79.7 101.9V416z"/>
+        </svg>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a target="_blank" class="social" title="RSS Feed" href="/posts/index.xml">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280.000000 1280.000000">
+            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentColor">
+                <path d="M2295 11929 c-284 -12 -642 -45 -707 -65 -17 -5 -18 -63 -18 -1039 0 -569 4 -1036 8 -1039 5 -3 74 6 153 19 510 86 1168 95 1789 25 1348 -153 2602 -677 3670 -1531 385 -308 820 -744 1126 -1129 842 -1060 1362 -2313 1514 -3650 70 -621 61 -1279 -25 -1789 -13 -79 -22 -148 -19 -153 3 -4 471 -8 1039 -8 l1035 0 5 23 c51 225 85 942 67 1419 -23 605 -77 1044 -198 1617 -294 1400 -927 2734 -1823 3846 -1043 1295 -2364 2259 -3909 2854 -1158 447 -2451 656 -3707 600z"/>
+                <path d="M2255 7845 c-269 -25 -620 -81 -667 -106 -17 -9 -18 -55 -18 -899 0 -706 3 -890 13 -890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207 -107 2267 -823 2814 -1902 166 -327 268 -637 330 -1001 38 -227 48 -384 42 -662 -8 -348 -44 -590 -126 -831 -23 -66 -41 -126 -41 -132 0 -10 184 -13 890 -13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782 -59 703 -233 1323 -545 1945 -481 956 -1313 1788 -2270 2268 -620 310 -1239 483 -1940 542 -165 14 -669 10 -840 -5z"/>
+                <path d="M2519 3815 c-391 -66 -725 -336 -868 -703 -79 -201 -96 -462 -45 -677 83 -344 338 -641 666 -774 116 -47 205 -69 330 -80 412 -39 811 153 1040 500 193 292 240 648 128 981 -135 403 -492 699 -914 757 -100 14 -241 12 -337 -4z"/>
+            </g>
+        </svg>
+    </a>
+
+
+
+
+
+        <p class="footnote">
+powered by <a target="_blank" href="https://gohugo.io">Hugo</a> | themed with <a target="_blank" href="https://github.com/lukeorth/poison">poison</a>
+    <br>
+    &copy; 2024 Ibrahim Shahzad - Personal Blog. All rights reserved.
+</p>
+
+  </div>
+</aside>
+
+            <main class="content container">
+                <div class="post">
+  <div class="info">
+  <h1 class="post-title">
+    <a href="https://ibrahimshahzad.github.io/posts/dpdk_03/">DPDK 03</a>
+  </h1>
+
+  <div class="headline">
+    <div>
+      
+      
+      <time datetime=" 2021-07-02T00:00:00Z" class="post-date">
+        July 2, 2021
+      </time>
+      
+      <span> - </span>
+      <span class="reading-time">
+        
+          
+        
+
+        <span>8 mins read</span>
+      </span>
+    </div>
+
+    
+  </div>
+
+  
+  
+
+  
+</div>
+
+  <h1 id="introduction">Introduction</h1>
+<p>Hello There. Today we will parse a few layers.</p>
+<blockquote>
+<p>This is the continuation of the DPDK series. You will need to have gone through <a href="https://ibrahimshahzad.github.io/blog/dpdk_02/" target="_blank"><!-- raw HTML omitted -->DPDK-02<!-- raw HTML omitted --></a>.</p>
+</blockquote>
+<p><strong>Let us begin!</strong></p>
+<h1 id="prereqs">PreReqs</h1>
+<ul>
+<li><a href="https://ibrahimshahzad.github.io/blog/dpdk_02/" target="_blank"><!-- raw HTML omitted -->DPDK-02<!-- raw HTML omitted --></a></li>
+<li>Live dpdk binded port with traffic</li>
+</ul>
+<h1 id="the-layers">The Layers</h1>
+<ul>
+<li>To understand packet filtering, you first have to understand packets and how they are handled at each layer of the <code>TCP/IP</code> protocol stack:
+<ol>
+<li>Application layer (e.g., FTP, Telnet, HTTP)</li>
+<li>Transport layer (TCP or UDP)</li>
+<li>Internet layer (IP)</li>
+<li>Network access layer (e.g., Ethernet, FDDI, ATM)
+<img src="https://i.imgur.com/adlnXNm.gif" alt="Layers"></li>
+</ol>
+</li>
+<li>We are going to parse Ethernet, IP and Transport Layer.</li>
+<li>We will only get a few values from each and log them.</li>
+<li>We will extract following params:</li>
+<li>Source/Destination Mac Addresses
+<ul>
+<li>From Ethernet Layer</li>
+</ul>
+</li>
+<li>Source/Destination IP
+<ul>
+<li>From IP Layer</li>
+</ul>
+</li>
+<li>Source/Destination Port
+<ul>
+<li>From Transport Layer</li>
+</ul>
+</li>
+<li>let&rsquo;s step in our working folder</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd $RTE_SDK/examples/my_app
+</code></pre></div><h2 id="here-is-what-we-are-aiming-for">Here is what we are aiming for</h2>
+<!-- raw HTML omitted -->
+<p><img src="https://i.imgur.com/SoVK42r.png" alt="design"></p>
+<!-- raw HTML omitted -->
+<h2 id="the-network-access-layer">The Network Access Layer</h2>
+<ul>
+<li>The packet here has got two parts:
+<ul>
+<li>Ethernet header
+<ul>
+<li>Packet kind</li>
+<li>Ethernet source address</li>
+<li>Ethernet destination address</li>
+</ul>
+</li>
+<li>Ethernet body
+<ul>
+<li>rest of packet data</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="the-code">The code</h3>
+<ul>
+<li>Lets  write some code to parse the layer now.</li>
+<li>we are going to use the <code>rte_ether_hdr</code> struct from <code>rte_ether.h</code>
+<ul>
+<li>it has following members
+<ul>
+<li><code>struct rte_ether_addr d_addr</code>
+<ul>
+<li>this contains destination mac address array</li>
+</ul>
+</li>
+<li><code>struct rte_ether_addr s_addr</code>
+<ul>
+<li>this contains source mac address array</li>
+</ul>
+</li>
+<li><code>ether_type</code>
+<ul>
+<li>Frame type</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>see more <a href="https://doc.dpdk.org/api/structrte__ether__hdr.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li>in the <code>main.c</code> file go to the <code>worker_main</code> function and add a loop for going over all the packets.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">worker_main</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg){
+  <span style="color:#66d9ef">const</span> u_int8_t nb_ports <span style="color:#f92672">=</span> rte_eth_dev_count_avail();
+  u_int8_t port;
+  u_int8_t dest_port;
+
+  <span style="color:#75715e">/* Run until app is killed or quit */</span>
+  <span style="color:#66d9ef">for</span>(;;){
+    <span style="color:#75715e">/* Receive packets on port */</span>
+    <span style="color:#66d9ef">for</span>(port<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;port<span style="color:#f92672">&lt;</span> nb_ports;port<span style="color:#f92672">++</span>){
+      <span style="color:#66d9ef">struct</span> rte_mbuf <span style="color:#f92672">*</span>bufs[BURST_SIZE];
+      u_int16_t nb_rx;
+      u_int16_t buf;
+
+      <span style="color:#75715e">/* Get burst fo RX packets */</span>
+      nb_rx <span style="color:#f92672">=</span> rte_eth_rx_burst(port,<span style="color:#ae81ff">0</span>,
+          bufs,BURST_SIZE);
+      <span style="color:#66d9ef">if</span> (unlikely(nb_rx<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>))
+        <span style="color:#66d9ef">continue</span>;
+
+      <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>nb_rx;i<span style="color:#f92672">++</span>){
+        <span style="color:#75715e">/* Write Code here */</span>
+      }
+
+      <span style="color:#75715e">/* send burst of Tx packets to the 
+</span><span style="color:#75715e">       * second port
+</span><span style="color:#75715e">       */</span>
+      dest_port <span style="color:#f92672">=</span> port <span style="color:#f92672">^</span> <span style="color:#ae81ff">1</span>;
+      nb_tx<span style="color:#f92672">=</span> rte_eth_tx_burst(dest_port, <span style="color:#ae81ff">0</span>,
+          bufs, nb_rx);
+      
+      <span style="color:#75715e">/* Free any unsent packets. */</span>
+      <span style="color:#66d9ef">for</span> (buf<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;buf<span style="color:#f92672">&lt;</span>nb_rx;buf<span style="color:#f92672">++</span>)
+        rte_pktmbuf_free(bufs[buf]);
+
+    }
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><ul>
+<li>lets first define the ether_header</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> rte_ether_hdr <span style="color:#f92672">*</span>ethernet_header;
+</code></pre></div><ul>
+<li>Now we will arrays to store source/destination MAC addresses</li>
+<li>The length of the array is defined by <code>RTE_ETHER_ADDR_LEN</code> which is <code>6</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">u_int8_t source_mac_address[RTE_ETHER_ADDR_LEN];
+u_int8_t destination_mac_address[RTE_ETHER_ADDR_LEN];
+</code></pre></div><ul>
+<li>now we use <code>rte_pktmbuf_mtod()</code> function
+<ul>
+<li>The way to remember this function is <code>packet-mbuf-to-data</code> function.</li>
+<li>we populate our <code>ethernet_header</code> struct using this.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">ethernet_header <span style="color:#f92672">=</span> rte_pktmbuf_mtod(bufs[i], <span style="color:#66d9ef">struct</span> rte_ether_hdr <span style="color:#f92672">*</span>); 
+</code></pre></div><ul>
+<li>Now we simply populate our value holders.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">u_int16_t ethernet_type;
+ethernet_type <span style="color:#f92672">=</span> ethernet_header<span style="color:#f92672">-&gt;</span>ether_type;
+rte_memcpy(source_mac_address,<span style="color:#f92672">&amp;</span>ethernet_header<span style="color:#f92672">-&gt;</span>s_addr,<span style="color:#66d9ef">sizeof</span>(u_int8_t)<span style="color:#f92672">*</span>RTE_ETHER_ADDR_LEN);
+rte_memcpy(destination_mac_address,<span style="color:#f92672">&amp;</span>ethernet_header<span style="color:#f92672">-&gt;</span>d_addr,<span style="color:#66d9ef">sizeof</span>(u_int8_t)<span style="color:#f92672">*</span>RTE_ETHER_ADDR_LEN);
+</code></pre></div><ul>
+<li>Finally we will log all the values extracted.</li>
+<li>All together it looks like below:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">/* Get burst fo RX packets */</span>
+nb_rx <span style="color:#f92672">=</span> rte_eth_rx_burst(port,<span style="color:#ae81ff">0</span>,
+    bufs,BURST_SIZE);
+<span style="color:#66d9ef">if</span> (unlikely(nb_rx<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>))
+  <span style="color:#66d9ef">continue</span>;
+
+<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>nb_rx;i<span style="color:#f92672">++</span>){
+  <span style="color:#75715e">/* Write Code here */</span>
+  <span style="color:#66d9ef">struct</span> rte_ether_hdr <span style="color:#f92672">*</span>ethernet_header;
+  u_int8_t source_mac_address[RTE_ETHER_ADDR_LEN];
+  u_int8_t destination_mac_address[RTE_ETHER_ADDR_LEN];
+  ethernet_header <span style="color:#f92672">=</span> rte_pktmbuf_mtod(bufs[i], <span style="color:#66d9ef">struct</span> rte_ether_hdr <span style="color:#f92672">*</span>); 
+  ethernet_type <span style="color:#f92672">=</span> ethernet_header<span style="color:#f92672">-&gt;</span>ether_type;
+  rte_memcpy(source_mac_address,<span style="color:#f92672">&amp;</span>ethernet_header<span style="color:#f92672">-&gt;</span>s_addr,<span style="color:#66d9ef">sizeof</span>(u_int8_t)<span style="color:#f92672">*</span>RTE_ETHER_ADDR_LEN);
+  rte_memcpy(destination_mac_address,<span style="color:#f92672">&amp;</span>ethernet_header<span style="color:#f92672">-&gt;</span>d_addr,<span style="color:#66d9ef">sizeof</span>(u_int8_t)<span style="color:#f92672">*</span>RTE_ETHER_ADDR_LEN);
+  RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;Source Mac: &#34;</span>);
+  <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>RTE_ETHER_ADDR_LEN;i<span style="color:#f92672">++</span>)
+    printf(<span style="color:#e6db74">&#34;%x&#34;</span>,source_mac_address[i]);
+  printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;Destination Mac: &#34;</span>);
+  <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>RTE_ETHER_ADDR_LEN;i<span style="color:#f92672">++</span>)
+    printf(<span style="color:#e6db74">&#34;%x&#34;</span>,source_mac_address[i]);
+  printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;ether type: %d&#34;</span>,ethernet_type);
+}
+<span style="color:#75715e">/* 
+</span><span style="color:#75715e">* send burst of Tx packets to the 
+</span><span style="color:#75715e">* second port
+</span><span style="color:#75715e">*/</span>
+dest_port <span style="color:#f92672">=</span> port <span style="color:#f92672">^</span> <span style="color:#ae81ff">1</span>;
+nb_tx<span style="color:#f92672">=</span> rte_eth_tx_burst(dest_port, <span style="color:#ae81ff">0</span>,
+    bufs, nb_rx);
+</code></pre></div><h2 id="the-internet-layer">The Internet Layer</h2>
+<ul>
+<li>This layer is responsible for routing messages between different local networks.</li>
+<li>IP addresses in IPv4 follow a format of <code>xxx.xxx.xxx.xxx</code>, where each decimal value (0–255) translates into 8 binary bits called an octet.</li>
+<li>We are going to use <code>struct rte_ipv4_hdr</code> from <code>rte_ip.h</code>
+<ul>
+<li>contains IP-related defines</li>
+<li>contains <code>struct rte_ipv4_hdr</code> and <code>struct rte_ipv6_hdr</code></li>
+</ul>
+</li>
+<li><code>rte_ipv4_hdr</code> has following members
+<ul>
+<li><code>version_ihl</code>
+<ul>
+<li>version and header length</li>
+</ul>
+</li>
+<li><code>type_of_service</code>
+<ul>
+<li>type of service</li>
+</ul>
+</li>
+<li><code>total_length</code>
+<ul>
+<li>Length of packet</li>
+</ul>
+</li>
+<li><code>packet_id</code>
+<ul>
+<li>packet ID</li>
+</ul>
+</li>
+<li><code>fragment_offset</code>
+<ul>
+<li>fragmentation offset</li>
+</ul>
+</li>
+<li><code>time_to_live</code>
+<ul>
+<li>time to live</li>
+</ul>
+</li>
+<li><code>next_proto_id</code>
+<ul>
+<li>protocol ID</li>
+</ul>
+</li>
+<li><code>hdr_checksum</code>
+<ul>
+<li>header checksum</li>
+</ul>
+</li>
+<li><code>src_addr</code>
+<ul>
+<li>source ip address</li>
+</ul>
+</li>
+<li><code>dst_addr</code>
+<ul>
+<li>destination ip address</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="the-code-1">The Code</h3>
+<ul>
+<li>The last two bytes in the ethernet layer tell us about the next layer.</li>
+<li>Let&rsquo;s write a function that will take the 16 bit value and tell us whether the layer is ipv4 or not.
+<ul>
+<li>the value is <code>2048 (dec)</code> in case of ipv4</li>
+</ul>
+</li>
+<li>write down the following functions</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define IPV4_PROTO 2048 
+</span><span style="color:#75715e">#define IPV6_PROTO 34525
+</span><span style="color:#75715e"></span>u_int16_t <span style="color:#a6e22e">get_Ether_Type</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pointer)
+{
+    u_int8_t slb<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    u_int8_t lb<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    slb<span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(pointer <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> );<span style="color:#75715e">// second last byte of ETH layer
+</span><span style="color:#75715e"></span>    lb<span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(pointer <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> );<span style="color:#75715e">// last last byte of ETH layer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> (slb<span style="color:#f92672">*</span> <span style="color:#ae81ff">256</span>) <span style="color:#f92672">+</span>lb;
+}
+
+<span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">is_ipv4</span>(u_int16_t val)
+{
+  <span style="color:#66d9ef">if</span> (val <span style="color:#f92672">==</span> IPV4_PROTO)
+    <span style="color:#66d9ef">return</span> true;
+  <span style="color:#66d9ef">return</span> false;
+}
+</code></pre></div><ul>
+<li>now let&rsquo;s create a pointer that we will use to traverse the packet bytes</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> pHdrTraverse <span style="color:#f92672">=</span> (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>) ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>) ether_header <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span> (<span style="color:#66d9ef">struct</span> rte_ether_hdr));<span style="color:#75715e">// Pointer to Next Layer to Eth
+</span></code></pre></div><ul>
+<li>now lets call <code>get_Ether_type()</code> and assign the value to <code>next_proto</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">u_int16_t next_proto <span style="color:#f92672">=</span> get_Ether_Type(pHdrTraverse);<span style="color:#75715e">// holds last two byte value of ETH Layer
+</span></code></pre></div><ul>
+<li>now let&rsquo;s check what the next layer is
+<ul>
+<li>incase the <code>next_proto</code> is not <code>IPv4</code> we will log it</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">if</span> (is_ipv4(next_proto)){
+
+}<span style="color:#66d9ef">else</span>
+{
+  RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;NOT IPv4</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+}
+</code></pre></div><ul>
+<li>now within the if clause we will parse the <code>ipv4 header</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> rte_ipv4_hdr ipv4_header;
+u_int32_t u32SrcIPv4;
+u_int32_t u32DstIPv4;
+ipv4_header<span style="color:#f92672">=</span> rte_pktmbuf_mtod_offset(bufs[i], <span style="color:#66d9ef">struct</span> rte_ipv4_hdr<span style="color:#f92672">*</span>, <span style="color:#66d9ef">sizeof</span> (<span style="color:#66d9ef">struct</span> rte_ether_hdr));
+</code></pre></div><ul>
+<li>okay so now the struct may be filled however, we need to check whether it is a valid ipv4 or not.
+<ul>
+<li>for that we create <code>is_valid_ipv4_pkt()</code> function</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">is_valid_ipv4_pkt</span>(<span style="color:#66d9ef">struct</span> rte_ipv4_hdr <span style="color:#f92672">*</span>pkt, <span style="color:#66d9ef">uint32_t</span> link_len)
+{
+    <span style="color:#75715e">/* From http://www.rfc-editor.org/rfc/rfc1812.txt section 5.2.2 */</span>
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">     * 1. The packet length reported by the Link Layer must be large
+</span><span style="color:#75715e">     * enough to hold the minimum length legal IP datagram (20 bytes).
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">if</span> (link_len <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> rte_ipv4_hdr))
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    <span style="color:#75715e">/* 2. The IP checksum must be correct. */</span>
+    <span style="color:#75715e">/* this is checked in H/W */</span>
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">     * 3. The IP version number must be 4. If the version number is not 4
+</span><span style="color:#75715e">     * then the packet may be another version of IP, such as IPng or
+</span><span style="color:#75715e">     * ST-II.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">if</span> (((pkt<span style="color:#f92672">-&gt;</span>version_ihl) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">4</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">3</span>;
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">     * 4. The IP header length field must be large enough to hold the
+</span><span style="color:#75715e">     * minimum length legal IP datagram (20 bytes = 5 words).
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">if</span> ((pkt<span style="color:#f92672">-&gt;</span>version_ihl <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xf</span>) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>;
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">     * 5. The IP total length field must be large enough to hold the IP
+</span><span style="color:#75715e">     * datagram header, whose length is specified in the IP header length
+</span><span style="color:#75715e">     * field.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">if</span> (rte_cpu_to_be_16(pkt<span style="color:#f92672">-&gt;</span>total_length) <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> rte_ipv4_hdr))
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>;
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><ul>
+<li>now lets call it in our if clause.</li>
+<li>we are going to hold ipv4 src and dst addresses in unsigned int 32 variables.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">if</span> (is_valid_ipv4_pkt(pIP4Hdr,bufs[i]<span style="color:#f92672">-&gt;</span>pkt_len)<span style="color:#f92672">&gt;=</span><span style="color:#ae81ff">0</span>){
+    <span style="color:#75715e">/* update TTL and CHKSM */</span>
+    <span style="color:#f92672">--</span>(pIP4Hdr<span style="color:#f92672">-&gt;</span>time_to_live);
+    <span style="color:#f92672">++</span>(pIP4Hdr<span style="color:#f92672">-&gt;</span>hdr_checksum);
+
+    u32SrcIPv4 <span style="color:#f92672">=</span> rte_bswap32(pIP4Hdr<span style="color:#f92672">-&gt;</span>src_addr);
+    u32DstIPv4 <span style="color:#f92672">=</span> rte_bswap32(pIP4Hdr<span style="color:#f92672">-&gt;</span>dst_addr);
+} <span style="color:#66d9ef">else</span> {
+  RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;invalid IPv4</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+}
+</code></pre></div><ul>
+<li>The <code>rte_bswap32</code> is used to swap <code>bytes</code> in a <code>32-bit value</code>.</li>
+</ul>
+<h2 id="the-transport-layer">The Transport Layer</h2>
+<ul>
+<li>The protocols of this layer provide host-to-host communication services for applications.
+<ul>
+<li>Different applications use either <code>TCP</code> or <code>UDP</code> to establish a connection.</li>
+<li>The ports used by the application are contained within the header as the <code>source port</code> and <code>destination port</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="the-code-2">The Code</h3>
+<ul>
+<li>The next layer can be checked by <code>next_proto_id</code> within the <code>rte_ipv4_hdr</code> struct.
+<ul>
+<li>We are going to extract the source and destination ports incase of
+<ul>
+<li>TCP notified by <code>IPPROTO_TCP</code> i.e. <code>6</code></li>
+<li>UDP notified by <code>IPPROTO_UDP</code> i.e. <code>17</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">switch</span>(pIP4Hdr<span style="color:#f92672">-&gt;</span>next_proto_id){
+  <span style="color:#66d9ef">case</span> IPPROTO_TCP:    
+    <span style="color:#66d9ef">break</span>;
+
+  <span style="color:#66d9ef">case</span> IPPROTO_UDP: 
+      <span style="color:#66d9ef">break</span>;
+
+  <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+      u16DstPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      u16SrcPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      <span style="color:#66d9ef">break</span>;
+
+}
+</code></pre></div><ul>
+<li>Default will handle the case in which <code>next_proto_id</code> is neither <code>TCP</code> or <code>UDP</code>.
+<ul>
+<li>We will set the default value <code>0</code> for both ports indicating this case</li>
+</ul>
+</li>
+<li>Now let&rsquo;s parse the TCP header
+<ul>
+<li>We will create a <code>rte_tcp_hdr</code> struct contained in <code>rte_tcp.h</code></li>
+<li>Read more about <code>rte_tcp.h</code> <a href="http://doc.dpdk.org/api/rte__tcp_8h.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+<li>The <code>rte_tcp_hdr</code> contains
+<ul>
+<li>src port</li>
+<li>dst port</li>
+<li>sent_seq</li>
+<li>recv_ack</li>
+<li>data_off</li>
+<li>tcp_flags</li>
+<li>rx_win</li>
+<li>cksum</li>
+<li>tcp_urp</li>
+</ul>
+</li>
+<li>Read more about <code>rte_tcp_hdr</code> <a href="http://doc.dpdk.org/api/structrte__tcp__hdr.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li>Include the header</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">include <span style="color:#f92672">&lt;</span>rte_tcp.h<span style="color:#f92672">&gt;</span>
+</code></pre></div><ul>
+<li>Create the <code>rte_tcp_hdr struct</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> rte_tcp_hdr pTcpHdr;
+</code></pre></div><ul>
+<li>Lastly, handle the TCP case</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">case</span> IPPROTO_TCP:
+    pTcpHdr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> rte_tcp_hdr <span style="color:#f92672">*</span>) ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) pIP4Hdr <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> rte_ipv4_hdr));
+    u16DstPort <span style="color:#f92672">=</span> rte_bswap16(pTcpHdr<span style="color:#f92672">-&gt;</span>dst_port);
+    u16SrcPort <span style="color:#f92672">=</span> rte_bswap16(pTcpHdr<span style="color:#f92672">-&gt;</span>src_port);
+    <span style="color:#66d9ef">break</span>;
+
+</code></pre></div><ul>
+<li>Create the <code>rte_tcp_hdr struct</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> rte_udo_hdr pUdpHdr;
+</code></pre></div><ul>
+<li>Lastly, handle the UDP case</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;rte_udp.h&gt;</span><span style="color:#75715e">
+</span></code></pre></div><ul>
+<li>We will create a <code>rte_udp_hdr</code> struct contained in <code>rte_udp.h</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> rte_udp_hdr pUdpHdr;
+</code></pre></div><ul>
+<li>The <code>rte_udp_hdr</code> contains
+<ul>
+<li>src port</li>
+<li>dst port</li>
+<li>dgram_len</li>
+<li>dgram_cksum</li>
+<li>Read more about <code>rte_upd_hdr</code> <a href="https://doc.dpdk.org/api/structrte__udp__hdr.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+</li>
+<li>Read more about <code>rte_udp.h</code> <a href="https://doc.dpdk.org/api/rte__udp_8h.html" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">case</span> IPPROTO_UDP:
+    pUdpHdr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> rte_udp_hdr <span style="color:#f92672">*</span>) ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) pIP4Hdr <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span> (<span style="color:#66d9ef">struct</span> rte_ipv4_hdr));
+    u16DstPort <span style="color:#f92672">=</span> rte_bswap16(pUdpHdr<span style="color:#f92672">-&gt;</span>dst_port);
+    u16SrcPort <span style="color:#f92672">=</span> rte_bswap16(pUdpHdr<span style="color:#f92672">-&gt;</span>src_port); 
+    <span style="color:#66d9ef">break</span>;
+</code></pre></div><h1 id="all-together">All Together</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>nb_rx;i<span style="color:#f92672">++</span>){
+    <span style="color:#75715e">/* Write Code here */</span>
+    <span style="color:#66d9ef">struct</span> rte_ether_hdr <span style="color:#f92672">*</span>ethernet_header;
+    u_int8_t source_mac_address[RTE_ETHER_ADDR_LEN];
+    u_int8_t destination_mac_address[RTE_ETHER_ADDR_LEN];
+    <span style="color:#66d9ef">struct</span> rte_ipv4_hdr     <span style="color:#f92672">*</span>pIP4Hdr;
+    <span style="color:#66d9ef">struct</span> rte_ipv6_hdr     <span style="color:#f92672">*</span>pIP6Hdr;
+    <span style="color:#66d9ef">struct</span> rte_udp_hdr      <span style="color:#f92672">*</span>pUdpHdr;
+    <span style="color:#66d9ef">struct</span> rte_tcp_hdr      <span style="color:#f92672">*</span>pTcpHdr;
+    u_int32_t u32SrcIPv4<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    u_int32_t u32DstIPv4<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    u_int16_t u16SrcPort<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    u_int16_t u16DstPort<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    u_int16_t ethernet_type;
+    ethernet_header <span style="color:#f92672">=</span> rte_pktmbuf_mtod(bufs[i], <span style="color:#66d9ef">struct</span> rte_ether_hdr <span style="color:#f92672">*</span>);
+    ethernet_type <span style="color:#f92672">=</span> ethernet_header<span style="color:#f92672">-&gt;</span>ether_type;
+    rte_memcpy(source_mac_address,<span style="color:#f92672">&amp;</span>ethernet_header<span style="color:#f92672">-&gt;</span>s_addr,<span style="color:#66d9ef">sizeof</span>(u_int8_t)<span style="color:#f92672">*</span>RTE_ETHER_ADDR_LEN);
+    rte_memcpy(destination_mac_address,<span style="color:#f92672">&amp;</span>ethernet_header<span style="color:#f92672">-&gt;</span>d_addr,<span style="color:#66d9ef">sizeof</span>(u_int8_t)<span style="color:#f92672">*</span>RTE_ETHER_ADDR_LEN);
+    RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;Source Mac: &#34;</span>);
+    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>RTE_ETHER_ADDR_LEN;i<span style="color:#f92672">++</span>)
+        printf(<span style="color:#e6db74">&#34;%x &#34;</span>,source_mac_address[i]);
+    printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;Destination Mac: &#34;</span>);
+    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>RTE_ETHER_ADDR_LEN;i<span style="color:#f92672">++</span>)
+        printf(<span style="color:#e6db74">&#34;%x &#34;</span>,source_mac_address[i]);
+    printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;ether type: %d&#34;</span>,ethernet_type);
+    <span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> pHdrTraverse <span style="color:#f92672">=</span> (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>) ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>) ethernet_header <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span> (<span style="color:#66d9ef">struct</span> rte_ether_hdr));<span style="color:#75715e">// Pointer to Next Layer to Eth
+</span><span style="color:#75715e"></span>    u_int16_t next_proto <span style="color:#f92672">=</span> get_Ether_Type(pHdrTraverse);<span style="color:#75715e">// holds last two byte value of ETH Layer
+</span><span style="color:#75715e"></span>    RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;next proto %u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,next_proto);
+    <span style="color:#66d9ef">if</span> (is_ipv4(next_proto)){
+        pIP4Hdr <span style="color:#f92672">=</span> rte_pktmbuf_mtod_offset(bufs[i], <span style="color:#66d9ef">struct</span> rte_ipv4_hdr<span style="color:#f92672">*</span>, <span style="color:#66d9ef">sizeof</span> (<span style="color:#66d9ef">struct</span> rte_ether_hdr));
+        <span style="color:#75715e">/* check for valid packet */</span>
+        <span style="color:#66d9ef">if</span> (is_valid_ipv4_pkt(pIP4Hdr,bufs[i]<span style="color:#f92672">-&gt;</span>pkt_len)<span style="color:#f92672">&gt;=</span><span style="color:#ae81ff">0</span>){
+            <span style="color:#75715e">/* update TTL and CHKSM */</span>
+            <span style="color:#f92672">--</span>(pIP4Hdr<span style="color:#f92672">-&gt;</span>time_to_live);
+            <span style="color:#f92672">++</span>(pIP4Hdr<span style="color:#f92672">-&gt;</span>hdr_checksum);
+            u32SrcIPv4 <span style="color:#f92672">=</span> rte_bswap32(pIP4Hdr<span style="color:#f92672">-&gt;</span>src_addr);
+            u32DstIPv4 <span style="color:#f92672">=</span> rte_bswap32(pIP4Hdr<span style="color:#f92672">-&gt;</span>dst_addr);
+            RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;IPv4 src %u dst %u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,u32SrcIPv4,u32DstIPv4);
+
+            <span style="color:#66d9ef">switch</span>(pIP4Hdr<span style="color:#f92672">-&gt;</span>next_proto_id){
+            <span style="color:#66d9ef">case</span> IPPROTO_TCP:
+                pTcpHdr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> rte_tcp_hdr <span style="color:#f92672">*</span>) ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) pIP4Hdr <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> rte_ipv4_hdr));
+                u16DstPort <span style="color:#f92672">=</span> rte_bswap16(pTcpHdr<span style="color:#f92672">-&gt;</span>dst_port);
+                u16SrcPort <span style="color:#f92672">=</span> rte_bswap16(pTcpHdr<span style="color:#f92672">-&gt;</span>src_port);
+                <span style="color:#66d9ef">break</span>;
+
+            <span style="color:#66d9ef">case</span> IPPROTO_UDP:
+                pUdpHdr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> rte_udp_hdr <span style="color:#f92672">*</span>) ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) pIP4Hdr <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span> (<span style="color:#66d9ef">struct</span> rte_ipv4_hdr));
+                u16DstPort <span style="color:#f92672">=</span> rte_bswap16(pUdpHdr<span style="color:#f92672">-&gt;</span>dst_port);
+                u16SrcPort <span style="color:#f92672">=</span> rte_bswap16(pUdpHdr<span style="color:#f92672">-&gt;</span>src_port);
+                <span style="color:#66d9ef">break</span>;
+
+            <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+               u16DstPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+               u16SrcPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+               <span style="color:#66d9ef">break</span>;
+
+            }
+            RTE_LOG(INFO,APP,<span style="color:#e6db74">&#34;TL src %u dst %u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,u16SrcPort,u16DstPort);
+        }
+
+    }
+}
+</code></pre></div><hr>
+<h1 id="now-lets-run-this">Now Lets Run this</h1>
+<ul>
+<li>First we build our program</li>
+<li>This should have created a <code>build</code> directory within our directory</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  make
+</code></pre></div><ul>
+<li>now run the program using the following command</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  ./build/my_app -l 0-3 -n <span style="color:#ae81ff">3</span> -- -p 0x3
+</code></pre></div><ul>
+<li>you should see some logs as following</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  APP: Source Mac: <span style="color:#ae81ff">0</span> ff <span style="color:#ae81ff">56</span> <span style="color:#ae81ff">88</span> <span style="color:#ae81ff">84</span> ff
+  APP: Destination Mac: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">50</span> <span style="color:#ae81ff">56</span> ff <span style="color:#ae81ff">84</span> ff
+  APP: ether type: 8APP: next proto <span style="color:#ae81ff">2048</span>
+  APP: IPv4 src <span style="color:#ae81ff">3232200221</span> dst <span style="color:#ae81ff">1700832002</span>
+  APP: TL src <span style="color:#ae81ff">14550</span> dst <span style="color:#ae81ff">443</span>
+</code></pre></div><h1 id="word">WORD</h1>
+<!-- raw HTML omitted -->
+<p><img src="https://i.imgflip.com/2dm9ef.jpg" alt="Meow"></p>
+<!-- raw HTML omitted -->
+<ul>
+<li>Have a cookiee. Treat-yo-self! We are finally done with this series</li>
+<li>You can look at the code <a href="https://github.com/IbrahimShahzad/dpdk-learning" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+<li>As always, checkout the <a href="https://www.dpdk.org/" target="_blank"><!-- raw HTML omitted -->DPDK documentation<!-- raw HTML omitted --></a> as well.</li>
+</ul>
+
+  
+  <hr>
+<div class="footer">
+    
+	    
+            <a class="previous-post" href="https://ibrahimshahzad.github.io/posts/dpdk_02/?ref=footer"><span style="font-weight:bold;">« Previous</span><br>DPDK 02</a>
+        
+	    
+    
+</div>
+
+  
+</div>
+            </main>
+            
+  
+    <div class="article-toc ">
+    <div class="toc-wrapper">
+      <h4 id="contents"></h4>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#here-is-what-we-are-aiming-for">Here is what we are aiming for</a></li>
+    <li><a href="#the-network-access-layer">The Network Access Layer</a>
+      <ul>
+        <li><a href="#the-code">The code</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-internet-layer">The Internet Layer</a>
+      <ul>
+        <li><a href="#the-code-1">The Code</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-transport-layer">The Transport Layer</a>
+      <ul>
+        <li><a href="#the-code-2">The Code</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+  
+
+        </div>
+    </body>
+</html>
