@@ -6,7 +6,16 @@
     <description>Recent content on Ibrahim Shahzad - Personal Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ibrahimshahzad.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Aug 2024 09:20:33 +0200</lastBuildDate><atom:link href="https://ibrahimshahzad.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Parsing_kamailio_cfg</title>
+      <link>https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/</link>
+      <pubDate>Sun, 18 Aug 2024 09:20:33 +0200</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/</guid>
+      <description>Hey there! If you&amp;rsquo;ve ever wrangled with Kamailio&amp;rsquo;s configuration files (kamailio.cfg), you know the pain is real. It’s like trying to solve a puzzle where the pieces are constantly changing shape! I had been using a syntax highlighter but found it a bit buggy/laggy sometimes. As someone who spends a lot of time with these files, I figured there had to be a better way to manage them. And guess what?</description>
+    </item>
+    
     <item>
       <title>DPDK 03</title>
       <link>https://ibrahimshahzad.github.io/posts/dpdk_03/</link>

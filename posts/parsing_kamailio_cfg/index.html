@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+    
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+<script defer language="javascript" type="text/javascript" src="/js/bundle.min.38ccdf5c998a71d2ad889faefccbe9132577d265b25e73d94a1be540ebcaaa18.js"></script>
+
+
+
+
+
+
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="icon" href=/favicon.png>
+
+    
+    
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+
+
+<!-- Open Graph image and Twitter Card metadata -->
+
+<title itemprop="name">Ibrahim Shahzad - Parsing_kamailio_cfg</title>
+<meta property="og:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Parsing_kamailio_cfg />
+<meta name="twitter:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Parsing_kamailio_cfg />
+<meta itemprop="name" content=Ibrahim&#32;Shahzad&#32;-&#32;Parsing_kamailio_cfg />
+<meta name="application-name" content=Ibrahim&#32;Shahzad&#32;-&#32;Parsing_kamailio_cfg />
+<meta property="og:site_name" content="Ibrahim Shahzad - Personal Blog" />
+
+
+<meta name="description" content="" />
+<meta itemprop="description" content="" />
+<meta property="og:description" content="" />
+<meta name="twitter:description" content="" />
+
+
+<base href="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/" />
+<link rel="canonical" href="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/" itemprop="url" />
+<meta name="url" content="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/" />
+<meta name="twitter:url" content="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/" />
+<meta property="og:url" content="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/" />
+
+
+<meta property="og:updated_time" content="2024-08-18T09:20:33&#43;02:00" />
+
+
+<link rel="sitemap" type="application/xml" title="Sitemap" href='https://ibrahimshahzad.github.io/sitemap.xml' />
+
+<meta name="robots" content="index,follow" />
+<meta name="googlebot" content="index,follow" />
+
+
+
+<meta property="fb:admins" content="" />
+
+
+<meta name="apple-mobile-web-app-title" content="Ibrahim Shahzad - Personal Blog" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.92.2" />
+
+
+    
+    
+
+<link type="text/css" rel="stylesheet" href="/css/bundle.min.94a339836f89f0d25f31980cb6b0631da21e20af128308747ce44e0525eb16ef.css">
+
+
+    
+    <style>
+    body {
+        --sidebar-bg-color: #202020;
+        --sidebar-img-border-color: #515151;
+        --sidebar-p-color: #909090;
+        --sidebar-h1-color: #FFF;
+        --sidebar-a-color: #FFF;
+        --sidebar-socials-color: #FFF;
+        --text-color: #222;
+        --bkg-color: #FAF9F6;
+        --post-title-color: #303030;
+        --list-color: #5A5A5A;
+        --link-color: #268BD2;
+        --date-color: #515151;
+        --table-border-color: #E5E5E5;
+        --table-stripe-color: #F9F9F9;
+        --code-color: #000;
+        --code-background-color: #E5E5E5;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+        --moon-sun-color: #FFF;
+        --moon-sun-background-color: #515151;
+    }
+    body.dark-theme {
+        --text-color: #EEE;
+        --bkg-color: #121212;
+        --post-title-color: #DBE2E9;
+        --list-color: #9D9D9D;
+        --link-color: #268BD2;
+        --date-color: #9A9A9A;
+        --table-border-color: #515151;
+        --table-stripe-color: #202020;
+        --code-color: #FFF;
+        --code-background-color: #515151;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+    }
+    body {
+        background-color: var(--bkg-color);
+    }
+</style>
+
+</head>
+
+    <body class="dark-theme">
+        <div class="wrapper">
+            <aside class="sidebar">
+    <div class="container sidebar-sticky">
+        <div class="light-dark" align="right">
+    <button class="btn-light-dark" title="Toggle light/dark mode">
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M6 .278a.768.768 0 0 1 .08.858a7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277c.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316a.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71C0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        </svg>
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+        </svg>
+    </button>
+</div>
+
+        <div class="sidebar-about">
+    <h1 class="brand">
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <img src="/images/profile.png" alt="brand image">
+            </a>
+        
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <h1>Ibrahim Shahzad</h1>
+            </a>
+        
+    </h1>
+    <p class="lead">
+    This is where i write sometimes...
+    </p>
+</div>
+
+        <nav>
+    <ul class="sidebar-nav">
+
+        
+        
+        
+        
+            
+
+            
+                
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+        
+            
+
+            
+                
+                
+                    <li class="heading">
+                        <a href="/posts/">Posts</a>
+                    </li>
+                    
+                        <li class="sub-heading">
+                            Recent
+                        </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/">Parsing_kamailio_cfg</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_03/">DPDK 03</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_02/">DPDK 02</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_01/">DPDK 01</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/">Set up your vim</a>
+                            </li>
+                        
+                    
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+
+    </ul>
+</nav>
+
+        
+    <a target="_blank" class="social" title="GitHub" href="https://github.com/IbrahimShahzad">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24">
+            <path fill="currentColor" d="M18.88 1.099C18.147.366 17.265 0 16.233 0H3.746C2.714 0 1.832.366 1.099 1.099C.366 1.832 0 2.714 0 3.746v12.487c0 1.032.366 1.914 1.099 2.647c.733.733 1.615 1.099 2.647 1.099H6.66c.19 0 .333-.007.429-.02a.504.504 0 0 0 .286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555 0 0 1-.904-.091a2.026 2.026 0 0 1-.872-.39a1.651 1.651 0 0 1-.572-.8l-.13-.3a3.25 3.25 0 0 0-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956 0 0 1-.17-.156a.723.723 0 0 1-.117-.182c-.026-.061-.004-.111.065-.15c.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1 0 0 1 .631.677c.2.355.44.626.722.813c.282.186.566.28.852.28c.286 0 .533-.022.742-.065a2.59 2.59 0 0 0 .585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907 0 0 1-1.333-.234a5.314 5.314 0 0 1-1.223-.507a3.5 3.5 0 0 1-1.047-.872c-.277-.347-.505-.802-.683-1.365c-.177-.564-.266-1.215-.266-1.952c0-1.049.342-1.942 1.027-2.68c-.32-.788-.29-1.673.091-2.652c.252-.079.625-.02 1.119.175c.494.195.856.362 1.086.5c.23.14.414.257.553.352a9.233 9.233 0 0 1 2.497-.338c.859 0 1.691.113 2.498.338l.494-.312a6.997 6.997 0 0 1 1.197-.572c.46-.174.81-.221 1.054-.143c.39.98.424 1.864.103 2.653c.685.737 1.028 1.63 1.028 2.68c0 .737-.089 1.39-.267 1.957c-.177.568-.407 1.023-.689 1.366a3.65 3.65 0 0 1-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9 0 0 1-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36 0 0 0 .208.189c.096.034.18.056.254.064c.074.01.18.013.318.013h2.914c1.032 0 1.914-.366 2.647-1.099c.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/>
+        </svg>
+    </a>
+
+
+
+    <a target="_blank" class="social" title="LinkedIn" href="https://linkedin.com/in/ibrahim-shahzad-71305773/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512">
+            <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5c0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7c-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5c67.2 0 79.7 44.3 79.7 101.9V416z"/>
+        </svg>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a target="_blank" class="social" title="RSS Feed" href="/posts/index.xml">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280.000000 1280.000000">
+            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentColor">
+                <path d="M2295 11929 c-284 -12 -642 -45 -707 -65 -17 -5 -18 -63 -18 -1039 0 -569 4 -1036 8 -1039 5 -3 74 6 153 19 510 86 1168 95 1789 25 1348 -153 2602 -677 3670 -1531 385 -308 820 -744 1126 -1129 842 -1060 1362 -2313 1514 -3650 70 -621 61 -1279 -25 -1789 -13 -79 -22 -148 -19 -153 3 -4 471 -8 1039 -8 l1035 0 5 23 c51 225 85 942 67 1419 -23 605 -77 1044 -198 1617 -294 1400 -927 2734 -1823 3846 -1043 1295 -2364 2259 -3909 2854 -1158 447 -2451 656 -3707 600z"/>
+                <path d="M2255 7845 c-269 -25 -620 -81 -667 -106 -17 -9 -18 -55 -18 -899 0 -706 3 -890 13 -890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207 -107 2267 -823 2814 -1902 166 -327 268 -637 330 -1001 38 -227 48 -384 42 -662 -8 -348 -44 -590 -126 -831 -23 -66 -41 -126 -41 -132 0 -10 184 -13 890 -13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782 -59 703 -233 1323 -545 1945 -481 956 -1313 1788 -2270 2268 -620 310 -1239 483 -1940 542 -165 14 -669 10 -840 -5z"/>
+                <path d="M2519 3815 c-391 -66 -725 -336 -868 -703 -79 -201 -96 -462 -45 -677 83 -344 338 -641 666 -774 116 -47 205 -69 330 -80 412 -39 811 153 1040 500 193 292 240 648 128 981 -135 403 -492 699 -914 757 -100 14 -241 12 -337 -4z"/>
+            </g>
+        </svg>
+    </a>
+
+
+
+
+
+        <p class="footnote">
+powered by <a target="_blank" href="https://gohugo.io">Hugo</a> | themed with <a target="_blank" href="https://github.com/lukeorth/poison">poison</a>
+    <br>
+    &copy; 2024 Ibrahim Shahzad - Personal Blog. All rights reserved.
+</p>
+
+  </div>
+</aside>
+
+            <main class="content container">
+                <div class="post">
+  <div class="info">
+  <h1 class="post-title">
+    <a href="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/">Parsing_kamailio_cfg</a>
+  </h1>
+
+  <div class="headline">
+    <div>
+      
+      
+      <time datetime=" 2024-08-18T09:20:33&#43;0200" class="post-date">
+        August 18, 2024
+      </time>
+      
+      <span> - </span>
+      <span class="reading-time">
+        
+          
+        
+
+        <span>6 mins read</span>
+      </span>
+    </div>
+
+    
+  </div>
+
+  
+  
+
+  
+</div>
+
+  <h2 id="hey-there">Hey there!</h2>
+<p>If you&rsquo;ve ever wrangled with Kamailio&rsquo;s configuration files (kamailio.cfg), you know the pain is real. It’s like trying to solve a puzzle where the pieces are constantly changing shape! I had been using a syntax highlighter but found it a bit buggy/laggy sometimes. As someone who spends a lot of time with these files, I figured there had to be a better way to manage them. And guess what? I found it—Tree-sitter!</p>
+<p>In case you haven&rsquo;t heard, Tree-sitter is this cool tool that lets you build parsers for pretty much any language out there. It’s like a Swiss Army knife for syntax—great for stuff like syntax highlighting, code navigation, and more. Plus, it’s already integrated into Neovim and VS Code, which means I didn’t have to jump through hoops to make things work.</p>
+<p>So, I decided to take the plunge and build a custom <a href="https://github.com/IbrahimShahzad/tree-sitter-kamailio-cfg" target="_blank">Tree-sitter parser for Kamailio’s configuration language</a>. Here’s how it went down.</p>
+<p>Examples of Kamailio configuration files:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cfg" data-lang="cfg"><span style="color:#75715e">#!KAMAILIO</span>
+<span style="color:#75715e">#!define WITH_MYSQL</span>
+<span style="color:#75715e">#!define WITH_AUTH</span>
+<span style="color:#75715e">#!define WITH_USRLOCDB</span>
+
+<span style="color:#75715e"># ----- global configuration parameters -----</span>
+
+<span style="color:#a6e22e">debug</span><span style="color:#f92672">=</span><span style="color:#e6db74">3</span>
+<span style="color:#a6e22e">fork</span><span style="color:#f92672">=</span><span style="color:#e6db74">yes</span>
+
+<span style="color:#a6e22e">log_stderror</span><span style="color:#f92672">=</span><span style="color:#e6db74">no</span>
+
+<span style="color:#75715e"># ----- modules to load -----</span>
+
+<span style="color:#a6e22e">loadmodule &#34;db_mysql.so&#34;</span>
+<span style="color:#a6e22e">loadmodule &#34;auth.so&#34;</span>
+
+<span style="color:#75715e"># ----- setting module-specific parameters -----</span>
+
+<span style="color:#a6e22e">modparam(&#34;auth&#34;, &#34;db_url&#34;, &#34;mysql://kamailio:kamailiorw@localhost/kamailio&#34;)</span>
+<span style="color:#a6e22e">modparam(&#34;auth&#34;, &#34;password_column&#34;, &#34;password&#34;)</span>
+
+
+<span style="color:#75715e"># ----- request routing logic -----</span>
+
+<span style="color:#a6e22e">route {</span>
+    <span style="color:#a6e22e">if (!mf_process_maxfwd_header(&#34;10&#34;)) {</span>
+        <span style="color:#a6e22e">sl_send_reply(&#34;483&#34;,&#34;Too Many Hops&#34;);</span>
+        <span style="color:#a6e22e">exit;</span>
+    <span style="color:#a6e22e">};</span>
+
+    <span style="color:#a6e22e">if (method</span><span style="color:#f92672">=</span><span style="color:#e6db74">=&#34;REGISTER&#34;) {
+</span><span style="color:#e6db74">        if (!www_authorize(&#34;kamailio.org&#34;, &#34;subscriber&#34;)) {
+</span><span style="color:#e6db74">            www_challenge(&#34;kamailio.org&#34;, &#34;0&#34;);
+</span><span style="color:#e6db74">            exit;
+</span><span style="color:#e6db74">        };
+</span><span style="color:#e6db74">        save(&#34;location&#34;);
+</span><span style="color:#e6db74">        exit;
+</span><span style="color:#e6db74">    };</span>
+
+    <span style="color:#a6e22e">if (method</span><span style="color:#f92672">=</span><span style="color:#e6db74">=&#34;INVITE&#34;) {
+</span><span style="color:#e6db74">        if (!proxy_authorize(&#34;&#34;, &#34;subscriber&#34;)) {
+</span><span style="color:#e6db74">            proxy_challenge(&#34;&#34;, &#34;0&#34;);
+</span><span style="color:#e6db74">            exit;
+</span><span style="color:#e6db74">        };
+</span><span style="color:#e6db74">        if (!t_relay()) {
+</span><span style="color:#e6db74">            sl_reply_error();
+</span><span style="color:#e6db74">        };
+</span><span style="color:#e6db74">        exit;
+</span><span style="color:#e6db74">    };</span>
+
+    <span style="color:#a6e22e">sl_send_reply(&#34;404&#34;,&#34;Not Here&#34;);</span>
+<span style="color:#a6e22e">}</span>
+</code></pre></div><h2 id="step-1-setting-the-stage">Step 1: Setting the Stage</h2>
+<p>Before diving into the code, I needed to set up my environment. I installed the Tree-sitter CLI and the Kamailio parser generator. The parser generator is a handy tool that generates the boilerplate code for a new parser. It’s like having a head start on your project!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cargo install tree-sitter-cli
+</code></pre></div><p>Next, I created a new directory for my project and ran the parser generator.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tree-sitter init
+</code></pre></div><p>The generator asked me a few questions about my project, like the language I was parsing and the name of the parser. I answered them, and voilà! I had a new parser project ready to go.</p>
+<h2 id="step-2-writing-the-grammar">Step 2: Writing the Grammar</h2>
+<p>The heart of any Tree-sitter parser is its grammar. The grammar defines the rules for parsing the language, like what constitutes a comment, a string, or a function call. Writing a grammar can be a bit tricky, but the parser generator gave me a good starting point.</p>
+<p>Kamailio’s configuration language is&hellip; well, let’s call it &ldquo;quirky.&rdquo; You’ve got variables (pseudo_vars), routes, and expressions that seem straightforward until they’re not. The goal was to capture all these quirks without pulling my hair out.</p>
+<p>I opened the grammar file and started adding rules for Kamailio’s configuration language. I defined rules for comments, strings, function calls, and more. It was like solving a puzzle, but in a good way!</p>
+<p>Here&rsquo;s a sneak peek into what I did:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">grammar</span>({
+  <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;kamailio_cfg&#39;</span>,
+
+  <span style="color:#a6e22e">extras</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">_</span> =&gt; [
+    <span style="color:#e6db74">/\s|\\\r?\n/</span>,
+  ],
+
+  <span style="color:#a6e22e">conflicts</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span> =&gt; [ ... ],
+
+  <span style="color:#a6e22e">rules</span><span style="color:#f92672">:</span> {
+    <span style="color:#a6e22e">source_file</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span> =&gt; <span style="color:#a6e22e">seq</span>(
+      <span style="color:#a6e22e">repeat</span>(<span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">top_level_item</span>)
+    ),
+
+    <span style="color:#75715e">// Top level statements
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">top_level_item</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span> =&gt; <span style="color:#a6e22e">choice</span>(
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">file_starter</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">include_file</span>,
+      <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    ),
+
+    <span style="color:#a6e22e">block_item</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span> =&gt; <span style="color:#a6e22e">choice</span>(
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">routing_block</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">route_call</span>,
+      <span style="color:#75715e">// ...    
+</span><span style="color:#75715e"></span>      ),
+
+    <span style="color:#a6e22e">top_level_statement</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span> =&gt; <span style="color:#a6e22e">choice</span>(
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">case_statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">compound_statement</span>,
+      <span style="color:#a6e22e">alias</span>(<span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">top_level_expression_statement</span>, <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">expression_statement</span>),
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">if_statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">switch_statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">while_statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">return_statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">break_statement</span>,
+      <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">continue_statement</span>,
+    ),
+
+
+    <span style="color:#75715e">// file starter
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">file_starter</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">_</span> =&gt; <span style="color:#a6e22e">seq</span>(
+      <span style="color:#a6e22e">choice</span>(
+        <span style="color:#a6e22e">token</span>(<span style="color:#a6e22e">PREP_START</span>.<span style="color:#a6e22e">HASH_BANG</span>),
+        <span style="color:#a6e22e">token</span>(<span style="color:#a6e22e">PREP_START</span>.<span style="color:#a6e22e">BANG_BANG</span>)
+      ),
+      <span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#39;cfg_type&#39;</span>,
+        <span style="color:#a6e22e">token</span>(<span style="color:#a6e22e">choice</span>(
+          <span style="color:#a6e22e">KAMAILIO_CFG</span>.<span style="color:#a6e22e">SER</span>,
+          <span style="color:#a6e22e">KAMAILIO_CFG</span>.<span style="color:#a6e22e">KAMAILIO</span>,
+          <span style="color:#a6e22e">KAMAILIO_CFG</span>.<span style="color:#a6e22e">OPENSER</span>,
+          <span style="color:#a6e22e">KAMAILIO_CFG</span>.<span style="color:#a6e22e">MAXCOMPAT</span>,
+          <span style="color:#a6e22e">KAMAILIO_CFG</span>.<span style="color:#a6e22e">ALL</span>
+        )))),
+    })
+</code></pre></div><h2 id="step-3-integrating-it-with-neovim">Step 3: Integrating it with Neovim</h2>
+<p>Once I had my grammar in place, I compiled the parser and integrated it with Neovim. I installed the Tree-sitter plugin and added the Kamailio parser to my Neovim configuration. And just like that, I had syntax highlighting for Kamailio’s configuration files! I did this so that I could see the fruits of my labor in action.</p>
+<p>I also installed <a href="https://github.com/nvim-treesitter/playground" target="_blank">nvim-treesitter-playground</a> to go along with <a href="https://github.com/nvim-treesitter/nvim-treesitter" target="_blank">nvim-treesitter</a>, a plugin that lets you visualize the syntax tree of your code. It was super helpful for debugging my grammar and understanding how Tree-sitter works. From the documentation, I realized <a href="https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#adding-parsers" target="_blank">how to add my custom parser</a> to Neovim.</p>
+<p>In my init.lua file, I added the Kamailio parser to the list of parsers Neovim should use for Kamailio’s configuration files. Here’s a snippet of what I added:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#75715e">-- [[ Our Local Parser for Kamailio CFG ]]</span>
+<span style="color:#66d9ef">local</span> parser_config <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;nvim-treesitter.parsers&#39;</span>).get_parser_configs()
+parser_config.kamailio_cfg <span style="color:#f92672">=</span> {
+  install_info <span style="color:#f92672">=</span> {
+    url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~/work/tree-sitter-kamailio-cfg&#39;</span>,
+    files <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#39;src/parser.c&#39;</span> },
+  },
+  filetype <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;cfg&#39;</span>,
+}
+</code></pre></div><p>And that was it! I opened a Kamailio configuration file in Neovim, (made sure to run <code>:TSInstall</code>) and was able to see the Tree with <code>:TSPlaygroundToggle</code>. It was like magic! I could see the syntax tree of my code, however the highlighting was yet to be done, plus the tree was full of errors. BUT now i could see my work in real time and debug it.</p>
+<h2 id="step-4-syntax-highlighting">Step 4: Syntax Highlighting</h2>
+<p>What’s the point of parsing if you can’t make it look good? That’s where syntax highlighting comes in. I set up highlights.scm to map my grammar to highlight groups:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scm" data-lang="scm">(<span style="color:#a6e22e">comment</span>) @comment
+
+(<span style="color:#a6e22e">preproc_def</span>
+  (<span style="color:#a6e22e">preproc_arg</span>) @variable<span style="color:#f92672">.</span>parameter)
+(<span style="color:#a6e22e">preproc_subst</span>
+  (<span style="color:#a6e22e">preproc_arg</span>) @string<span style="color:#f92672">.</span>regexp) @keyword<span style="color:#f92672">.</span>directive
+(<span style="color:#a6e22e">preproc_substdef</span>
+  (<span style="color:#a6e22e">preproc_arg</span>) @string<span style="color:#f92672">.</span>regexp) @keyword<span style="color:#f92672">.</span>directive<span style="color:#f92672">.</span>define
+(<span style="color:#a6e22e">preproc_substdefs</span>
+  (<span style="color:#a6e22e">preproc_arg</span>) @string<span style="color:#f92672">.</span>regexp) @keyword<span style="color:#f92672">.</span>directive<span style="color:#f92672">.</span>define
+(<span style="color:#a6e22e">preproc_trydef</span>
+  (<span style="color:#a6e22e">preproc_arg</span>) @variable<span style="color:#f92672">.</span>parameter)
+(<span style="color:#a6e22e">preproc_ifdef</span>) @keyword<span style="color:#f92672">.</span>directive
+(<span style="color:#a6e22e">preproc_trydef</span>) @keyword<span style="color:#f92672">.</span>directive<span style="color:#f92672">.</span>define
+(<span style="color:#a6e22e">preproc_def</span>) @keyword<span style="color:#f92672">.</span>directive<span style="color:#f92672">.</span>define
+(<span style="color:#a6e22e">include_file</span>
+  file_name: (<span style="color:#a6e22e">string</span>) @string<span style="color:#f92672">.</span>special<span style="color:#f92672">.</span>path) @keyword<span style="color:#f92672">.</span>directive
+(<span style="color:#a6e22e">import_file</span>
+  file_name: (<span style="color:#a6e22e">string</span>) @string<span style="color:#f92672">.</span>special<span style="color:#f92672">.</span>path) @keyword<span style="color:#f92672">.</span>directive
+(<span style="color:#a6e22e">route_call</span>) @function
+
+(<span style="color:#a6e22e">pseudo_variable</span>
+   pvar: (<span style="color:#a6e22e">pvar_type</span>) @attribute<span style="color:#f92672">.</span>builtin
+   <span style="color:#e6db74">&#34;(&#34;</span> @punctuation<span style="color:#f92672">.</span>builtin
+   argument: (<span style="color:#a6e22e">identifier</span>) @variable<span style="color:#f92672">.</span>parameter
+   <span style="color:#e6db74">&#34;)&#34;</span> @punctuation<span style="color:#f92672">.</span>builtin) 
+
+(<span style="color:#a6e22e">pvar_type</span>) @attribute<span style="color:#f92672">.</span>builtin
+(<span style="color:#a6e22e">modparam</span>) @function<span style="color:#f92672">.</span>builtin
+(<span style="color:#a6e22e">loadmodule</span>) @function<span style="color:#f92672">.</span>builtin
+(<span style="color:#a6e22e">modparamx</span>) @function<span style="color:#f92672">.</span>builtin
+(<span style="color:#a6e22e">loadmodulex</span>) @function<span style="color:#f92672">.</span>builtin
+<span style="color:#75715e">; ...</span>
+</code></pre></div><p>Now, when I pop open a Kamailio config file in Neovim, it’s like Christmas—everything’s highlighted just the way I want. I can see comments, strings, and function calls in all their glory. It’s a small thing, but it makes a big difference when you’re staring at code all day.</p>
+<h2 id="step-5-using-whats-already-there">Step 5: Using whats already there</h2>
+<p>For C-like grammar within the Kamailio configuration file, I used the grammar from <a href="https://github.com/tree-sitter/tree-sitter-c" target="_blank">Tree-sitter-c</a>. This way, I didn’t have to reinvent the wheel for things like strings, comments, and function calls. I just imported the C grammar and built on it to work with Kamailio’s quirks. It saved me a ton of time and effort!</p>
+<h2 id="step-5-the-grand-finale">Step 5: The Grand Finale</h2>
+<p>I made the first release of my parser on GitHub, and it felt like a huge accomplishment. I was able to take a problem that had been bugging me for a while and turn it into a solution that I could share with others. It was a great feeling! It might have a few rough edges, but it’s a start. I will keep improving it as I go.</p>
+<p><img src="images/tree_sitter_kamailio_cfg_image.png" alt="Tree-sitter-kamailio-cfg"></p>
+<h2 id="whats-next">What’s Next?</h2>
+<p>Right now, I’m working on taking this to the next level—building a Language Server Protocol (LSP) for kamailio.cfg. The idea is to add cool features like auto-completion, diagnostics, and go-to-definition. Im thinking of building it in golang, and instead of parsing the whole thing again, I would use the bindings generated by the Tree-sitter CLI. I’m excited to see where this journey takes me! However, this parsing was done with the syntax highlighting in mind, so I might have to make some changes to the grammar to make it more suitable for LSP.</p>
+<h2 id="wrapping-up">Wrapping Up</h2>
+<p>Building a <a href="https://github.com/IbrahimShahzad/tree-sitter-kamailio-cfg" target="_blank">Tree-sitter parser</a> for kamailio.cfg was a wild ride, but it’s already making my life so much easier. If you’re dealing with Kamailio regularly, I’d love for you to check it out, maybe even contribute!</p>
+<p>If you’re into Kamailio, parsing, or just like building cool stuff, keep an eye on this space. We’re just getting started.</p>
+
+  
+  <hr>
+<div class="footer">
+    
+	    
+            <a class="previous-post" href="https://ibrahimshahzad.github.io/posts/dpdk_03/?ref=footer"><span style="font-weight:bold;">« Previous</span><br>DPDK 03</a>
+        
+	    
+    
+</div>
+
+  
+</div>
+            </main>
+            
+  
+    <div class="article-toc ">
+    <div class="toc-wrapper">
+      <h4 id="contents"></h4>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hey-there">Hey there!</a></li>
+    <li><a href="#step-1-setting-the-stage">Step 1: Setting the Stage</a></li>
+    <li><a href="#step-2-writing-the-grammar">Step 2: Writing the Grammar</a></li>
+    <li><a href="#step-3-integrating-it-with-neovim">Step 3: Integrating it with Neovim</a></li>
+    <li><a href="#step-4-syntax-highlighting">Step 4: Syntax Highlighting</a></li>
+    <li><a href="#step-5-using-whats-already-there">Step 5: Using whats already there</a></li>
+    <li><a href="#step-5-the-grand-finale">Step 5: The Grand Finale</a></li>
+    <li><a href="#whats-next">What’s Next?</a></li>
+    <li><a href="#wrapping-up">Wrapping Up</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+  
+
+        </div>
+    </body>
+</html>
