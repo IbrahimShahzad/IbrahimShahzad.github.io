@@ -6,7 +6,17 @@
     <description>Recent content on Ibrahim Shahzad - Personal Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Aug 2024 09:20:33 +0200</lastBuildDate><atom:link href="https://ibrahimshahzad.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Aug 2024 19:38:33 +0200</lastBuildDate><atom:link href="https://ibrahimshahzad.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing LSP for kamailio_cfg p1</title>
+      <link>https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/</link>
+      <pubDate>Sun, 25 Aug 2024 19:38:33 +0200</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/</guid>
+      <description>Writing LSP for Kamailio.cfg - Part 1 In the previous post, i used the tree-sitter parser to parse the kamilio.cfg file for syntax highlighting. Since the tree-sitter also generates the go bindings for the parser, i thought it would be a good idea to use the parser to generate the LSP for the kamailio.cfg file.
+For this reason i went back to the grammar i had written for the kamailio.cfg file and made it a bit more specific since that would help identifying the different nodes when im writing the LSP.</description>
+    </item>
+    
     <item>
       <title>Parsing_kamailio_cfg</title>
       <link>https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/</link>

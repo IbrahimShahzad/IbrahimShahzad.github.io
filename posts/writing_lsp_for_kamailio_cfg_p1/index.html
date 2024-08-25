@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+    
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+<script defer language="javascript" type="text/javascript" src="/js/bundle.min.38ccdf5c998a71d2ad889faefccbe9132577d265b25e73d94a1be540ebcaaa18.js"></script>
+
+
+
+
+
+
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="icon" href=/favicon.png>
+
+    
+    
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+
+
+<!-- Open Graph image and Twitter Card metadata -->
+
+<title itemprop="name">Ibrahim Shahzad - Writing LSP for kamailio_cfg p1</title>
+<meta property="og:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Writing&#32;LSP&#32;for&#32;kamailio_cfg&#32;p1 />
+<meta name="twitter:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Writing&#32;LSP&#32;for&#32;kamailio_cfg&#32;p1 />
+<meta itemprop="name" content=Ibrahim&#32;Shahzad&#32;-&#32;Writing&#32;LSP&#32;for&#32;kamailio_cfg&#32;p1 />
+<meta name="application-name" content=Ibrahim&#32;Shahzad&#32;-&#32;Writing&#32;LSP&#32;for&#32;kamailio_cfg&#32;p1 />
+<meta property="og:site_name" content="Ibrahim Shahzad - Personal Blog" />
+
+
+<meta name="description" content="" />
+<meta itemprop="description" content="" />
+<meta property="og:description" content="" />
+<meta name="twitter:description" content="" />
+
+
+<base href="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/" />
+<link rel="canonical" href="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/" itemprop="url" />
+<meta name="url" content="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/" />
+<meta name="twitter:url" content="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/" />
+<meta property="og:url" content="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/" />
+
+
+<meta property="og:updated_time" content="2024-08-25T19:38:33&#43;02:00" />
+
+
+<link rel="sitemap" type="application/xml" title="Sitemap" href='https://ibrahimshahzad.github.io/sitemap.xml' />
+
+<meta name="robots" content="index,follow" />
+<meta name="googlebot" content="index,follow" />
+
+
+
+<meta property="fb:admins" content="" />
+
+
+<meta name="apple-mobile-web-app-title" content="Ibrahim Shahzad - Personal Blog" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.92.2" />
+
+
+    
+    
+
+<link type="text/css" rel="stylesheet" href="/css/bundle.min.94a339836f89f0d25f31980cb6b0631da21e20af128308747ce44e0525eb16ef.css">
+
+
+    
+    <style>
+    body {
+        --sidebar-bg-color: #202020;
+        --sidebar-img-border-color: #515151;
+        --sidebar-p-color: #909090;
+        --sidebar-h1-color: #FFF;
+        --sidebar-a-color: #FFF;
+        --sidebar-socials-color: #FFF;
+        --text-color: #222;
+        --bkg-color: #FAF9F6;
+        --post-title-color: #303030;
+        --list-color: #5A5A5A;
+        --link-color: #268BD2;
+        --date-color: #515151;
+        --table-border-color: #E5E5E5;
+        --table-stripe-color: #F9F9F9;
+        --code-color: #000;
+        --code-background-color: #E5E5E5;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+        --moon-sun-color: #FFF;
+        --moon-sun-background-color: #515151;
+    }
+    body.dark-theme {
+        --text-color: #EEE;
+        --bkg-color: #121212;
+        --post-title-color: #DBE2E9;
+        --list-color: #9D9D9D;
+        --link-color: #268BD2;
+        --date-color: #9A9A9A;
+        --table-border-color: #515151;
+        --table-stripe-color: #202020;
+        --code-color: #FFF;
+        --code-background-color: #515151;
+        --code-block-color: #FFF;
+        --code-block-background-color: #272822;
+    }
+    body {
+        background-color: var(--bkg-color);
+    }
+</style>
+
+</head>
+
+    <body class="dark-theme">
+        <div class="wrapper">
+            <aside class="sidebar">
+    <div class="container sidebar-sticky">
+        <div class="light-dark" align="right">
+    <button class="btn-light-dark" title="Toggle light/dark mode">
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M6 .278a.768.768 0 0 1 .08.858a7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277c.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316a.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71C0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        </svg>
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+            <path fill="currentColor" d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+        </svg>
+    </button>
+</div>
+
+        <div class="sidebar-about">
+    <h1 class="brand">
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <img src="/images/profile.png" alt="brand image">
+            </a>
+        
+        
+            <a href="https://ibrahimshahzad.github.io/">
+                <h1>Ibrahim Shahzad</h1>
+            </a>
+        
+    </h1>
+    <p class="lead">
+    This is where i write sometimes...
+    </p>
+</div>
+
+        <nav>
+    <ul class="sidebar-nav">
+
+        
+        
+        
+        
+            
+
+            
+                
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+        
+            
+
+            
+                
+                
+                    <li class="heading">
+                        <a href="/posts/">Posts</a>
+                    </li>
+                    
+                        <li class="sub-heading">
+                            Recent
+                        </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/">Writing LSP for kamailio_cfg p1</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/">Parsing_kamailio_cfg</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_03/">DPDK 03</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_02/">DPDK 02</a>
+                            </li>
+                        
+                            <li class="bullet">
+                                <a href="https://ibrahimshahzad.github.io/posts/dpdk_01/">DPDK 01</a>
+                            </li>
+                        
+                    
+                
+            
+            
+                
+                
+            
+                
+                
+            
+        
+
+    </ul>
+</nav>
+
+        
+    <a target="_blank" class="social" title="GitHub" href="https://github.com/IbrahimShahzad">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24">
+            <path fill="currentColor" d="M18.88 1.099C18.147.366 17.265 0 16.233 0H3.746C2.714 0 1.832.366 1.099 1.099C.366 1.832 0 2.714 0 3.746v12.487c0 1.032.366 1.914 1.099 2.647c.733.733 1.615 1.099 2.647 1.099H6.66c.19 0 .333-.007.429-.02a.504.504 0 0 0 .286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555 0 0 1-.904-.091a2.026 2.026 0 0 1-.872-.39a1.651 1.651 0 0 1-.572-.8l-.13-.3a3.25 3.25 0 0 0-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956 0 0 1-.17-.156a.723.723 0 0 1-.117-.182c-.026-.061-.004-.111.065-.15c.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1 0 0 1 .631.677c.2.355.44.626.722.813c.282.186.566.28.852.28c.286 0 .533-.022.742-.065a2.59 2.59 0 0 0 .585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907 0 0 1-1.333-.234a5.314 5.314 0 0 1-1.223-.507a3.5 3.5 0 0 1-1.047-.872c-.277-.347-.505-.802-.683-1.365c-.177-.564-.266-1.215-.266-1.952c0-1.049.342-1.942 1.027-2.68c-.32-.788-.29-1.673.091-2.652c.252-.079.625-.02 1.119.175c.494.195.856.362 1.086.5c.23.14.414.257.553.352a9.233 9.233 0 0 1 2.497-.338c.859 0 1.691.113 2.498.338l.494-.312a6.997 6.997 0 0 1 1.197-.572c.46-.174.81-.221 1.054-.143c.39.98.424 1.864.103 2.653c.685.737 1.028 1.63 1.028 2.68c0 .737-.089 1.39-.267 1.957c-.177.568-.407 1.023-.689 1.366a3.65 3.65 0 0 1-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9 0 0 1-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36 0 0 0 .208.189c.096.034.18.056.254.064c.074.01.18.013.318.013h2.914c1.032 0 1.914-.366 2.647-1.099c.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/>
+        </svg>
+    </a>
+
+
+
+    <a target="_blank" class="social" title="LinkedIn" href="https://linkedin.com/in/ibrahim-shahzad-71305773/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512">
+            <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5c0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7c-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5c67.2 0 79.7 44.3 79.7 101.9V416z"/>
+        </svg>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a target="_blank" class="social" title="RSS Feed" href="/posts/index.xml">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280.000000 1280.000000">
+            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentColor">
+                <path d="M2295 11929 c-284 -12 -642 -45 -707 -65 -17 -5 -18 -63 -18 -1039 0 -569 4 -1036 8 -1039 5 -3 74 6 153 19 510 86 1168 95 1789 25 1348 -153 2602 -677 3670 -1531 385 -308 820 -744 1126 -1129 842 -1060 1362 -2313 1514 -3650 70 -621 61 -1279 -25 -1789 -13 -79 -22 -148 -19 -153 3 -4 471 -8 1039 -8 l1035 0 5 23 c51 225 85 942 67 1419 -23 605 -77 1044 -198 1617 -294 1400 -927 2734 -1823 3846 -1043 1295 -2364 2259 -3909 2854 -1158 447 -2451 656 -3707 600z"/>
+                <path d="M2255 7845 c-269 -25 -620 -81 -667 -106 -17 -9 -18 -55 -18 -899 0 -706 3 -890 13 -890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207 -107 2267 -823 2814 -1902 166 -327 268 -637 330 -1001 38 -227 48 -384 42 -662 -8 -348 -44 -590 -126 -831 -23 -66 -41 -126 -41 -132 0 -10 184 -13 890 -13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782 -59 703 -233 1323 -545 1945 -481 956 -1313 1788 -2270 2268 -620 310 -1239 483 -1940 542 -165 14 -669 10 -840 -5z"/>
+                <path d="M2519 3815 c-391 -66 -725 -336 -868 -703 -79 -201 -96 -462 -45 -677 83 -344 338 -641 666 -774 116 -47 205 -69 330 -80 412 -39 811 153 1040 500 193 292 240 648 128 981 -135 403 -492 699 -914 757 -100 14 -241 12 -337 -4z"/>
+            </g>
+        </svg>
+    </a>
+
+
+
+
+
+        <p class="footnote">
+powered by <a target="_blank" href="https://gohugo.io">Hugo</a> | themed with <a target="_blank" href="https://github.com/lukeorth/poison">poison</a>
+    <br>
+    &copy; 2024 Ibrahim Shahzad - Personal Blog. All rights reserved.
+</p>
+
+  </div>
+</aside>
+
+            <main class="content container">
+                <div class="post">
+  <div class="info">
+  <h1 class="post-title">
+    <a href="https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/">Writing LSP for kamailio_cfg p1</a>
+  </h1>
+
+  <div class="headline">
+    <div>
+      
+      
+      <time datetime=" 2024-08-25T19:38:33&#43;0200" class="post-date">
+        August 25, 2024
+      </time>
+      
+      <span> - </span>
+      <span class="reading-time">
+        
+          
+        
+
+        <span>9 mins read</span>
+      </span>
+    </div>
+
+    
+  </div>
+
+  
+  
+
+  
+</div>
+
+  <h1 id="writing-lsp-for-kamailiocfg---part-1">Writing LSP for Kamailio.cfg - Part 1</h1>
+<p>In the previous post, i used the tree-sitter parser to parse the kamilio.cfg file for syntax highlighting. Since the tree-sitter also generates the go bindings for the parser, i thought it would be a good idea to use the parser to generate the LSP for the kamailio.cfg file.</p>
+<p>For this reason i went back to the grammar i had written for the kamailio.cfg file and made it a bit more specific since that would help identifying the different nodes when im writing the LSP.</p>
+<p>First and foremost, I am going to target Hover feature, I will look into more features as i go along. For this what i want from the LSP is to be able to hover over a token and get the information about the token. For now i&rsquo;ll consider only the function documentation.</p>
+<h2 id="name">Name</h2>
+<p>I have named the LSP server as <code>KamaiZen</code>. The name is a play on the words Kamailio and Zen. The server is written in Go and uses the go bindings generated by the tree-sitter parser. Github repo for the project is <a href="https://github.com/IbrahimShahzad/KamaiZen" target="_blank">here</a>.</p>
+<h2 id="directory-structure">Directory Structure</h2>
+<p>Following is the directory structure i have for the project:</p>
+<pre tabindex="0"><code>.
+├── README.md
+├── kamailio_cfg
+│   ├── binding.go
+│   ├── binding_test.go
+│   ├── parser.c
+│   └── treesitter
+│       ├── alloc.h
+│       ├── array.h
+│       └── parser.c
+├── lsp
+│   ├── initialize.go
+│   ├── message.go
+│   ├── textDocument.go
+│   ├── textDocument_open.go
+│   ├── textDocument_hover.go
+│   └── writer.go
+├── docs
+│   └── server.go
+├── analysis
+│   ├── analysis.go
+│   ├── formatter.go
+│   └── state.go
+├── rpc
+│   └── rpc.go
+└── utils
+    └── logger.go
+    
+</code></pre><h3 id="kamailio_cfg">kamailio_cfg</h3>
+<p>This directory contains the go bindings for the tree-sitter parser. Main two files to consider are <code>binding.go</code> and <code>parser.c</code>.</p>
+<ul>
+<li>The <code>parser.c</code> file is the file generated by the tree-sitter parser.</li>
+<li>The <code>binding.go</code> file contains the go bindings for the parser.</li>
+</ul>
+<h3 id="rpc">rpc</h3>
+<p>This directory contains the rpc server. The main file to consider is <code>rpc.go</code>.</p>
+<ul>
+<li>The <code>rpc.go</code> file contains the Encode Decode functions for the messages that are sent and received by the LSP server.</li>
+</ul>
+<h3 id="lsp">lsp</h3>
+<p>This directory contains the LSP server. The main files to consider are <code>initialize.go</code>, <code>message.go</code>, <code>textDocument.go</code>, <code>textDocument_open.go</code>, <code>textDocument_hover.go</code> and <code>writer.go</code>.</p>
+<ul>
+<li>The <code>initialize.go</code> file contains the initialize function for the LSP server.</li>
+<li>The <code>message.go</code> file contains the message struct for the LSP server.</li>
+<li>The <code>textDocument.go</code> file contains the textDocument struct for the LSP server.</li>
+<li>The <code>textDocument_open.go</code> file contains the open function for the LSP server.</li>
+<li>The <code>textDocument_hover.go</code> file contains the hover function for the LSP server.</li>
+<li>The <code>writer.go</code> file contains the writer function for the LSP server.</li>
+</ul>
+<h3 id="analysis">analysis</h3>
+<p>This directory will contain the analysis done on the source code. It will be able to proide the user with diagnostics and code completion.</p>
+<h3 id="docs">docs</h3>
+<p>This is the directory where the documentation for the <code>kamailio</code> functions/modules will be parsed and stored and on hover the information will be displayed. We will focus on this one in this post.</p>
+<h2 id="lets-get-started">Let&rsquo;s get started</h2>
+<ul>
+<li>
+<p>You can watch youtube video <a href="https://www.youtube.com/watch?v=YsdlcQoHqPY" target="_blank">Learn By Building: Language Server Protocol</a> by <a href="https://www.youtube.com/@teej_dv" target="_blank">TJ DeVries</a> to get a better understanding of how to write an LSP server. I found it very helpful starting out on this.</p>
+</li>
+<li>
+<p>I&rsquo;ll skip straight to parsing the kamailio docs and the hover feature.</p>
+</li>
+</ul>
+<h3 id="parsing-the-kamailio-docs">Parsing the Kamailio Docs</h3>
+<p>For parsing the kamailio docs, I have gone with the README files present in each modules directory, and as stated earlier im focusing on the function definitions for now.</p>
+<p>I have following structure for the docs:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">moduleDocsCache</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ModuleDocs</span>)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">FunctionDoc</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Name</span>        <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Parameters</span>  <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Description</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Example</span>     <span style="color:#66d9ef">string</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">FunctionDocs</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Functions</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">FunctionDoc</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ModuleDocs</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Functions</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">FunctionDocs</span>
+}
+</code></pre></div><ol>
+<li><code>FunctionDoc</code> contains the name of the function, the parameters, the description and an example.</li>
+<li><code>FunctionDocs</code> contains a map of <code>FunctionDoc</code> with the key as the function name.</li>
+<li><code>ModuleDocs</code> contains a map of <code>FunctionDocs</code> with the key as the module name.</li>
+</ol>
+<p>The idea is that on startup the LSP server will parse the README files and store the information in the <code>moduleDocsCache</code> map. When a hover request is made, the server will look up the function in the cache and return the information.</p>
+<p>The function is called on startup and is as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Initialise</span>(<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">LSPSettings</span>) {
+	<span style="color:#a6e22e">path</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">KamailioSourcePath</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/src/modules&#34;</span>
+	<span style="color:#a6e22e">listOfModules</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ReadDir</span>(<span style="color:#a6e22e">path</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error reading directory&#34;</span>)
+		<span style="color:#66d9ef">return</span>
+	}
+	<span style="color:#75715e">// Get All Modules
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">module</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">listOfModules</span> {
+		<span style="color:#75715e">// Parse README file for each module
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">readme</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ReadFile</span>(<span style="color:#a6e22e">path</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">Name</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/README&#34;</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error reading file&#34;</span>)
+			<span style="color:#66d9ef">return</span>
+		}
+
+		<span style="color:#a6e22e">moduleDocs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewModuleDocs</span>()
+		<span style="color:#a6e22e">functionDocs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">extractFunctionDoc</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Split</span>(string(<span style="color:#a6e22e">readme</span>), <span style="color:#e6db74">&#34;\n&#34;</span>))
+		<span style="color:#a6e22e">functionDocsMap</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">FunctionDocs</span>{<span style="color:#a6e22e">Functions</span>: make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">FunctionDoc</span>)}
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">functionDoc</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">functionDocs</span> {
+			<span style="color:#a6e22e">functionDocsMap</span>.<span style="color:#a6e22e">AddFunctionDoc</span>(<span style="color:#a6e22e">functionDoc</span>)
+		}
+		<span style="color:#a6e22e">moduleDocs</span>.<span style="color:#a6e22e">AddFunctionDoc</span>(<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">Name</span>(), <span style="color:#a6e22e">functionDocsMap</span>)
+		<span style="color:#a6e22e">moduleDocsCache</span>[<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">Name</span>()] = <span style="color:#a6e22e">moduleDocs</span>
+	}
+}
+</code></pre></div><p>The main function responsible for extracting the documentation is  <code>extractFunctionDoc</code> which is as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">extractFunctionDoc</span>(<span style="color:#a6e22e">lines</span> []<span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">FunctionDoc</span> {
+	<span style="color:#a6e22e">funcPattern</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">MustCompile</span>(<span style="color:#e6db74">`^\s*\d+\.\d+\.\s*(\w+)\((.*)\)\s*$`</span>)
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">functionDocs</span> []<span style="color:#a6e22e">FunctionDoc</span>
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">functionDoc</span> <span style="color:#a6e22e">FunctionDoc</span>
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">inExample</span> <span style="color:#66d9ef">bool</span>
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">example</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">exampleLineCount</span> <span style="color:#66d9ef">int</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">line</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">lines</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">match</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">funcPattern</span>.<span style="color:#a6e22e">FindStringSubmatch</span>(<span style="color:#a6e22e">line</span>); <span style="color:#a6e22e">match</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">functionDoc</span>.<span style="color:#a6e22e">Name</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
+				<span style="color:#a6e22e">functionDocs</span> = append(<span style="color:#a6e22e">functionDocs</span>, <span style="color:#a6e22e">functionDoc</span>)
+			}
+			<span style="color:#a6e22e">functionDoc</span> = <span style="color:#a6e22e">FunctionDoc</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#a6e22e">match</span>[<span style="color:#ae81ff">1</span>], <span style="color:#a6e22e">Parameters</span>: <span style="color:#a6e22e">match</span>[<span style="color:#ae81ff">2</span>]}
+			<span style="color:#a6e22e">inExample</span> = <span style="color:#66d9ef">false</span>
+			<span style="color:#a6e22e">example</span> = <span style="color:#e6db74">&#34;&#34;</span>
+		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">functionDoc</span>.<span style="color:#a6e22e">Name</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
+			<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">inExample</span> {
+				<span style="color:#75715e">// example has indentation of some spaces
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">line</span>, <span style="color:#e6db74">&#34;Example&#34;</span>) {
+					<span style="color:#a6e22e">inExample</span> = <span style="color:#66d9ef">true</span>
+				} <span style="color:#66d9ef">else</span> {
+					<span style="color:#a6e22e">functionDoc</span>.<span style="color:#a6e22e">Description</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">line</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span>
+				}
+			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">line</span>, <span style="color:#e6db74">&#34;...&#34;</span>) {
+					<span style="color:#a6e22e">exampleLineCount</span><span style="color:#f92672">++</span>
+					<span style="color:#75715e">// end of example if there are 2 lines
+</span><span style="color:#75715e"></span>					<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">exampleLineCount</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span> {
+						<span style="color:#a6e22e">inExample</span> = <span style="color:#66d9ef">false</span>
+					}
+					<span style="color:#a6e22e">functionDoc</span>.<span style="color:#a6e22e">Example</span> = <span style="color:#a6e22e">example</span>
+				} <span style="color:#66d9ef">else</span> {
+					<span style="color:#a6e22e">example</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">line</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span>
+				}
+			}
+		}
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">functionDoc</span>.<span style="color:#a6e22e">Name</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">functionDocs</span> = append(<span style="color:#a6e22e">functionDocs</span>, <span style="color:#a6e22e">functionDoc</span>)
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">functionDocs</span>
+}
+</code></pre></div><p>The function uses a regular expression to match the function definition and then extracts the parameters and the description. The function also extracts the example if it is present.</p>
+<h3 id="hover-feature">Hover Feature</h3>
+<p>The hover feature request and response are defined in the <code>textDocument_hover.go</code> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">HoverRequest</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Request</span>
+	<span style="color:#a6e22e">Params</span> <span style="color:#a6e22e">HoverParams</span> <span style="color:#e6db74">`json:&#34;params&#34;`</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">HoverParams</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">TextDocuemntPositionParams</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">HoverResponse</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Response</span>
+	<span style="color:#a6e22e">Result</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hover</span> <span style="color:#e6db74">`json:&#34;result&#34;`</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hover</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Contents</span> <span style="color:#a6e22e">MarkupContent</span> <span style="color:#e6db74">`json:&#34;contents&#34;`</span>
+	<span style="color:#a6e22e">Range</span>    <span style="color:#f92672">*</span><span style="color:#a6e22e">Range</span>        <span style="color:#e6db74">`json:&#34;range,omitempty&#34;`</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewHoverResponse</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">HoverResponse</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">HoverResponse</span>{
+		<span style="color:#a6e22e">Response</span>: <span style="color:#a6e22e">Response</span>{
+			<span style="color:#a6e22e">RPC</span>: <span style="color:#e6db74">&#34;2.0&#34;</span>,
+			<span style="color:#a6e22e">ID</span>:  <span style="color:#a6e22e">id</span>,
+		},
+		<span style="color:#a6e22e">Result</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Hover</span>{
+			<span style="color:#a6e22e">Contents</span>: <span style="color:#a6e22e">MarkupContent</span>{
+				<span style="color:#a6e22e">Kind</span>:  <span style="color:#e6db74">&#34;markdown&#34;</span>,
+				<span style="color:#a6e22e">Value</span>: <span style="color:#a6e22e">contents</span>,
+			},
+		},
+	}
+}
+</code></pre></div><p>When a hover request is made, the following block of code is executed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleMessage</span>(<span style="color:#a6e22e">writer</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>, <span style="color:#a6e22e">logger</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Logger</span>, <span style="color:#a6e22e">state</span> <span style="color:#a6e22e">analysis</span>.<span style="color:#a6e22e">State</span>, <span style="color:#a6e22e">method</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">analyser_channel</span> <span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">analysis</span>.<span style="color:#a6e22e">State</span>) {
+	<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Received message with method: &#34;</span>, <span style="color:#a6e22e">method</span>)
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">method</span> {
+
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">MethodInitialize</span>:
+        <span style="color:#f92672">...</span>
+
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">MethodDidOpen</span>:
+		<span style="color:#f92672">...</span>
+
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">MethodHover</span>:
+		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">HoverRequest</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#66d9ef">error</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshal</span>(<span style="color:#a6e22e">contents</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">request</span>); <span style="color:#66d9ef">error</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error unmarshalling hover request: &#34;</span>, <span style="color:#66d9ef">error</span>)
+			<span style="color:#66d9ef">return</span>
+		}
+		<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Hover request for document with URI: &#34;</span>, <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">Params</span>.<span style="color:#a6e22e">TextDocument</span>.<span style="color:#a6e22e">URI</span>)
+		<span style="color:#a6e22e">response</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">Hover</span>(<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">Params</span>.<span style="color:#a6e22e">TextDocument</span>.<span style="color:#a6e22e">URI</span>, <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">Params</span>.<span style="color:#a6e22e">Position</span>)
+		<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Sent hover response %v&#34;</span>, <span style="color:#a6e22e">response</span>)
+		<span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">WriteResponse</span>(<span style="color:#a6e22e">writer</span>, <span style="color:#a6e22e">response</span>)
+
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">MethodDidChange</span>:
+        <span style="color:#f92672">...</span>
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">MethodDefinition</span>:
+        <span style="color:#f92672">...</span>
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">MethodFormatting</span>:
+        <span style="color:#f92672">...</span>
+	}
+}
+
+</code></pre></div><p>The <code>Hover</code> method is called on the <code>state</code> object which is responsible for returning the hover response.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">State</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#75715e">// Key: URI, Value: Text content
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Documents</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">DocumentURI</span>]<span style="color:#66d9ef">string</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">State</span>) <span style="color:#a6e22e">Hover</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">uri</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">DocumentURI</span>, <span style="color:#a6e22e">position</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">Position</span>) <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">HoverResponse</span> {
+	<span style="color:#a6e22e">text</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Documents</span>[<span style="color:#a6e22e">uri</span>]
+	<span style="color:#a6e22e">functionName</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">GetFunctionNameAtPosition</span>(<span style="color:#a6e22e">uri</span>, <span style="color:#a6e22e">position</span>, []byte(<span style="color:#a6e22e">text</span>))
+	<span style="color:#a6e22e">documentation</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">docs</span>.<span style="color:#a6e22e">FindFunctionInAllModules</span>(<span style="color:#a6e22e">functionName</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">NewHoverResponse</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s&#34;</span>, <span style="color:#a6e22e">documentation</span>))
+}
+</code></pre></div><p>Here the <code>State</code> is a map of <code>URI</code> to <code>Text content</code>. The <code>Hover</code> method gets the text content for the URI and then gets the function name at the position. The function name is then used to get the documentation from the <code>moduleDocsCache</code> map.</p>
+<h3 id="getfunctionnameatposition">GetFunctionNameAtPosition</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetFunctionNameAtPosition</span>(<span style="color:#a6e22e">uri</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">DocumentURI</span>, <span style="color:#a6e22e">position</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">Position</span>, <span style="color:#a6e22e">source_code</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#a6e22e">node</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">stateTreeCache</span>.<span style="color:#a6e22e">nodes</span>[<span style="color:#a6e22e">uri</span>]
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">getFunctionName</span>(<span style="color:#a6e22e">node</span>, <span style="color:#a6e22e">position</span>, <span style="color:#a6e22e">source_code</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getFunctionName</span>(<span style="color:#a6e22e">node</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Node</span>, <span style="color:#a6e22e">position</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">Position</span>, <span style="color:#a6e22e">source_code</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#a6e22e">nodeAtPosition</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">node</span>.<span style="color:#a6e22e">NamedDescendantForPointRange</span>(
+		<span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Point</span>{
+			<span style="color:#a6e22e">Row</span>:    uint32(<span style="color:#a6e22e">position</span>.<span style="color:#a6e22e">Line</span>),
+			<span style="color:#a6e22e">Column</span>: uint32(<span style="color:#a6e22e">position</span>.<span style="color:#a6e22e">Character</span>),
+		},
+		<span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Point</span>{
+			<span style="color:#a6e22e">Row</span>:    uint32(<span style="color:#a6e22e">position</span>.<span style="color:#a6e22e">Line</span>),
+			<span style="color:#a6e22e">Column</span>: uint32(<span style="color:#a6e22e">position</span>.<span style="color:#a6e22e">Character</span>),
+		})
+	<span style="color:#a6e22e">functionName</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nodeAtPosition</span>.<span style="color:#a6e22e">Content</span>(<span style="color:#a6e22e">source_code</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">functionName</span>
+}
+</code></pre></div><p>Here we use out <code>stateTreeCache</code> to get the node at the position and then get the content of the node which is the function name. This cache is populated when the document is opened. This is simply a map of <code>URI</code> to <code>Node</code>. The <code>Node</code> here represents the go-tree-sitter node. So the tree is going to be exactly like what we used in the parser for syntax highlighting.</p>
+<h3 id="findfunctioninallmodules">FindFunctionInAllModules</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">FindFunctionInAllModules</span>(<span style="color:#a6e22e">functionName</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">moduleName</span>, <span style="color:#a6e22e">moduleDocs</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">moduleDocsCache</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">exists</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">moduleDocs</span>.<span style="color:#a6e22e">Functions</span>[<span style="color:#a6e22e">moduleName</span>].<span style="color:#a6e22e">Functions</span>[<span style="color:#a6e22e">functionName</span>]; <span style="color:#a6e22e">exists</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Module: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">moduleName</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">moduleDocs</span>.<span style="color:#a6e22e">GetFunctionDocAsString</span>(<span style="color:#a6e22e">moduleName</span>, <span style="color:#a6e22e">functionName</span>)
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Function not found&#34;</span>
+}
+</code></pre></div><p>This function iterates over the <code>moduleDocsCache</code> map and checks if the function exists in any of the modules. If it does, it returns the documentation for the function. The cache is populated on startup.</p>
+<h3 id="statetreecache">StateTreeCache</h3>
+<p>The <code>StateTreeCache</code> is populated when the document is opened. The <code>Open</code> method is called when a document is opened.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Parser</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">parser</span>   <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Parser</span>
+	<span style="color:#a6e22e">language</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Language</span>
+	<span style="color:#a6e22e">tree</span>     <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Tree</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewParser</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">Parser</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Parser</span>{
+		<span style="color:#a6e22e">parser</span>: <span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">NewParser</span>(),
+	}
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Parser</span>) <span style="color:#a6e22e">SetLanguage</span>() {
+	<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">language</span> = <span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">NewLanguage</span>(<span style="color:#a6e22e">kamailio_cfg</span>.<span style="color:#a6e22e">Language</span>())
+	<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">parser</span>.<span style="color:#a6e22e">SetLanguage</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">language</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Parser</span>) <span style="color:#a6e22e">GetLanguage</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Language</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">language</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Parser</span>) <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">sourceCode</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Node</span> {
+	<span style="color:#a6e22e">tree</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">parser</span>.<span style="color:#a6e22e">ParseCtx</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(), <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">sourceCode</span>)
+	<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">tree</span> = <span style="color:#a6e22e">tree</span>
+	<span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">RootNode</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">n</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Parser</span>) <span style="color:#a6e22e">GetTree</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Tree</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">tree</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Parser</span>) <span style="color:#a6e22e">UpdateTree</span>(<span style="color:#a6e22e">content</span> []<span style="color:#66d9ef">byte</span>) {
+	<span style="color:#a6e22e">newTree</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">parser</span>.<span style="color:#a6e22e">ParseCtx</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(), <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">tree</span>, <span style="color:#a6e22e">content</span>)
+	<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">tree</span> = <span style="color:#a6e22e">newTree</span>
+}
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StateTree</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">nodes</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">DocumentURI</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Node</span>
+}
+
+<span style="color:#75715e">// module level state tree
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">stateTreeCache</span> <span style="color:#a6e22e">StateTree</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewStateTree</span>() <span style="color:#a6e22e">StateTree</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">StateTree</span>{
+        <span style="color:#a6e22e">nodes</span>: make(<span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">DocumentURI</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Node</span>),
+    }
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StateTree</span>) <span style="color:#a6e22e">AddNode</span>(<span style="color:#a6e22e">uri</span> <span style="color:#a6e22e">lsp</span>.<span style="color:#a6e22e">DocumentURI</span>, <span style="color:#a6e22e">node</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sitter</span>.<span style="color:#a6e22e">Node</span>) {
+    <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">nodes</span>[<span style="color:#a6e22e">uri</span>] = <span style="color:#a6e22e">node</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">StartAnalyser</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">State</span>, <span style="color:#a6e22e">writer</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>, <span style="color:#a6e22e">logger</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Logger</span>, <span style="color:#a6e22e">wg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>) {
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
+    <span style="color:#a6e22e">parser</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewParser</span>()
+    <span style="color:#a6e22e">parser</span>.<span style="color:#a6e22e">SetLanguage</span>()
+    <span style="color:#a6e22e">stateTree</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewStateTree</span>()
+    <span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;=====Analyser started&#34;</span>)
+
+    <span style="color:#66d9ef">for</span> {
+        <span style="color:#66d9ef">select</span> {
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>:
+            <span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ok</span> {
+                <span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Channel closed! Exiting...&#34;</span>)
+                <span style="color:#66d9ef">return</span>
+            }
+            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">uri</span>, <span style="color:#a6e22e">content</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">Documents</span> {
+                <span style="color:#a6e22e">node</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">parser</span>.<span style="color:#a6e22e">Parse</span>([]byte(<span style="color:#a6e22e">content</span>))
+                <span style="color:#75715e">//...
+</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">stateTreeCache</span> = <span style="color:#a6e22e">stateTree</span>
+            }
+        }
+    }
+}
+</code></pre></div><p>The Parser uses the kamailio_cfg language parser, this is the same parser that was used for syntax highlighting. The <code>StateTree</code> is a map of <code>URI</code> to <code>Node</code>. The <code>Node</code> is the go-tree-sitter node. The <code>StartAnalyser</code> function is responsible for populating the <code>StateTreeCache</code> when the document is opened.</p>
+<p>We use this same cache to get the node at the position when the hover request is made.</p>
+<h3 id="in-action">In Action</h3>
+<p>The hover feature in action:</p>
+<p><img src="images/hover.png" alt="Hover Feature"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>I still have yet to update the design of the LSP server and add more features. I will be looking into the diagnostics and code completion after i have fine-tuned this.</p>
+<p>Also in terms of design, i will be looking into the <code>golang.org/x/tools/internal/lsp</code> package to see how they have implemented the LSP server.</p>
+<p>I will be updating the github repo with the latest changes. You can find the repo <a href="https://github.com/IbrahimShahzad/KamaiZen" target="_blank">here</a>.</p>
+
+  
+  <hr>
+<div class="footer">
+    
+	    
+            <a class="previous-post" href="https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/?ref=footer"><span style="font-weight:bold;">« Previous</span><br>Parsing_kamailio_cfg</a>
+        
+	    
+    
+</div>
+
+  
+</div>
+            </main>
+            
+  
+    <div class="article-toc ">
+    <div class="toc-wrapper">
+      <h4 id="contents"></h4>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#name">Name</a></li>
+    <li><a href="#directory-structure">Directory Structure</a>
+      <ul>
+        <li><a href="#kamailio_cfg">kamailio_cfg</a></li>
+        <li><a href="#rpc">rpc</a></li>
+        <li><a href="#lsp">lsp</a></li>
+        <li><a href="#analysis">analysis</a></li>
+        <li><a href="#docs">docs</a></li>
+      </ul>
+    </li>
+    <li><a href="#lets-get-started">Let&rsquo;s get started</a>
+      <ul>
+        <li><a href="#parsing-the-kamailio-docs">Parsing the Kamailio Docs</a></li>
+        <li><a href="#hover-feature">Hover Feature</a></li>
+        <li><a href="#getfunctionnameatposition">GetFunctionNameAtPosition</a></li>
+        <li><a href="#findfunctioninallmodules">FindFunctionInAllModules</a></li>
+        <li><a href="#statetreecache">StateTreeCache</a></li>
+        <li><a href="#in-action">In Action</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+  
+
+        </div>
+    </body>
+</html>
