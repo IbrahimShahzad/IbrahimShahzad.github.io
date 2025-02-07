@@ -49,31 +49,36 @@
 
 
 
+  
+  
+  
+
 
 <!-- Open Graph image and Twitter Card metadata -->
 
-<title itemprop="name">Ibrahim Shahzad - Personal Blog</title>
-<meta property="og:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Personal&#32;Blog />
-<meta name="twitter:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Personal&#32;Blog />
-<meta itemprop="name" content=Ibrahim&#32;Shahzad&#32;-&#32;Personal&#32;Blog />
-<meta name="application-name" content=Ibrahim&#32;Shahzad&#32;-&#32;Personal&#32;Blog />
+  
+<title itemprop="name">Ibrahim Shahzad - Set up your vim</title>
+<meta property="og:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Set&#32;up&#32;your&#32;vim />
+<meta name="twitter:title" content=Ibrahim&#32;Shahzad&#32;-&#32;Set&#32;up&#32;your&#32;vim />
+<meta itemprop="name" content=Ibrahim&#32;Shahzad&#32;-&#32;Set&#32;up&#32;your&#32;vim />
+<meta name="application-name" content=Ibrahim&#32;Shahzad&#32;-&#32;Set&#32;up&#32;your&#32;vim />
 <meta property="og:site_name" content="Ibrahim Shahzad - Personal Blog" />
 
 
-<meta name="description" content="" />
-<meta itemprop="description" content="" />
-<meta property="og:description" content="" />
-<meta name="twitter:description" content="" />
+<meta name="description" content="Set up your favourite editor -- VIM --" />
+<meta itemprop="description" content="Set up your favourite editor -- VIM --" />
+<meta property="og:description" content="Set up your favourite editor -- VIM --" />
+<meta name="twitter:description" content="Set up your favourite editor -- VIM --" />
 
 
-<base href="https://ibrahimshahzad.github.io/404.html" />
-<link rel="canonical" href="https://ibrahimshahzad.github.io/404.html" itemprop="url" />
-<meta name="url" content="https://ibrahimshahzad.github.io/404.html" />
-<meta name="twitter:url" content="https://ibrahimshahzad.github.io/404.html" />
-<meta property="og:url" content="https://ibrahimshahzad.github.io/404.html" />
+<base href="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/" />
+<link rel="canonical" href="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/" itemprop="url" />
+<meta name="url" content="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/" />
+<meta name="twitter:url" content="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/" />
+<meta property="og:url" content="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/" />
 
 
-<meta property="og:updated_time" content="0001-01-01T00:00:00Z" />
+<meta property="og:updated_time" content="2021-06-11T18:30:00Z" />
 
 
 <link rel="sitemap" type="application/xml" title="Sitemap" href='https://ibrahimshahzad.github.io/sitemap.xml' />
@@ -305,10 +310,194 @@ powered by <a target="_blank" href="https://gohugo.io">Hugo</a> | themed with <a
 </aside>
 
             <main class="content container">
-                <h1>404: Page not found</h1>
-<p class="lead">Sorry, we've misplaced that URL or it's pointing to something that doesn't exist. <a href="https://ibrahimshahzad.github.io/">Head back home</a> to try finding it again.</p>
+                <div class="post">
+  <div class="info">
+  <h1 class="post-title">
+    <a href="https://ibrahimshahzad.github.io/posts/getting_started_with_vim/">Set up your vim</a>
+  </h1>
+
+  <div class="headline">
+    <div>
+      
+      
+      <time datetime=" 2021-06-11T18:30:00Z" class="post-date">
+        June 11, 2021
+      </time>
+      
+      <span> - </span>
+      <span class="reading-time">
+        
+          
+        
+
+        <span>2 mins read</span>
+      </span>
+    </div>
+
+    
+  </div>
+
+  
+  
+
+  
+</div>
+
+  <p>Shruberry!</p>
+<h2 id="vimrc">Vimrc</h2>
+<p>Get a good vimrc file, you can use mine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd ~
+wget https://raw.githubusercontent.com/IbrahimShahzad/My-Vimrc-file/master/.vimrc ~/.vimrc
+</code></pre></div><h2 id="get-vim-version--8">Get VIm (version &gt; 8)</h2>
+<h3 id="centos">CentOS</h3>
+<ul>
+<li>Install the Dependencies and clone vim (version &gt; 8.1 )</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo yum install -y gcc make ncurses ncurses-devel git python3 pip3
+sudo yum list installed | grep vim
+sudo yum remove -y vim-enhanced vim-common vim-filesystem
+sudo git clone https://github.com/vim/vim.git
+
+</code></pre></div><h3 id="ubuntu">Ubuntu</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install -y gcc make libncurses5-dev libncursesw5-dev git python3 pip3 
+sudo git clone https://github.com/vim/vim.git
+
+</code></pre></div><h2 id="install-vim">Install Vim</h2>
+<blockquote>
+<p>Following should work for both CentOS and Ubuntu</p>
+</blockquote>
+<ul>
+<li>You can configure with simple options with following</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">pushd vim
+./configure --with-features<span style="color:#f92672">=</span>huge <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --enable-multibyte <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --enable-pythoninterp <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --enable-luainterp
+sudo make
+sudo make install
+popd
+
+</code></pre></div><p><strong>OR</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">pushd vim
+./configure --with-features<span style="color:#f92672">=</span>huge <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>            --enable-multibyte <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	--enable-rubyinterp<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	--enable-pythoninterp<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	--with-python-config-dir<span style="color:#f92672">=</span>/usr/lib/python2.7/config <span style="color:#ae81ff">\ </span><span style="color:#75715e"># pay attention here check directory correct</span>
+	    	--enable-python3interp<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	--with-python3-config-dir<span style="color:#f92672">=</span>/usr/lib/python3.5/config <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	--enable-perlinterp<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	--enable-luainterp<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>            --enable-gui<span style="color:#f92672">=</span>gtk2 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>            --enable-cscope <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	   		--prefix<span style="color:#f92672">=</span>/usr/local
+popd
+
+</code></pre></div><blockquote>
+<p>On <code>CentOS7</code> change <code>--with-python-config-dir=/usr/lib/python2.7/config</code> to <code>--with-python-config-dir=/lib64/python2.7/config</code></p>
+</blockquote>
+<ul>
+<li>Finally check Vim Version</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vim -version | less
+</code></pre></div><h2 id="get-vundle">Get Vundle</h2>
+<blockquote>
+<p>Following should work for both CentOS and Ubuntu</p>
+</blockquote>
+<ul>
+<li>Download vunlde and install all the plugins mentioned in <code>~.vimrc</code> file.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall
+</code></pre></div><ul>
+<li>The above should download all the plugins in <code>/.vim/bundle/</code> directory.</li>
+</ul>
+<h2 id="for-clang-support">For CLANG support</h2>
+<h3 id="centos-1">CentOS</h3>
+<ul>
+<li>Run the following</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo yum install cmake -y
+sudo yum install centos-release-scl -y
+sudo yum install llvm-toolset-7 -y
+scl enable llvm-toolset-7 bash
+clang --version
+</code></pre></div><h3 id="ubuntu-1">Ubuntu</h3>
+<ul>
+<li>Run the following</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install cmake clang -y
+clang --version
+</code></pre></div><h2 id="install-youcompleteme-for-autocompletion">Install YOUCOMPLETEME for autocompletion</h2>
+<ul>
+<li>Run the following commands</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">pushd ~/.vim/bundle/YouCompleteMe/
+git submodule update --init --recursive
+./install.py --clang-completer
+popd
+
+</code></pre></div><h2 id="done">Done</h2>
+<p>Finally</p>
+<ul>
+<li>Run the <code>vim</code> command.</li>
+<li>Enjoy the <code>vim</code> in all its glory</li>
+<li>Checkout the plugins in <code>~/.vimrc</code> file</li>
+<li>Need a cheatsheet for vim commands? Look <a href="https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf" target="_blank"><!-- raw HTML omitted -->here<!-- raw HTML omitted --></a></li>
+<li>Give yourself a cookie</li>
+</ul>
+<p><img src="./vim.png" alt="VIM"></p>
+
+  
+  <hr>
+<div class="footer">
+    
+	    
+            <a class="previous-post" href="https://ibrahimshahzad.github.io/posts/welcome_arthur/?ref=footer"><span style="font-weight:bold;">« Previous</span><br>Welcome Arthur!</a>
+        
+	    
+            <div class="next-post">
+                <a href="https://ibrahimshahzad.github.io/posts/dpdk_01/?ref=footer"><span style="font-weight:bold;">Next »</span><br>DPDK 01</a>
+            </div>
+        
+    
+</div>
+
+  
+</div>
             </main>
             
+  
+    <div class="article-toc ">
+    <div class="toc-wrapper">
+      <h4 id="contents"></h4>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#vimrc">Vimrc</a></li>
+    <li><a href="#get-vim-version--8">Get VIm (version &gt; 8)</a>
+      <ul>
+        <li><a href="#centos">CentOS</a></li>
+        <li><a href="#ubuntu">Ubuntu</a></li>
+      </ul>
+    </li>
+    <li><a href="#install-vim">Install Vim</a></li>
+    <li><a href="#get-vundle">Get Vundle</a></li>
+    <li><a href="#for-clang-support">For CLANG support</a>
+      <ul>
+        <li><a href="#centos-1">CentOS</a></li>
+        <li><a href="#ubuntu-1">Ubuntu</a></li>
+      </ul>
+    </li>
+    <li><a href="#install-youcompleteme-for-autocompletion">Install YOUCOMPLETEME for autocompletion</a></li>
+    <li><a href="#done">Done</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+  
+
         </div>
     </body>
 </html>

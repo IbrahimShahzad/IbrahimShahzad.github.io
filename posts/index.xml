@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Ibrahim Shahzad - Personal Blog</title>
+    <link>https://ibrahimshahzad.github.io/posts/</link>
+    <description>Recent content in Posts on Ibrahim Shahzad - Personal Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Aug 2024 19:38:33 +0200</lastBuildDate><atom:link href="https://ibrahimshahzad.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing LSP for kamailio_cfg p1</title>
+      <link>https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/</link>
+      <pubDate>Sun, 25 Aug 2024 19:38:33 +0200</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/writing_lsp_for_kamailio_cfg_p1/</guid>
+      <description>Writing LSP for Kamailio.cfg - Part 1 In the previous post, i used the tree-sitter parser to parse the kamilio.cfg file for syntax highlighting. Since the tree-sitter also generates the go bindings for the parser, i thought it would be a good idea to use the parser to generate the LSP for the kamailio.cfg file.
+For this reason i went back to the grammar i had written for the kamailio.cfg file and made it a bit more specific since that would help identifying the different nodes when im writing the LSP.</description>
+    </item>
+    
+    <item>
+      <title>Parsing_kamailio_cfg</title>
+      <link>https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/</link>
+      <pubDate>Sun, 18 Aug 2024 09:20:33 +0200</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/parsing_kamailio_cfg/</guid>
+      <description>Hey there! If you&amp;rsquo;ve ever wrangled with Kamailio&amp;rsquo;s configuration files (kamailio.cfg), you know the pain is real. It’s like trying to solve a puzzle where the pieces are constantly changing shape! I had been using a syntax highlighter but found it a bit buggy/laggy sometimes. As someone who spends a lot of time with these files, I figured there had to be a better way to manage them. And guess what?</description>
+    </item>
+    
+    <item>
+      <title>DPDK 03</title>
+      <link>https://ibrahimshahzad.github.io/posts/dpdk_03/</link>
+      <pubDate>Fri, 02 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/dpdk_03/</guid>
+      <description>Introduction Hello There. Today we will parse a few layers.
+ This is the continuation of the DPDK series. You will need to have gone through DPDK-02.
+ Let us begin!
+PreReqs  DPDK-02 Live dpdk binded port with traffic  The Layers  To understand packet filtering, you first have to understand packets and how they are handled at each layer of the TCP/IP protocol stack:  Application layer (e.</description>
+    </item>
+    
+    <item>
+      <title>DPDK 02</title>
+      <link>https://ibrahimshahzad.github.io/posts/dpdk_02/</link>
+      <pubDate>Wed, 23 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/dpdk_02/</guid>
+      <description>Introduction In this section we will write a smiple C application to recieve packets.
+Let&amp;rsquo;s dive in!
+PreReqs Make sure that
+  DPDK is built
+  A DPDK compatible NIC is binded to the igb_uio driver
+  Hugepages are setup
+  Minimum system requirements are met
+  Please see DPDK-01 if any of the aforementioned pre-reqs are not set.
+File Setup  From here on out we will refer to our dpdk installation directory as RTE_SDK.</description>
+    </item>
+    
+    <item>
+      <title>DPDK 01</title>
+      <link>https://ibrahimshahzad.github.io/posts/dpdk_01/</link>
+      <pubDate>Sun, 13 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/dpdk_01/</guid>
+      <description>Introduction What is DPDK? Data Plane Development Kit (DPDK) is a set of libraries that enable fast packet processing.
+Why would we want to use it? If you are writing any application that deals with packets AND require fast performance then you might need to look into fast packet processing libraries such as DPDK.
+In a normal flow the kernel receives a packet and does does its processing after which it forwards the packet to the application in the userspace.</description>
+    </item>
+    
+    <item>
+      <title>Set up your vim</title>
+      <link>https://ibrahimshahzad.github.io/posts/getting_started_with_vim/</link>
+      <pubDate>Fri, 11 Jun 2021 18:30:00 +0000</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/getting_started_with_vim/</guid>
+      <description>Shruberry!
+Vimrc Get a good vimrc file, you can use mine
+cd ~ wget https://raw.githubusercontent.com/IbrahimShahzad/My-Vimrc-file/master/.vimrc ~/.vimrc Get VIm (version &amp;gt; 8) CentOS  Install the Dependencies and clone vim (version &amp;gt; 8.1 )  sudo yum install -y gcc make ncurses ncurses-devel git python3 pip3 sudo yum list installed | grep vim sudo yum remove -y vim-enhanced vim-common vim-filesystem sudo git clone https://github.com/vim/vim.git Ubuntu sudo apt install -y gcc make libncurses5-dev libncursesw5-dev git python3 pip3 sudo git clone https://github.</description>
+    </item>
+    
+    <item>
+      <title>Welcome Arthur!</title>
+      <link>https://ibrahimshahzad.github.io/posts/welcome_arthur/</link>
+      <pubDate>Fri, 11 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://ibrahimshahzad.github.io/posts/welcome_arthur/</guid>
+      <description>We are the knights who say Ni!. If you wish to proceed you must find a shrubbery….
+  </description>
+    </item>
+    
+  </channel>
+</rss>
